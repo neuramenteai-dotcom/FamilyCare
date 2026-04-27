@@ -410,23 +410,30 @@ function Stats() {
 function WaitlistCTA() {
   return (
     <Section id="iscriviti">
-      <div className="grid lg:grid-cols-2 gap-12 items-center bg-gradient-warm rounded-[2rem] p-8 md:p-14 border border-border">
-        <div>
+      <div className="grid lg:grid-cols-2 gap-12 items-start bg-gradient-warm rounded-[2rem] p-8 md:p-14 border border-border">
+        <div className="lg:sticky lg:top-24">
           <span className="inline-block text-xs font-semibold tracking-[0.18em] uppercase text-primary mb-3">
             Iscrizione gratuita
           </span>
           <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.05]">
-            Sii tra i primi a provare <span className="text-gradient-primary italic">Family Care</span>.
+            Inizia subito con <span className="text-gradient-primary italic">Family Care</span>.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Lasciaci la tua email e ti avvisiamo non appena Family Care
-            arriva nella tua città. Nessun pagamento richiesto.
+            Scegli il tuo percorso: <strong className="text-foreground">cerco aiuto</strong> per la mia famiglia,
+            oppure <strong className="text-foreground">offro servizi</strong> come professionista.
           </p>
-          <ul className="mt-6 space-y-2 text-sm">
-            {["Accesso prima del lancio pubblico", "1 mese gratis del piano Starter", "Niente impegno, niente spam"].map((b) => (
-              <li key={b} className="flex items-center gap-2">
-                <span className="h-5 w-5 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs">✓</span>
-                {b}
+          <ul className="mt-6 space-y-3 text-sm">
+            {[
+              { t: "Famiglie", d: "Servizio da €199 — paghi solo dopo aver scelto il profilo giusto" },
+              { t: "Professionisti", d: "Iscrizione 100% gratuita, sempre. Profilo online in 48 ore" },
+              { t: "Zero spam", d: "I tuoi dati restano riservati e conformi al GDPR" },
+            ].map((b) => (
+              <li key={b.t} className="flex items-start gap-3">
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs">✓</span>
+                <div>
+                  <p className="font-semibold">{b.t}</p>
+                  <p className="text-muted-foreground">{b.d}</p>
+                </div>
               </li>
             ))}
           </ul>
