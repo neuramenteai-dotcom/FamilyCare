@@ -29,19 +29,29 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "CareTinder — Trova babysitter, badanti, colf, dog sitter e tutor verificati" },
+      {
+        name: "description",
+        content:
+          "CareTinder è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, badanti, dog sitter e tutor.",
+      },
+      { name: "author", content: "CareTinder" },
+      { property: "og:title", content: "CareTinder — La cura che la tua famiglia merita" },
+      {
+        property: "og:description",
+        content:
+          "Babysitter, colf, badanti, dog sitter e tutor verificati. Tutto in un'unica piattaforma.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
       },
     ],
   }),
