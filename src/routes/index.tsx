@@ -105,7 +105,7 @@ function Hero() {
           <div className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/3]">
             <img
               src={heroFamily}
-              alt="Famiglia italiana che usa CareTinder"
+              alt="Famiglia italiana che usa Family Care"
               width={1536}
               height={1024}
               className="w-full h-full object-cover"
@@ -306,7 +306,7 @@ function HowItWorks() {
       <SectionHeader
         eyebrow="Come funziona"
         title={<>Tre passi. <span className="text-primary italic">Zero stress.</span></>}
-        subtitle="Dimentica le settimane di ricerca. Con CareTinder trovi la persona giusta in pochi minuti."
+        subtitle="Dimentica le settimane di ricerca. Con Family Care trovi la persona giusta in pochi minuti."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {steps.map((s) => (
@@ -332,14 +332,14 @@ function Testimonials() {
   const items = [
     {
       img: t1,
-      quote: "Cercavo da mesi una babysitter affidabile. Su CareTinder l'ho trovata in 2 giorni. Mia figlia la adora.",
+      quote: "Cercavo da mesi una babysitter affidabile. Su Family Care l'ho trovata in 2 giorni. Mia figlia la adora.",
       name: "Giulia M.",
       city: "Milano",
       service: "Babysitter",
     },
     {
       img: t3,
-      quote: "Per mia mamma serviva una persona davvero competente. Le verifiche di CareTinder mi hanno dato pace.",
+      quote: "Per mia mamma serviva una persona davvero competente. Le verifiche di Family Care mi hanno dato pace.",
       name: "Anna R.",
       city: "Torino",
       service: "Badante",
@@ -416,10 +416,10 @@ function WaitlistCTA() {
             Iscrizione gratuita
           </span>
           <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.05]">
-            Sii tra i primi a provare <span className="text-gradient-primary italic">CareTinder</span>.
+            Sii tra i primi a provare <span className="text-gradient-primary italic">Family Care</span>.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Lasciaci la tua email e ti avvisiamo non appena CareTinder
+            Lasciaci la tua email e ti avvisiamo non appena Family Care
             arriva nella tua città. Nessun pagamento richiesto.
           </p>
           <ul className="mt-6 space-y-2 text-sm">

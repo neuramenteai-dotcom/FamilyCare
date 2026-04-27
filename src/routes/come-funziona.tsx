@@ -6,13 +6,13 @@ import { Search, Heart, MessageCircle, Calendar, ShieldCheck, Sparkles } from "l
 export const Route = createFileRoute("/come-funziona")({
   head: () => ({
     meta: [
-      { title: "Come funziona — Trova aiuto in 5 minuti | CareTinder" },
+      { title: "Come funziona — Trova aiuto in 5 minuti | Family Care" },
       {
         name: "description",
         content:
-          "Scopri come funziona CareTinder: scegli il servizio, sfoglia profili verificati, chatta e prenota. Tutto in pochi minuti, dal cellulare.",
+          "Scopri come funziona Family Care: scegli il servizio, sfoglia profili verificati, chatta e prenota. Tutto in pochi minuti, dal cellulare.",
       },
-      { property: "og:title", content: "Come funziona CareTinder" },
+      { property: "og:title", content: "Come funziona Family Care" },
       {
         property: "og:description",
         content: "Dal primo swipe alla prenotazione confermata. Tutto in 5 minuti.",
@@ -67,7 +67,7 @@ function HowPage() {
         <SectionHeader
           eyebrow="Per i professionisti"
           title="Lavora con chi ti rispetta"
-          subtitle="Anche tu sei un professionista della cura? Su CareTinder gestisci agenda, clienti e pagamenti con un'unica app."
+          subtitle="Anche tu sei un professionista della cura? Su Family Care gestisci agenda, clienti e pagamenti con un'unica app."
         />
         <div className="grid md:grid-cols-3 gap-6">
           {[

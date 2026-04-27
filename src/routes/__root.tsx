@@ -32,14 +32,14 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CareTinder — Trova babysitter, badanti, colf, dog sitter e tutor verificati" },
+      { title: "Family Care — Trova babysitter, badanti, colf, dog sitter e tutor verificati" },
       {
         name: "description",
         content:
-          "CareTinder è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, badanti, dog sitter e tutor.",
+          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, badanti, dog sitter e tutor.",
       },
-      { name: "author", content: "CareTinder" },
-      { property: "og:title", content: "CareTinder — La cura che la tua famiglia merita" },
+      { name: "author", content: "Family Care" },
+      { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
       {
         property: "og:description",
         content:
