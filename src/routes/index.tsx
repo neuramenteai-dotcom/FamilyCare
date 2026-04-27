@@ -12,17 +12,17 @@ import t3 from "@/assets/testimonial-3.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CareTinder — Trova babysitter, badanti, colf, dog sitter e tutor verificati" },
+      { title: "Family Care — Babysitter, badanti, colf, dog sitter e tutor verificati" },
       {
         name: "description",
         content:
-          "La piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia. Iscriviti gratis alla waitlist.",
+          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia. Cerchi aiuto o vuoi offrire i tuoi servizi: iscrizione gratuita.",
       },
-      { property: "og:title", content: "CareTinder — La cura che la tua famiglia merita" },
+      { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
       {
         property: "og:description",
         content:
-          "Babysitter, colf, badanti, dog sitter e tutor verificati. Tutto in un'unica piattaforma.",
+          "Babysitter, colf, badanti, dog sitter e tutor verificati. Cerchi aiuto o offri i tuoi servizi: tutto in un'unica piattaforma.",
       },
     ],
   }),
@@ -34,6 +34,7 @@ function Index() {
     <>
       <Hero />
       <TrustStrip />
+      <AudienceSplit />
       <ServicesPreview />
       <HowItWorks />
       <Testimonials />
@@ -133,6 +134,75 @@ function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+function AudienceSplit() {
+  return (
+    <Section className="bg-secondary/20" id="per-chi">
+      <SectionHeader
+        eyebrow="Family Care è per te se…"
+        title={<>Una piattaforma. <em className="italic text-primary">Due percorsi.</em></>}
+        subtitle="Famiglie e professionisti hanno bisogni diversi. Per questo abbiamo costruito due esperienze su misura."
+      />
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-card border border-border rounded-3xl p-8 flex flex-col">
+          <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground grid place-items-center mb-4">
+            <Heart className="h-5 w-5 fill-current" />
+          </div>
+          <h3 className="font-display text-2xl font-semibold mb-2">Sei una famiglia che cerca aiuto</h3>
+          <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+            Raccontaci di cosa hai bisogno. Ti proponiamo profili verificati e
+            disponibili nella tua zona, entro 24 ore.
+          </p>
+          <ul className="space-y-2 text-sm mb-6">
+            {[
+              "Profili con foto, esperienza e referenze",
+              "Background check su tutti i professionisti",
+              "Contratto e gestione paghe inclusi",
+            ].map((b) => (
+              <li key={b} className="flex items-start gap-2">
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary-soft text-primary grid place-items-center text-xs font-bold">✓</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+          <Button asChild className="mt-auto h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Link to="/" hash="iscriviti">
+              Cerco aiuto per la mia famiglia <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="bg-card border border-border rounded-3xl p-8 flex flex-col">
+          <div className="h-12 w-12 rounded-2xl bg-foreground text-background grid place-items-center mb-4">
+            <Users className="h-5 w-5" />
+          </div>
+          <h3 className="font-display text-2xl font-semibold mb-2">Sei un professionista della cura</h3>
+          <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+            Babysitter, badante, colf, dog sitter o tutor: crea il tuo profilo e
+            ricevi richieste dalle famiglie della tua zona.
+          </p>
+          <ul className="space-y-2 text-sm mb-6">
+            {[
+              "Iscrizione 100% gratuita, sempre",
+              "Famiglie in regola — niente lavoro nero",
+              "Visibilità nella tua città in 48 ore",
+            ].map((b) => (
+              <li key={b} className="flex items-start gap-2">
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">✓</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+          <Button asChild variant="outline" className="mt-auto h-12 rounded-xl border-2">
+            <Link to="/" hash="iscriviti">
+              Mi iscrivo come professionista <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </Section>
   );
 }
 
