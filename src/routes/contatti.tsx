@@ -13,13 +13,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contatti")({
   head: () => ({
     meta: [
-      { title: "Contatti — Parla con il team CareTinder" },
+      { title: "Contatti — Parla con il team Family Care" },
       {
         name: "description",
         content:
           "Hai una domanda, una segnalazione o vuoi collaborare? Scrivici. Rispondiamo entro 24 ore lavorative.",
       },
-      { property: "og:title", content: "Contatta CareTinder" },
+      { property: "og:title", content: "Contatta Family Care" },
       {
         property: "og:description",
         content: "Siamo qui per aiutarti. Scrivici e ti rispondiamo entro 24 ore.",
@@ -78,7 +78,7 @@ function ContactPage() {
 
           <div className="mt-10 space-y-5">
             {[
-              { icon: Mail, t: "Email", d: "ciao@caretinder.it" },
+              { icon: Mail, t: "Email", d: "ciao@familycare.it" },
               { icon: MessageCircle, t: "Chat", d: "Lun–Ven · 8:00–22:00" },
               { icon: MapPin, t: "Sede", d: "Via Tortona 32, 20144 Milano" },
             ].map((it) => (

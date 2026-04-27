@@ -6,13 +6,13 @@ import { Check, Sparkles } from "lucide-react";
 export const Route = createFileRoute("/prezzi")({
   head: () => ({
     meta: [
-      { title: "Prezzi — Piani trasparenti per famiglie e professionisti | CareTinder" },
+      { title: "Prezzi — Piani trasparenti per famiglie e professionisti | Family Care" },
       {
         name: "description",
         content:
           "Tre piani semplici e flessibili. Inizia gratis, paghi solo se trovi la persona giusta. Nessun costo nascosto.",
       },
-      { property: "og:title", content: "Prezzi CareTinder — Trasparenti e flessibili" },
+      { property: "og:title", content: "Prezzi Family Care — Trasparenti e flessibili" },
       {
         property: "og:description",
         content: "Piani da €0 a €19.99/mese. Nessun costo di iscrizione, nessuna commissione nascosta.",
@@ -76,7 +76,7 @@ function PricingPage() {
             Trasparenti. <em className="italic text-primary">Sempre.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            I professionisti non pagano mai per essere su CareTinder.
+            I professionisti non pagano mai per essere su Family Care.
             Le famiglie scelgono il piano che preferiscono. Disdici quando vuoi.
           </p>
         </div>
@@ -136,7 +136,7 @@ function PricingPage() {
         <div className="max-w-3xl mx-auto space-y-3">
           {[
             { q: "Posso disdire quando voglio?", a: "Sì. Cancelli l'abbonamento dal tuo profilo, senza penali, in 1 click." },
-            { q: "I professionisti pagano qualcosa?", a: "No. CareTinder è completamente gratuito per i professionisti." },
+            { q: "I professionisti pagano qualcosa?", a: "No. Family Care è completamente gratuito per i professionisti." },
             { q: "Cosa succede se non sono soddisfatto?", a: "Con il piano Premium hai la garanzia di sostituzione entro 48 ore. Senza domande." },
             { q: "I prezzi indicati includono il compenso del professionista?", a: "I prezzi dei servizi (es. €8/h babysitter) sono il compenso del professionista. L'abbonamento copre l'uso della piattaforma." },
           ].map((f) => (

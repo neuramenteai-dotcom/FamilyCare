@@ -5,16 +5,16 @@ import { ShieldCheck, FileCheck, UserCheck, Lock, Star, AlertTriangle } from "lu
 export const Route = createFileRoute("/sicurezza")({
   head: () => ({
     meta: [
-      { title: "Sicurezza e verifiche — Come proteggiamo la tua famiglia | CareTinder" },
+      { title: "Sicurezza e verifiche — Come proteggiamo la tua famiglia | Family Care" },
       {
         name: "description",
         content:
-          "Background check, documenti verificati, referenze controllate, conformità GDPR. Scopri come CareTinder rende sicura ogni prenotazione.",
+          "Background check, documenti verificati, referenze controllate, conformità GDPR. Scopri come Family Care rende sicura ogni prenotazione.",
       },
-      { property: "og:title", content: "Sicurezza CareTinder" },
+      { property: "og:title", content: "Sicurezza Family Care" },
       {
         property: "og:description",
-        content: "Ogni professionista passa 4 livelli di verifica prima di entrare su CareTinder.",
+        content: "Ogni professionista passa 4 livelli di verifica prima di entrare su Family Care.",
       },
     ],
   }),
@@ -64,7 +64,7 @@ function SecurityPage() {
         <div className="grid md:grid-cols-3 gap-6">
           {[
             { icon: Lock, t: "Conformi al GDPR", d: "Server in Europa. Cifratura end-to-end delle conversazioni. Diritto all'oblio in 1 click." },
-            { icon: ShieldCheck, t: "Pagamenti sicuri", d: "Tutte le transazioni passano da Stripe. CareTinder non vede mai i dati della tua carta." },
+            { icon: ShieldCheck, t: "Pagamenti sicuri", d: "Tutte le transazioni passano da Stripe. Family Care non vede mai i dati della tua carta." },
             { icon: AlertTriangle, t: "Supporto 7/7", d: "Squadra dedicata in italiano, raggiungibile via chat dalle 8:00 alle 22:00, sempre." },
           ].map((it) => (
             <div key={it.t} className="bg-card rounded-3xl p-7 border border-border">

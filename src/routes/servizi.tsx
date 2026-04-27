@@ -7,13 +7,13 @@ import { Check, ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
-      { title: "Servizi — Babysitter, Badanti, Colf, Dog sitter, Tutor | CareTinder" },
+      { title: "Servizi — Babysitter, Badanti, Colf, Dog sitter, Tutor | Family Care" },
       {
         name: "description",
         content:
-          "Scopri i 5 servizi di CareTinder: babysitter, badanti, colf, dog sitter e tutor. Professionisti verificati, prezzi trasparenti, contratto incluso.",
+          "Scopri i 5 servizi di Family Care: babysitter, badanti, colf, dog sitter e tutor. Professionisti verificati, prezzi trasparenti, contratto incluso.",
       },
-      { property: "og:title", content: "I servizi CareTinder" },
+      { property: "og:title", content: "I servizi Family Care" },
       {
         property: "og:description",
         content: "5 categorie di servizi alla famiglia con professionisti verificati in tutta Italia.",
