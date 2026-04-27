@@ -16,33 +16,57 @@ export type Database = {
     Tables: {
       waitlist: {
         Row: {
+          birth_date: string | null
           city: string | null
           created_at: string
           email: string
+          experience: string | null
+          frequency: string | null
           full_name: string | null
           id: string
+          italian_level: string | null
           message: string | null
+          nationality: string | null
+          phone: string | null
+          services: string[] | null
           source: string
+          urgency: string | null
           user_type: string
         }
         Insert: {
+          birth_date?: string | null
           city?: string | null
           created_at?: string
           email: string
+          experience?: string | null
+          frequency?: string | null
           full_name?: string | null
           id?: string
+          italian_level?: string | null
           message?: string | null
+          nationality?: string | null
+          phone?: string | null
+          services?: string[] | null
           source?: string
+          urgency?: string | null
           user_type?: string
         }
         Update: {
+          birth_date?: string | null
           city?: string | null
           created_at?: string
           email?: string
+          experience?: string | null
+          frequency?: string | null
           full_name?: string | null
           id?: string
+          italian_level?: string | null
           message?: string | null
+          nationality?: string | null
+          phone?: string | null
+          services?: string[] | null
           source?: string
+          urgency?: string | null
           user_type?: string
         }
         Relationships: []
