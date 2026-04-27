@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+    <title>FamilyCare Roma | Badanti e Assistenti Familiari Verificate in 48h</title>
+    <meta name="description" content="Trova una badante verificata a Roma in 48 ore. Oltre 120 profili controllati. Zero burocrazia: contratto, INPS e buste paga gestiti da noi.">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --accent: #059669;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: var(--text); background: var(--bg); }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+        .btn { display: inline-block; padding: 12px 24px; border-radius: var(--radius); font-weight: 600; text-align: center; cursor: pointer; transition: 0.2s; border: none; font-size: 1rem; }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-secondary { background: var(--white); color: var(--primary); border: 2px solid var(--primary); }
+        .btn-secondary:hover { background: #f1f5f9; }
+        .btn-large { padding: 16px 32px; font-size: 1.1rem; }
+        section { padding: 70px 0; }
+        h2 { font-size: 2.2rem; text-align: center; margin-bottom: 40px; color: var(--primary-dark); }
+        h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        p { margin-bottom: 16px; }
+        
+        /* Header */
+        .nav{ background:#f8fafc; padding:0 5%; display:flex; align-items:center; justify-content:space-between; height:70px; position:sticky; top:0; z-index:100; border-bottom:1px solid #e2e8f0; }
+        .logo{ display:flex; align-items:center; gap:10px; cursor:pointer; }
+        .logo-mark{ width:36px; height:36px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+        .logo-mark svg{ width:18px; height:18px; fill:#fff; }
+        .logo-text{ color:var(--primary-dark); font-family:'Lora',serif; font-size:19px; font-weight:600; letter-spacing:-.3px; }
+        .logo-text span{ color:var(--accent); }
+        .nav-links{ display:flex; align-items:center; gap:2rem; }
+        .nav-links a{ color:#475569; font-size:15px; font-weight:500; transition:color 0.2s; cursor:pointer; display:flex; align-items:center; gap:4px; }
+        .nav-links a:hover{ color:var(--primary); }
+        .nav-cta{ background:var(--accent); color:#fff !important; border:none; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:600; transition:background 0.2s, transform 0.2s; display:inline-block; }
+        .nav-cta:hover{ background:#047857; transform:translateY(-1px); color:#fff !important; }
+        .hamburger{ display:none; flex-direction:column; gap:5px; background:none; border:none; padding:4px; cursor:pointer; }
+        .hamburger span{ display:block; width:24px; height:2px; background:var(--primary-dark); border-radius:2px; transition:0.2s; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+        }
+/* FORMS CSS INJECTED */
+/* ─── FORMS ─────────────────────────────────────────────────── */
+.form-wrap{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:2.25rem 2rem;
+  box-shadow:var(--shadow);
+}
+.form-title{
+  font-family:'Lora',serif;
+  font-size:22px;font-weight:600;margin-bottom:.35rem;
+}
+.form-title.green{color:var(--accent)}
+.form-title.blue{color:var(--primary-dark)}
+.form-note{font-size:14px;color:var(--text-light);margin-bottom:1.5rem;line-height:1.65}
+.status-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12.5px;padding:5px 12px;border-radius:20px;
+  font-weight:500;margin-bottom:1.25rem;
+}
+.status-badge.blue{background:#dbeafe;color:#0C447C}
+.status-badge.green{background:#d1fae5;color:#085041}
+.progress-wrap{margin-bottom:1.75rem}
+.progress-track{height:3px;background:#E5E7EB;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;width:0%;transition:width .4s ease}
+.progress-fill.blue{background:var(--primary)}
+.progress-fill.green{background:var(--accent)}
+.fg{margin-bottom:1.25rem}
+.fg label{
+  display:block;font-size:13px;font-weight:500;
+  color:#374151;margin-bottom:.4rem;
+}
+.fg input,.fg select,.fg textarea{
+  width:100%;border:1.5px solid #E5E7EB;
+  border-radius:8px;padding:10px 13px;
+  font-size:14.5px;transition:border-color 0.2s,box-shadow 0.2s;
+  outline:none;background:#fff;color:#1a1a1a;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(26,95,168,.12);
+}
+.fg input.green-focus:focus,.fg select.green-focus:focus,.fg textarea.green-focus:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(11,94,70,.12);
+}
+.fg textarea{height:88px;resize:vertical}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chips-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.chip{
+  padding:7px 15px;border-radius:20px;
+  border:1.5px solid #E5E7EB;font-size:13px;
+  cursor:pointer;color:#6B7280;background:#fff;
+  transition:all 0.2s;
+}
+.chip:hover{border-color:#9CA3AF;color:#374151}
+.chip.on-blue{background:#dbeafe;border-color:var(--primary);color:#0C447C;font-weight:500}
+.chip.on-green{background:#d1fae5;border-color:var(--accent);color:var(--accent);font-weight:500}
+.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:13.5px;color:#374151;cursor:pointer;
+  padding:8px 10px;border-radius:8px;
+  border:1px solid #F3F4F6;background:#FAFAFA;
+  transition:background 0.2s,border-color 0.2s;
+}
+.chk-item:hover{background:#F3F4F6;border-color:#E5E7EB}
+.chk-item input{margin-top:2px;flex-shrink:0;accent-color:var(--primary)}
+.chk-item input.green-accent{accent-color:var(--accent)}
+.upload-box{
+  border:2px dashed #D1D5DB;border-radius:var(--radius);
+  padding:1.5rem;text-align:center;cursor:pointer;
+  background:#FAFAFA;
+  transition:border-color 0.2s,background 0.2s;
+}
+.upload-box:hover{border-color:var(--primary);background:#dbeafe}
+.upload-box.green:hover{border-color:var(--accent);background:#d1fae5}
+.upload-icon-wrap{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto .75rem;background:#dbeafe;
+}
+.upload-icon-wrap.green{background:#d1fae5}
+.upload-box strong{font-size:14px;color:#1a1a1a}
+.upload-box p{font-size:12.5px;color:var(--text-light);margin-top:4px}
+.file-name{font-size:12px;color:var(--primary);margin-top:6px;font-weight:500}
+.btn-submit{
+  width:100%;padding:15px;border-radius:8px;
+  font-size:15px;font-weight:600;border:none;color:#fff;
+  transition:background 0.2s,transform 0.2s,box-shadow 0.2s;
+  margin-top:.5rem;
+}
+.btn-submit.blue{background:var(--primary)}
+.btn-submit.blue:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,95,168,.3)}
+.btn-submit.green{background:var(--accent)}
+.btn-submit.green:hover{background:#084D38;transform:translateY(-1px);box-shadow:0 4px 16px rgba(11,94,70,.3)}
+.form-privacy{font-size:12px;color:#9CA3AF;margin-top:.75rem;text-align:center;line-height:1.6}
+.form-privacy a{color:var(--text-light);text-decoration:underline}
+.success-screen{
+  text-align:center;padding:2.5rem 1rem;display:none;
+}
+.success-check{
+  width:60px;height:60px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.1rem;
+}
+.success-check.blue{background:#dbeafe}
+.success-check.green{background:#d1fae5}
+.success-screen h3{font-family:'Lora',serif;font-size:22px;font-weight:600;margin-bottom:.5rem}
+.success-screen p{font-size:14.5px;color:var(--text-light);line-height:1.7;max-width:360px;margin:0 auto}
+.btn-reset{
+  margin-top:1.25rem;padding:10px 24px;
+  border-radius:8px;border:1.5px solid #E5E7EB;
+  background:#fff;font-size:14px;color:#374151;
+  cursor:pointer;transition:background 0.2s;
+}
+.btn-reset:hover{background:#f1f5f9}
+
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo" onclick="window.scrollTo(0,0)">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402C1 3.791 5.068 1 8 1c2.341 0 4.203 1.139 5.003 2.287C13.849 2.139 15.572 1 18 1c2.932 0 7 2.791 7 6.191 0 4.105-5.63 8.912-11 14.402z"/></svg>
+    </div>
+    <span class="logo-text">Family<span>Care</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#form-famiglie">Trova <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+    <a href="#pacchetti">Sfoglia profili</a>
+    <a href="#pacchetti">Gestione paghe</a>
+    <a href="#lavoratrici">Cerco lavoro</a>
+  </div>
+  <div class="nav-links" style="gap:1rem;">
+    <a href="#contatti" style="font-weight:600; color:var(--primary);">Accedi</a>
+    <a href="#form-famiglie" class="nav-cta">Iscriviti</a>
+  </div>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" style="display:none;background:var(--primary-dark);padding:1rem 5%;flex-direction:column;gap:.25rem;position:sticky;top:64px;z-index:99;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+  <a href="#" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">Home</a>
+  <a href="#form-famiglie" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">Per le famiglie</a>
+  <a href="#lavoratrici" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">Cerco lavoro</a>
+  <a href="#pacchetti" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">Pacchetti</a>
+  <a href="#faq" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">FAQ</a>
+  <a href="#contatti" onclick="closeMobile()" style="color:rgba(255,255,255,.8);display:block;padding:.7rem 0;font-size:15px;text-decoration:none;">Contatti</a>
+  <a href="#form-famiglie" onclick="closeMobile()" class="btn btn-primary" style="margin-top:.75rem;width:100%;text-align:center;">Trova la tua assistente</a>
+</div>
+
+<section class="hero">
+    <div class="container">
+        <div class="urgency-badge">🔥 12 nuove candidate verificate questa settimana a Roma</div>
+        <h1>Trova una badante verificata a Roma in 48 ore</h1>
+        <p class="subhead">Oltre 120 profili già disponibili. <strong>Zero burocrazia</strong>: pensiamo noi a contratto, buste paga e INPS.</p>
+        <div class="trust-bar">
+            <span>✓ Identità verificata Didit</span>
+            <span>✓ Referenze telefoniche controllate</span>
+            <span>✓ Sostituzione gratuita se non va</span>
+        </div>
+        <div class="cta-split">
+            <a href="#pacchetti" class="btn btn-primary btn-large">Cerco assistenza →</a>
+            <a href="#lavoratrici" class="btn btn-secondary btn-large">Cerco lavoro come badante →</a>
+        </div>
+        <p class="social-proof">Già 87 famiglie a Roma hanno trovato la persona giusta<br>
+        <span class="stars">★★★★★</span> <em>"In 3 giorni avevo 3 profili perfetti"</em> — Laura G., Parioli</p>
+    </div>
+</section>
+
+
+<section id="lavoratrici" style="background:#F7FDF9">
+    <div class="container" style="max-width:800px; margin:0 auto;">
+        <div class="form-wrap">
+        <div class="form-title green">Crea il tuo profilo</div>
+        <p class="form-note">Il servizio è <strong>completamente gratuito</strong> per chi cerca lavoro. Il tuo profilo sarà visibile solo alle famiglie selezionate da noi — non pubblichiamo i tuoi dati online.</p>
+        <span class="status-badge green">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#085041" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          Gratuito per chi cerca lavoro — sempre
+        </span>
+        <div class="progress-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:.4rem">
+            <span>Completamento profilo</span>
+            <span id="pct-lav">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill green" id="bar-lav"></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="comparison">
+    <div class="container">
+        <h2>Perché le famiglie scelgono FamilyCare</h2>
+        <div class="grid-2">
+            <div class="card negative">
+                <h3>❌ Gli altri servizi</h3>
+                <ul>
+                    <li>Annunci non verificati e autocertificazioni</li>
+                    <li>Nessun controllo referenze reali</li>
+                    <li>Burocrazia e contratti a tuo carico</li>
+                    <li>Tempi di attesa: 2-3 settimane</li>
+                    <li>Zero garanzia se la persona non è adatta</li>
+                </ul>
+            </div>
+            <div class="card positive">
+                <h3>✅ FamilyCare</h3>
+                <ul>
+                    <li>Ogni candidata verificata di persona</li>
+                    <li>Referenze telefoniche chiamate e validate</li>
+                    <li>Contratto, INPS e buste paga inclusi</li>
+                    <li>Prime schede pronte in 48 ore</li>
+                    <li>Sostituzione gratuita senza costi aggiuntivi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="come-funziona">
+    <div class="container">
+        <h2>Come funziona in 3 passi</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h3>Ci racconti le tue esigenze</h3>
+                <p>Compili il form in 2 minuti: zona, tipo di assistenza, orari e budget. Niente spam, solo quello che serve.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h3>Ricevi profili verificati</h3>
+                <p>Entro 48 ore ti inviamo 3-5 schede di candidate già controllate da noi (documenti, referenze, colloquio).</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h3>Scegli e pensa solo a conoscerla</h3>
+                <p>Incontri le candidate che preferisci. Al resto pensiamo noi: contratto CCNL, denuncia INPS e buste paga.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pacchetti" class="pricing">
+    <div class="container">
+        <h2>Scegli il servizio più adatto a te</h2>
+        <p class="section-sub">Tutti i pacchetti includono profili verificati con identità Didit e referenze controllate</p>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <div class="price-header">
+                    <h3>Piano START</h3>
+                    <div class="price">€249</div>
+                    <div class="price-note">una tantum</div>
+                </div>
+                <ul class="features">
+                    <li>✓ 3 profili verificati</li>
+                    <li>✓ Schede dettagliate con foto</li>
+                    <li>✓ Contatti diretti delle candidate</li>
+                    <li>✓ Organizzazione colloqui</li>
+                    <li>✓ Checklist pre-assunzione</li>
+                    <li style="color:#059669; font-weight:600;">🎁 Sconto 20% sul Piano CARE</li>
+                </ul>
+                <a href="#form-famiglie" class="btn btn-secondary price-btn">Scegli START</a>
+                <div class="price-footer">Per chi vuole gestire in autonomia</div>
+            </div>
+            <div class="price-card featured">
+                <div class="badge">IL PIÙ SCELTO</div>
+                <div class="price-header">
+                    <h3>Piano CARE</h3>
+                    <div class="price">€39<span>/mese</span></div>
+                    <div class="price-note">minimo 6 mesi (€234)</div>
+                </div>
+                <ul class="features">
+                    <li>✓ Tutto il Piano START</li>
+                    <li>✓ <strong>Contratto CCNL completo</strong></li>
+                    <li>✓ <strong>Denuncia assunzione INPS</strong></li>
+                    <li>✓ <strong>Buste paga automatiche</strong></li>
+                    <li>✓ Calcolo MAV per pagamento</li>
+                    <li>✓ Check contrattuale annuale</li>
+                    <li>✓ Sostituzione gratuita (1x/anno)</li>
+                    <li>✓ Priorità su nuove candidate</li>
+                    <li>✓ Assistenza WhatsApp dedicata</li>
+                </ul>
+                <a href="#form-famiglie" class="btn btn-primary price-btn">Scegli CARE</a>
+                <div class="price-footer">Tranquillità totale: zero burocrazia</div>
+            </div>
+            <div class="price-card">
+                <div class="price-header">
+                    <h3>Piano FAMILY</h3>
+                    <div class="price">€79<span>/mese</span></div>
+                    <div class="price-note">minimo 6 mesi (€474)</div>
+                </div>
+                <ul class="features">
+                    <li>✓ Tutto il Piano CARE</li>
+                    <li>✓ Matching proattivo personalizzato</li>
+                    <li>✓ Formazione base per la badante</li>
+                    <li>✓ Report mensile stato contratto</li>
+                    <li>✓ 2 sostituzioni gratuite/anno</li>
+                    <li>✓ Accesso anticipato Decreto Flussi</li>
+                    <li>✓ Supporto lingue (RO/UK)</li>
+                </ul>
+                <a href="#form-famiglie" class="btn btn-secondary price-btn">Scegli FAMILY</a>
+                <div class="price-footer">Servizio premium completo</div>
+            </div>
+        </div>
+        <div class="extras">
+            <h3>Servizi extra (anche singolarmente)</h3>
+            <div class="extras-grid">
+                <div class="extra-item">
+                    <strong>Sostituzione rapida 48h</strong>
+                    <span>€149 — Troviamo un'altra candidata in 48 ore</span>
+                </div>
+                <div class="extra-item">
+                    <strong>Supporto Decreto Flussi</strong>
+                    <span>€199 — Nulla osta e pratiche per assumere dall'estero</span>
+                </div>
+                <div class="extra-item">
+                    <strong>Check contrattuale annuale</strong>
+                    <span>€99 — Verifica adeguamenti salariali e conformità CCNL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <h2>Cosa dicono le famiglie romane</h2>
+        <div class="testimonials-grid">
+            <div class="test-card">
+                <div class="stars">★★★★★</div>
+                <p>"Dopo aver provato altri servizi, ho trovato in 3 giorni una badante perfetta per mia madre. Le referenze erano vere e la ragazza è fantastica."</p>
+                <div class="test-author">— Laura G., Parioli</div>
+            </div>
+            <div class="test-card">
+                <div class="stars">★★★★★</div>
+                <p>"Il piano CARE mi ha salvato la vita. Buste paga, INPS, tutto automatico. Pago meno di una cena fuori al mese e non ci penso più."</p>
+                <div class="test-author">— Marco R., EUR</div>
+            </div>
+            <div class="test-card">
+                <div class="stars">★★★★★</div>
+                <p>"Quando la mia badante è andata via improvvisamente, in 48 ore ne avevano già un'altra. Servizio impeccabile, lo consiglio a tutti."</p>
+                <div class="test-author">— Anna P., Prati</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" style="background:#f1f5f9;">
+    <div class="container">
+        <h2>Domande frequenti</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-question">Cosa succede se la badante non è adatta? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Con i piani CARE e FAMILY hai diritto alla sostituzione gratuita. Troviamo un'altra candidata senza costi aggiuntivi entro 7 giorni.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Chi paga l'INPS e i contributi? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Li paga la famiglia come datore di lavoro. Con i piani CARE e FAMILY calcoliamo tutto noi e ti inviamo i MAV già pronti per il pagamento.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Posso cambiare pacchetto dopo? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Certo! Se parti con START e vuoi passare a CARE, ti scontiamo il 20% sul primo anno. Puoi disdire CARE quando vuoi dopo i 6 mesi minimi.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Quanto tempo ci vuole per trovare una badante? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Le prime 3-5 schede le ricevi entro 48 ore dalla richiesta. In media le famiglie concludono l'assunzione in 5-7 giorni.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Le candidate parlano italiano? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Tutte le candidate fanno un colloquio in italiano per verificare la comunicazione. Specifichiamo nel profilo il livello (base/intermedio/avanzato).</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Come verificate le referenze? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Chiamiamo personalmente almeno 2 precedenti datori di lavoro. Chiediamo informazioni su puntualità, competenze, affidabilità e motivi dell'interruzione.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="form-famiglie" style="background:var(--bg)">
+    <div class="container" style="max-width:800px; margin:0 auto;">
+        <div class="form-wrap">
+        <div class="form-title blue">Descrivi la tua situazione</div>
+        <p class="form-note">Più sei preciso, più accurata sarà la nostra selezione. Il servizio parte da <strong>€ 199</strong> — paghi solo quando scegli.</p>
+        <span class="status-badge blue">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0C447C" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          Risposta rapida garantita
+        </span>
+        <div class="progress-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:.4rem">
+            <span>Completamento form</span>
+            <span id="pct-fam">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill blue" id="bar-fam"></div></div>
+        </div>
+    </div>
+</section>
+
+<section id="contatti" class="cta-section">
+    <div class="container">
+        <h2>Pronto a trovare la persona giusta?</h2>
+        <p>Unisciti alle 87 famiglie romane che già si fidano di FamilyCare</p>
+        <a href="#form-famiglie" class="btn btn-primary btn-large" style="background:white; color:#1e40af;">Richiedi ora la tua badante →</a>
+        <p class="guarantee">🔒 Soddisfatti o rimborsati entro 7 giorni</p>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>FamilyCare Roma | Servizio di intermediazione lavoro domestico</p>
+        <p style="margin-top:10px;">P.IVA: XXXXXXXXXXX | <a href="#">Privacy Policy</a> | <a href="#">Cookie Policy</a></p>
+        <p style="margin-top:15px; font-size:0.85rem; opacity:0.7;">© 2026 FamilyCare. Tutti i diritti riservati.</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/39XXXXXXXXXX?text=Ciao%20FamilyCare%2C%20cerco%20una%20badante%20a%20Roma.%20Potete%20aiutarmi%3F" class="whatsapp-float" target="_blank" title="Scrivici su WhatsApp">💬</a>
+
+<script>
+    
+    function toggleMobile(){
+      var m=document.getElementById('mobile-menu');
+      m.style.display=m.style.display==='none'?'flex':'none';
+    }
+    function closeMobile(){
+      document.getElementById('mobile-menu').style.display='none';
+    }
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            item.classList.toggle('active');
+        });
+    });
+
+    
+    /* FORMS JS INJECTED */
+    function tChip(el,type,group){
+  var cls=type==='fam'?'on-blue':'on-green';
+  el.classList.toggle(cls);
+  calcPct(type);
+}
+
+function calcPct(type){
+  var nome,tel,zona,chips;
+  if(type==='fam'){
+    nome=(document.getElementById('f-nome')||{}).value||'';
+    tel=(document.getElementById('f-tel')||{}).value||'';
+    var zo=document.getElementById('f-zona');
+    zona=zo&&zo.value?1:0;
+    chips=document.querySelectorAll('.on-blue').length;
+  } else {
+    nome=(document.getElementById('l-nome')||{}).value||'';
+    tel=(document.getElementById('l-tel')||{}).value||'';
+    var nz=document.getElementById('l-naz');
+    zona=nz&&nz.value?1:0;
+    chips=document.querySelectorAll('.on-green').length;
+  }
+  var score=(nome.length>1?25:0)+(tel.length>6?25:0)+(zona?20:0)+(chips>0?30:0);
+  score=Math.min(100,score);
+  var bar=document.getElementById('bar-'+type);
+  var pct=document.getElementById('pct-'+type);
+  if(bar)bar.style.width=score+'%';
+  if(pct)pct.textContent=score+'%';
+}
+
+function submit(type){
+  var ok=true;
+  if(type==='fam'){
+    var n=document.getElementById('f-nome');
+    if(n&&!n.value.trim()){n.style.borderColor='#E24B4A';n.focus();ok=false;}
+    else if(n){n.style.borderColor=''}
+  } else if(type==='lav'){
+    var n=document.getElementById('l-nome');
+    if(n&&!n.value.trim()){n.style.borderColor='#16A34A';n.focus();ok=false;}
+    else if(n){n.style.borderColor=''}
+  } else if(type==='cnt'){
+    var n=document.getElementById('c-nome');
+    var m=document.getElementById('c-msg');
+    if(n&&!n.value.trim()){n.style.borderColor='#E24B4A';n.focus();ok=false;}
+    if(m&&!m.value.trim()){m.style.borderColor='#E24B4A';ok=false;}
+    if(n&&n.value.trim())n.style.borderColor='';
+    if(m&&m.value.trim())m.style.borderColor='';
+  }
+  if(!ok)return;
+  var form=document.getElementById(type+'-form')||(type==='cnt'?document.getElementById('cnt-form'):null);
+  var succ=document.getElementById(type+'-success');
+  if(form)form.style.display='none';
+  if(succ)succ.style.display='block';
+}
+
+function reset(type){
+  var form=document.getElementById(type+'-form')||(type==='cnt'?document.getElementById('cnt-form'):null);
+  var succ=document.getElementById(type+'-success');
+  if(form)form.style.display='block';
+  if(succ)succ.style.display='none';
+  if(type==='fam'||type==='lav'){
+    var bar=document.getElementById('bar-'+type);
+    var pct=document.getElementById('pct-'+type);
+    if(bar)bar.style.width='0%';
+    if(pct)pct.textContent='0%';
+  }
+}
+
+function showFN(input,targetId){
+  var el=document.getElementById(targetId);
+  if(el&&input.files&&input.files[0])el.textContent='File: '+input.files[0].name;
+}
+
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+</script>
+
+</body>
+</html>
