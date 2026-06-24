@@ -32,7 +32,7 @@ const Schema = z.object({
 });
 
 export const joinWaitlist = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => Schema.parse(input))
+  .validator((input: unknown) => Schema.parse(input))
   .handler(async ({ data }) => {
     try {
       // Calculate Quality Score (0-100)
@@ -165,7 +165,7 @@ export const getWaitlist = createServerFn({ method: "GET" })
   });
 
 export const updateWaitlistStatus = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) =>
+  .validator((input: unknown) =>
     z.object({
       id: z.string(),
       status: z.enum(["nuovo", "contattato", "in_verifica", "attivo"]),

@@ -94,7 +94,7 @@ export function AdminDashboard() {
 
   const handleStatusChange = async (id: string, newStatus: "nuovo" | "contattato" | "in_verifica" | "attivo") => {
     try {
-      const res = await updateStatus({ id, status: newStatus });
+      const res = await updateStatus({ data: { id, status: newStatus } });
       if (res.success) {
         setLeads((prev) =>
           prev.map((lead) => (lead.id === id ? { ...lead, status: newStatus } : lead))
