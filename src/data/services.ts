@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "badanti",
-    name: "Badanti",
+    name: "Collaboratrici domestiche",
     tagline: "Assistenza dignitosa per chi ami",
     description:
       "Assistenti familiari per anziani e persone non autosufficienti, conviventi o a ore. Esperienza con Alzheimer e Parkinson.",

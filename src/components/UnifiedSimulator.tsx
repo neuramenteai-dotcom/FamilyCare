@@ -10,14 +10,14 @@ const LIVEL_RATES: Record<string, { label: string; rate: number; desc: string }>
   B: { label: "Livello B (Collaboratori con esperienza)", rate: 7.20, desc: "Camerieri, cuochi, colf esperte, custodi." },
   BS: { label: "Livello BS (Baby Sitter / Assistenza a autosufficienti)", rate: 7.80, desc: "Baby sitter standard o assistenza a anziani autosufficienti." },
   C: { label: "Livello C (Cuochi o assistenti specializzati)", rate: 8.40, desc: "Preparazione pasti avanzata, gestione casa." },
-  CS: { label: "Livello CS (Assistenti a non autosufficienti - non formati)", rate: 9.00, desc: "Accudimento di persone non autosufficienti (badanti standard)." },
+  CS: { label: "Livello CS (Assistenti a non autosufficienti - non formati)", rate: 9.00, desc: "Accudimento di persone non autosufficienti (collaboratrici domestiche standard)." },
   D: { label: "Livello D (Profili gestionali o infermieristici)", rate: 10.20, desc: "Educatori, governanti, chef domestici." },
-  DS: { label: "Livello DS (Assistenti a non autosufficienti - formati)", rate: 11.50, desc: "Infermieri, badanti con certificazione professionale riconosciuta." },
+  DS: { label: "Livello DS (Assistenti a non autosufficienti - formati)", rate: 11.50, desc: "Infermieri, collaboratrici domestiche con certificazione professionale riconosciuta." },
 };
 
 const SERVICE_RATES: Record<string, { label: string; rate: number }> = {
   babysitter: { label: "Babysitter", rate: 9.00 },
-  badanti: { label: "Badante / Assistente familiare", rate: 9.50 },
+  badanti: { label: "Collaboratrice domestica / Assistente familiare", rate: 9.50 },
   colf: { label: "Colf e pulizie", rate: 10.00 },
   dogsitter: { label: "Dog sitter", rate: 8.00 },
   tutor: { label: "Ripetizioni / Tutor scolastico", rate: 13.00 },

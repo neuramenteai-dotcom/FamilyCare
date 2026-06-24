@@ -19,7 +19,7 @@ type ServiceKey = "babysitter" | "badanti" | "colf" | "dogsitter" | "tutor";
 
 const SERVICE_OPTIONS: { value: ServiceKey; label: string }[] = [
   { value: "babysitter", label: "Babysitter" },
-  { value: "badanti", label: "Badante / Assistente familiare" },
+  { value: "badanti", label: "Collaboratrice domestica / Assistente familiare" },
   { value: "colf", label: "Colf e pulizie" },
   { value: "dogsitter", label: "Dog sitter" },
   { value: "tutor", label: "Ripetizioni / Tutor" },

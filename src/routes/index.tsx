@@ -12,7 +12,7 @@ import t3 from "@/assets/testimonial-3.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Family Care — Babysitter, badanti, colf, dog sitter e tutor verificati" },
+      { title: "Family Care — Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati" },
       {
         name: "description",
         content:
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Babysitter, colf, badanti, dog sitter e tutor verificati. Cerchi aiuto o offri i tuoi servizi: tutto in un'unica piattaforma.",
+          "Babysitter, colf, collaboratrici domestiche, dog sitter e tutor verificati. Cerchi aiuto o offri i tuoi servizi: tutto in un'unica piattaforma.",
       },
     ],
   }),
@@ -58,7 +58,7 @@ function Hero() {
             <span className="text-gradient-primary italic">famiglia</span> merita.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-            Babysitter, badanti, colf, dog sitter e tutor verificati.
+            Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati.
             Trova la persona giusta in pochi minuti, non in settimane.
           </p>
 
@@ -180,7 +180,7 @@ function AudienceSplit() {
           </div>
           <h3 className="font-display text-2xl font-semibold mb-2">Sei un professionista della cura</h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-            Babysitter, badante, colf, dog sitter o tutor: crea il tuo profilo e
+            Babysitter, collaboratrice domestica, colf, dog sitter o tutor: crea il tuo profilo e
             ricevi richieste dalle famiglie della tua zona.
           </p>
           <ul className="space-y-2 text-sm mb-6">
@@ -342,7 +342,7 @@ function Testimonials() {
       quote: "Per mia mamma serviva una persona davvero competente. Le verifiche di Family Care mi hanno dato pace.",
       name: "Anna R.",
       city: "Torino",
-      service: "Badante",
+      service: "Collaboratrice domestica",
     },
     {
       img: t2,

@@ -30,7 +30,7 @@ export function SiteFooter() {
           <div>
             <h4 className="font-display font-semibold mb-3">Servizi</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/servizi" hash="badanti" className="hover:text-foreground">Badanti</Link></li>
+              <li><Link to="/servizi" hash="badanti" className="hover:text-foreground">Collaboratrici domestiche</Link></li>
               <li><Link to="/servizi" hash="colf" className="hover:text-foreground">Colf</Link></li>
               <li><Link to="/servizi" hash="babysitter" className="hover:text-foreground">Babysitter</Link></li>
               <li><Link to="/servizi" hash="dogsitter" className="hover:text-foreground">Dog sitter</Link></li>

@@ -7,11 +7,11 @@ import { Check, ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
-      { title: "Servizi — Babysitter, Badanti, Colf, Dog sitter, Tutor | Family Care" },
+      { title: "Servizi — Babysitter, Collaboratrici domestiche, Colf, Dog sitter, Tutor | Family Care" },
       {
         name: "description",
         content:
-          "Scopri i 5 servizi di Family Care: babysitter, badanti, colf, dog sitter e tutor. Professionisti verificati, prezzi trasparenti, contratto incluso.",
+          "Scopri i 5 servizi di Family Care: babysitter, collaboratrici domestiche, colf, dog sitter e tutor. Professionisti verificati, prezzi trasparenti, contratto incluso.",
       },
       { property: "og:title", content: "I servizi Family Care" },
       {

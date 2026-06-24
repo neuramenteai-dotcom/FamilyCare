@@ -190,7 +190,7 @@ export function AdminDashboard() {
         <div>
           <h2 className="font-display text-3xl font-bold text-foreground">Pipeline Leads & Candidati</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Gestisci le registrazioni delle famiglie e delle candidate badanti in tempo reale.
+            Gestisci le registrazioni delle famiglie e delle candidate collaboratrici domestiche in tempo reale.
           </p>
         </div>
         <Button onClick={loadLeads} disabled={loading} variant="outline" className="h-10 rounded-xl">
