@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Check, Loader2, HeartHandshake, Briefcase } from "lucide-react";
-import { joinWaitlist } from "@/server/waitlist.functions";
+import { joinWaitlist } from "@/functions/waitlist.functions";
 import { toast } from "sonner";
 
 type ServiceKey = "babysitter" | "badanti" | "colf" | "dogsitter" | "tutor";

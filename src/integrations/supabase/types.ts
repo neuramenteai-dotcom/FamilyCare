@@ -32,6 +32,8 @@ export type Database = {
           source: string
           urgency: string | null
           user_type: string
+          status: string
+          score: number | null
         }
         Insert: {
           birth_date?: string | null
@@ -50,6 +52,8 @@ export type Database = {
           source?: string
           urgency?: string | null
           user_type?: string
+          status?: string
+          score?: number | null
         }
         Update: {
           birth_date?: string | null
@@ -68,6 +72,8 @@ export type Database = {
           source?: string
           urgency?: string | null
           user_type?: string
+          status?: string
+          score?: number | null
         }
         Relationships: []
       }

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, MessageCircle, MapPin, Loader2, Check } from "lucide-react";
-import { joinWaitlist } from "@/server/waitlist.functions";
+import { joinWaitlist } from "@/functions/waitlist.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contatti")({

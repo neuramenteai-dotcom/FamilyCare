@@ -14,6 +14,7 @@ import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as PrezziRouteImport } from './routes/prezzi'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ComeFunzionaRouteImport } from './routes/come-funziona'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SicurezzaRoute = SicurezzaRouteImport.update({
@@ -41,6 +42,11 @@ const ComeFunzionaRoute = ComeFunzionaRouteImport.update({
   path: '/come-funziona',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/prezzi': typeof PrezziRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/prezzi': typeof PrezziRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/prezzi': typeof PrezziRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/come-funziona'
     | '/contatti'
     | '/prezzi'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/come-funziona'
     | '/contatti'
     | '/prezzi'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/come-funziona'
     | '/contatti'
     | '/prezzi'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   ComeFunzionaRoute: typeof ComeFunzionaRoute
   ContattiRoute: typeof ContattiRoute
   PrezziRoute: typeof PrezziRoute
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComeFunzionaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   ComeFunzionaRoute: ComeFunzionaRoute,
   ContattiRoute: ContattiRoute,
   PrezziRoute: PrezziRoute,
