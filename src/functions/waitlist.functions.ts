@@ -118,7 +118,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
       // Invia notifiche email in background
       try {
         const { sendEmailNotification } = await import("@/server/email");
-        sendEmailNotification({
+        await sendEmailNotification({
           email: data.email,
           full_name: data.full_name || undefined,
           userType: data.userType,
