@@ -88,7 +88,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         }
       }
 
-      const { error } = await supabaseAdmin.from("waitlist").insert({
+      const { data: insertedData, error } = await supabaseAdmin.from("waitlist").insert({
         email: data.email,
         full_name: data.full_name || null,
         user_type: data.userType,
@@ -105,7 +105,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         birth_date: data.birth_date || null,
         status: "nuovo",
         score,
-      });
+      }).select("id").single();
 
       if (error) {
         if (error.code === "23505") {
@@ -137,7 +137,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         console.error("Failed to send email notifications:", emailErr);
       }
 
-      return { success: true };
+      return { success: true, id: insertedData?.id };
     } catch (err) {
       console.error("waitlist handler error:", err);
       return { success: false, error: "Dati non validi. Controlla i campi." };
@@ -168,7 +168,7 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
   .validator((input: unknown) =>
     z.object({
       id: z.string(),
-      status: z.enum(["nuovo", "contattato", "in_verifica", "attivo"]),
+      status: z.enum(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"]),
     }).parse(input)
   )
   .handler(async ({ data }) => {

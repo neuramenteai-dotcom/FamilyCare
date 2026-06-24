@@ -92,7 +92,7 @@ export function AdminDashboard() {
     }
   };
 
-  const handleStatusChange = async (id: string, newStatus: "nuovo" | "contattato" | "in_verifica" | "attivo") => {
+  const handleStatusChange = async (id: string, newStatus: "nuovo" | "contattato" | "in_verifica" | "pre_approvato" | "attivo") => {
     try {
       const res = await updateStatus({ data: { id, status: newStatus } });
       if (res.success) {
@@ -135,9 +135,9 @@ export function AdminDashboard() {
       case "attivo":
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case "in_verifica":
-        return <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />;
-      case "contattato":
-        return <Clock className="h-4 w-4 text-amber-500" />;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800"><Clock className="w-3 h-3 mr-1" /> In Verifica</span>;
+      case "pre_approvato":
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><ShieldAlert className="w-3 h-3 mr-1" /> Pre-Approvato (AI)</span>;
       default:
         return <ShieldAlert className="h-4 w-4 text-slate-400" />;
     }
@@ -262,6 +262,7 @@ export function AdminDashboard() {
                 <option value="nuovo">Nuovo</option>
                 <option value="contattato">Contattato</option>
                 <option value="in_verifica">In Verifica</option>
+                <option value="pre_approvato">Pre-Approvato (AI)</option>
                 <option value="attivo">Attivo</option>
               </select>
             </div>
@@ -476,13 +477,24 @@ export function AdminDashboard() {
                     {selectedLead.message || "Nessun dettaglio aggiuntivo."}
                   </div>
                 </div>
+
+                {(selectedLead as any).id_front_url && (
+                  <div className="space-y-1.5 border-t border-border/60 pt-3">
+                    <span className="text-xs font-semibold text-muted-foreground uppercase">Documento d'Identità Caricato</span>
+                    <div className="mt-2">
+                      <a href={(selectedLead as any).id_front_url} target="_blank" rel="noreferrer" className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity">
+                        <img src={(selectedLead as any).id_front_url} alt="Documento" className="w-full h-auto object-cover max-h-48" />
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Status Update section */}
               <div className="border-t border-border pt-4 space-y-2">
                 <span className="text-xs font-semibold text-muted-foreground uppercase">Modifica Stato Pipeline</span>
                 <div className="grid grid-cols-2 gap-2">
-                  {(["nuovo", "contattato", "in_verifica", "attivo"] as const).map((st) => (
+                  {(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"] as const).map((st) => (
                     <button
                       key={st}
                       onClick={() => handleStatusChange(selectedLead.id, st)}

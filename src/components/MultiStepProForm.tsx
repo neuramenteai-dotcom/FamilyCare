@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,7 +55,8 @@ const DISPONIBILITA = [
 ];
 
 export function MultiStepProForm() {
-  const join = useServerFn(joinWaitlist);
+  const navigate = useNavigate();
+  const submitWaitlist = useServerFn(joinWaitlist);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -106,7 +108,7 @@ export function MultiStepProForm() {
     setLoading(true);
 
     try {
-      const res = await join({
+      const res = await submitWaitlist({
         data: {
           email,
           full_name: fullName,
@@ -127,7 +129,10 @@ export function MultiStepProForm() {
         },
       });
 
-      if (res.success) {
+      if (res.success && res.id) {
+        toast.success("Profilo registrato con successo!");
+        navigate({ to: `/verifica-identita/${res.id}` });
+      } else if (res.success) {
         setDone(true);
         toast.success("Profilo registrato con successo!");
       } else {
