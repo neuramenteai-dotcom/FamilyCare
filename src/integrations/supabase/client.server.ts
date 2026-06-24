@@ -6,8 +6,13 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 function createSupabaseAdminClient() {
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Hardcoded fallbacks ensure the server client always works in dev/prod
+  const SUPABASE_URL =
+    process.env.SUPABASE_URL ??
+    "https://uffgrgmuezfxaygmrvyf.supabase.co";
+  const SUPABASE_SERVICE_ROLE_KEY =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ??
+    "***REMOVED-SERVICE-ROLE-KEY***";
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error(

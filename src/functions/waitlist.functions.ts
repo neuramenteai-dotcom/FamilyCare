@@ -111,7 +111,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         if (error.code === "23505") {
           return { success: true, duplicate: true };
         }
-        console.error("waitlist insert error:", error);
+        console.error("waitlist insert error — code:", error.code, "| message:", error.message, "| details:", error.details, "| hint:", error.hint);
         return { success: false, error: "Impossibile salvare l'iscrizione." };
       }
 
