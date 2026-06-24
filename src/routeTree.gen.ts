@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SicurezzaRouteImport } from './routes/sicurezza'
 import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as PrezziRouteImport } from './routes/prezzi'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ComeFunzionaRouteImport } from './routes/come-funziona'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerificaIdentitaIdRouteImport } from './routes/verifica-identita.$id'
 
 const SicurezzaRoute = SicurezzaRouteImport.update({
   id: '/sicurezza',
@@ -30,6 +32,11 @@ const ServiziRoute = ServiziRouteImport.update({
 const PrezziRoute = PrezziRouteImport.update({
   id: '/prezzi',
   path: '/prezzi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContattiRoute = ContattiRouteImport.update({
@@ -52,24 +59,33 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerificaIdentitaIdRoute = VerificaIdentitaIdRouteImport.update({
+  id: '/verifica-identita/$id',
+  path: '/verifica-identita/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
+  '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
+  '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,9 +93,11 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
+  '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,27 +106,33 @@ export interface FileRouteTypes {
     | '/admin'
     | '/come-funziona'
     | '/contatti'
+    | '/login'
     | '/prezzi'
     | '/servizi'
     | '/sicurezza'
+    | '/verifica-identita/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/come-funziona'
     | '/contatti'
+    | '/login'
     | '/prezzi'
     | '/servizi'
     | '/sicurezza'
+    | '/verifica-identita/$id'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/come-funziona'
     | '/contatti'
+    | '/login'
     | '/prezzi'
     | '/servizi'
     | '/sicurezza'
+    | '/verifica-identita/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -116,9 +140,11 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   ComeFunzionaRoute: typeof ComeFunzionaRoute
   ContattiRoute: typeof ContattiRoute
+  LoginRoute: typeof LoginRoute
   PrezziRoute: typeof PrezziRoute
   ServiziRoute: typeof ServiziRoute
   SicurezzaRoute: typeof SicurezzaRoute
+  VerificaIdentitaIdRoute: typeof VerificaIdentitaIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -142,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/prezzi'
       fullPath: '/prezzi'
       preLoaderRoute: typeof PrezziRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contatti': {
@@ -172,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verifica-identita/$id': {
+      id: '/verifica-identita/$id'
+      path: '/verifica-identita/$id'
+      fullPath: '/verifica-identita/$id'
+      preLoaderRoute: typeof VerificaIdentitaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -180,9 +220,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   ComeFunzionaRoute: ComeFunzionaRoute,
   ContattiRoute: ContattiRoute,
+  LoginRoute: LoginRoute,
   PrezziRoute: PrezziRoute,
   ServiziRoute: ServiziRoute,
   SicurezzaRoute: SicurezzaRoute,
+  VerificaIdentitaIdRoute: VerificaIdentitaIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
