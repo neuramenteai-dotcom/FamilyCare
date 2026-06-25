@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -315,6 +316,7 @@ function FamilyForm() {
 
 function ProForm() {
   const join = useServerFn(joinWaitlist);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -353,9 +355,8 @@ function ProForm() {
           birth_date: birthDate,
         },
       });
-      if (res.success) {
-        setDone(true);
-        toast.success("Profilo creato! Ti contattiamo a breve.");
+      if (res.success && res.id) {
+        navigate({ to: `/verifica-identita/${res.id}` });
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
