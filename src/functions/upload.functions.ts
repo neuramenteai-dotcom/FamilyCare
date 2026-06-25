@@ -68,6 +68,7 @@ export const uploadIdentityDocument = createServerFn({ method: "POST" })
         .update({
           id_front_url: fileUrl,
           status: newStatus,
+          score: Math.round(aiResult.confidence * 100) // Salva il rating AI nel campo score
         })
         .eq("id", waitlistId);
 

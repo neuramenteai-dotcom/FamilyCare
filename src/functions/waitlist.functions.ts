@@ -29,6 +29,7 @@ const Schema = z.object({
   documenti: z.array(z.string()).optional(),
   competenze: z.array(z.string()).optional(),
   disponibilita: z.array(z.string()).optional(),
+  auth_id: z.string().uuid().optional(),
 });
 
 export const joinWaitlist = createServerFn({ method: "POST" })
@@ -105,6 +106,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         birth_date: data.birth_date || null,
         status: "nuovo",
         score,
+        auth_id: data.auth_id || null,
       }).select("id").single();
 
       if (error) {
@@ -113,6 +115,15 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         }
         console.error("waitlist insert error — code:", error.code, "| message:", error.message, "| details:", error.details, "| hint:", error.hint);
         return { success: false, error: "Impossibile salvare l'iscrizione." };
+      }
+
+      // Auto-conferma l'email dell'utente in Supabase per permettere l'accesso immediato
+      if (data.auth_id) {
+        try {
+          await supabaseAdmin.auth.admin.updateUserById(data.auth_id, { email_confirm: true });
+        } catch (authConfirmErr) {
+          console.error("Errore durante l'auto-conferma dell'email:", authConfirmErr);
+        }
       }
 
       // Invia notifiche email in background
@@ -149,7 +160,7 @@ export const getWaitlist = createServerFn({ method: "GET" })
     try {
       const { data, error } = await supabaseAdmin
         .from("waitlist")
-        .select("*")
+        .select("*, has_active_package")
         .order("score", { ascending: false })
         .order("created_at", { ascending: false });
 
@@ -158,6 +169,31 @@ export const getWaitlist = createServerFn({ method: "GET" })
         return { success: false, error: "Impossibile recuperare i dati." };
       }
       return { success: true, data };
+    } catch (err) {
+      console.error(err);
+      return { success: false, error: "Errore del server." };
+    }
+  });
+
+export const updateFamilyPackage = createServerFn({ method: "POST" })
+  .validator((input: unknown) =>
+    z.object({
+      id: z.string(),
+      has_active_package: z.boolean(),
+    }).parse(input)
+  )
+  .handler(async ({ data }) => {
+    try {
+      const { error } = await supabaseAdmin
+        .from("waitlist")
+        .update({ has_active_package: data.has_active_package })
+        .eq("id", data.id);
+
+      if (error) {
+        console.error("update package error:", error);
+        return { success: false, error: "Impossibile aggiornare pacchetto." };
+      }
+      return { success: true };
     } catch (err) {
       console.error(err);
       return { success: false, error: "Errore del server." };

@@ -34,6 +34,10 @@ export type Database = {
           user_type: string
           status: string
           score: number | null
+          auth_id: string | null
+          has_active_package: boolean | null
+          id_front_url: string | null
+          documenti: string | null
         }
         Insert: {
           birth_date?: string | null
@@ -54,6 +58,10 @@ export type Database = {
           user_type?: string
           status?: string
           score?: number | null
+          auth_id?: string | null
+          has_active_package?: boolean | null
+          id_front_url?: string | null
+          documenti?: string | null
         }
         Update: {
           birth_date?: string | null
@@ -74,8 +82,51 @@ export type Database = {
           user_type?: string
           status?: string
           score?: number | null
+          auth_id?: string | null
+          has_active_package?: boolean | null
+          id_front_url?: string | null
+          documenti?: string | null
         }
         Relationships: []
+      }
+      professional_interests: {
+        Row: {
+          id: string
+          created_at: string
+          professional_id: string
+          family_id: string
+          status: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          professional_id: string
+          family_id: string
+          status: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          professional_id?: string
+          family_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_interests_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "waitlist"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "professional_interests_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "waitlist"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

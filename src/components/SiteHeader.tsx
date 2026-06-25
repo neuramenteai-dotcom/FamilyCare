@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
@@ -14,6 +14,14 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const isReservedArea = 
+    location.pathname.includes('/dashboard') || 
+    location.pathname.includes('/admin') ||
+    location.pathname.includes('/verifica-identita');
+
+  if (isReservedArea) return null;
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/60">
@@ -35,7 +43,7 @@ export function SiteHeader() {
 
         <div className="hidden lg:flex items-center gap-2">
           <Button variant="ghost" asChild>
-            <Link to="/contatti">Accedi</Link>
+            <Link to="/login">Accedi</Link>
           </Button>
           <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5">
             <Link to="/" hash="iscriviti">Iscriviti gratis</Link>

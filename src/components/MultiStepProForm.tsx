@@ -129,9 +129,14 @@ export function MultiStepProForm() {
         },
       });
 
+      if (res.duplicate) {
+        toast.error("Questa email è già registrata. Effettua il login.");
+        return;
+      }
+      
       if (res.success && res.id) {
         toast.success("Profilo registrato con successo!");
-        navigate({ to: `/verifica-identita/${res.id}` });
+        navigate({ to: '/verifica-identita/$id', params: { id: res.id } });
       } else if (res.success) {
         setDone(true);
         toast.success("Profilo registrato con successo!");

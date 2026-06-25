@@ -11,13 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SicurezzaRouteImport } from './routes/sicurezza'
 import { Route as ServiziRouteImport } from './routes/servizi'
+import { Route as RecuperaPasswordRouteImport } from './routes/recupera-password'
 import { Route as PrezziRouteImport } from './routes/prezzi'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ComeFunzionaRouteImport } from './routes/come-funziona'
+import { Route as AggiornaPasswordRouteImport } from './routes/aggiorna-password'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerificaIdentitaIdRouteImport } from './routes/verifica-identita.$id'
+import { Route as ProfessionistaDashboardRouteImport } from './routes/professionista.dashboard'
+import { Route as FamigliaDashboardRouteImport } from './routes/famiglia.dashboard'
 
 const SicurezzaRoute = SicurezzaRouteImport.update({
   id: '/sicurezza',
@@ -27,6 +31,11 @@ const SicurezzaRoute = SicurezzaRouteImport.update({
 const ServiziRoute = ServiziRouteImport.update({
   id: '/servizi',
   path: '/servizi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperaPasswordRoute = RecuperaPasswordRouteImport.update({
+  id: '/recupera-password',
+  path: '/recupera-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrezziRoute = PrezziRouteImport.update({
@@ -49,6 +58,11 @@ const ComeFunzionaRoute = ComeFunzionaRouteImport.update({
   path: '/come-funziona',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AggiornaPasswordRoute = AggiornaPasswordRouteImport.update({
+  id: '/aggiorna-password',
+  path: '/aggiorna-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -64,39 +78,61 @@ const VerificaIdentitaIdRoute = VerificaIdentitaIdRouteImport.update({
   path: '/verifica-identita/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfessionistaDashboardRoute = ProfessionistaDashboardRouteImport.update({
+  id: '/professionista/dashboard',
+  path: '/professionista/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FamigliaDashboardRoute = FamigliaDashboardRouteImport.update({
+  id: '/famiglia/dashboard',
+  path: '/famiglia/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/famiglia/dashboard': typeof FamigliaDashboardRoute
+  '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/famiglia/dashboard': typeof FamigliaDashboardRoute
+  '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
   '/contatti': typeof ContattiRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/famiglia/dashboard': typeof FamigliaDashboardRoute
+  '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRouteTypes {
@@ -104,46 +140,62 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/aggiorna-password'
     | '/come-funziona'
     | '/contatti'
     | '/login'
     | '/prezzi'
+    | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/famiglia/dashboard'
+    | '/professionista/dashboard'
     | '/verifica-identita/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
+    | '/aggiorna-password'
     | '/come-funziona'
     | '/contatti'
     | '/login'
     | '/prezzi'
+    | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/famiglia/dashboard'
+    | '/professionista/dashboard'
     | '/verifica-identita/$id'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/aggiorna-password'
     | '/come-funziona'
     | '/contatti'
     | '/login'
     | '/prezzi'
+    | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/famiglia/dashboard'
+    | '/professionista/dashboard'
     | '/verifica-identita/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AggiornaPasswordRoute: typeof AggiornaPasswordRoute
   ComeFunzionaRoute: typeof ComeFunzionaRoute
   ContattiRoute: typeof ContattiRoute
   LoginRoute: typeof LoginRoute
   PrezziRoute: typeof PrezziRoute
+  RecuperaPasswordRoute: typeof RecuperaPasswordRoute
   ServiziRoute: typeof ServiziRoute
   SicurezzaRoute: typeof SicurezzaRoute
+  FamigliaDashboardRoute: typeof FamigliaDashboardRoute
+  ProfessionistaDashboardRoute: typeof ProfessionistaDashboardRoute
   VerificaIdentitaIdRoute: typeof VerificaIdentitaIdRoute
 }
 
@@ -161,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/servizi'
       fullPath: '/servizi'
       preLoaderRoute: typeof ServiziRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recupera-password': {
+      id: '/recupera-password'
+      path: '/recupera-password'
+      fullPath: '/recupera-password'
+      preLoaderRoute: typeof RecuperaPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/prezzi': {
@@ -191,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComeFunzionaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aggiorna-password': {
+      id: '/aggiorna-password'
+      path: '/aggiorna-password'
+      fullPath: '/aggiorna-password'
+      preLoaderRoute: typeof AggiornaPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -212,18 +278,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerificaIdentitaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/professionista/dashboard': {
+      id: '/professionista/dashboard'
+      path: '/professionista/dashboard'
+      fullPath: '/professionista/dashboard'
+      preLoaderRoute: typeof ProfessionistaDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/famiglia/dashboard': {
+      id: '/famiglia/dashboard'
+      path: '/famiglia/dashboard'
+      fullPath: '/famiglia/dashboard'
+      preLoaderRoute: typeof FamigliaDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AggiornaPasswordRoute: AggiornaPasswordRoute,
   ComeFunzionaRoute: ComeFunzionaRoute,
   ContattiRoute: ContattiRoute,
   LoginRoute: LoginRoute,
   PrezziRoute: PrezziRoute,
+  RecuperaPasswordRoute: RecuperaPasswordRoute,
   ServiziRoute: ServiziRoute,
   SicurezzaRoute: SicurezzaRoute,
+  FamigliaDashboardRoute: FamigliaDashboardRoute,
+  ProfessionistaDashboardRoute: ProfessionistaDashboardRoute,
   VerificaIdentitaIdRoute: VerificaIdentitaIdRoute,
 }
 export const routeTree = rootRouteImport

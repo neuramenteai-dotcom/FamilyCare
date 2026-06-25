@@ -54,9 +54,9 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.22 0.04 25);
 
-  --primary: oklch(0.65 0.19 25);               /* coral red */
+  --primary: oklch(0.52 0.18 25);               /* deeper coral red for WCAG AA contrast */
   --primary-foreground: oklch(0.99 0.005 60);
-  --primary-soft: oklch(0.94 0.04 25);          /* soft coral wash */
+  --primary-soft: oklch(0.97 0.03 25);          /* lighter pink for contrast against primary */
 
   --secondary: oklch(0.96 0.02 60);             /* light cream */
   --secondary-foreground: oklch(0.28 0.05 25);

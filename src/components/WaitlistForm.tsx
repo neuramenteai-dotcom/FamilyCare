@@ -15,6 +15,7 @@ import {
 import { Check, Loader2, HeartHandshake, Briefcase } from "lucide-react";
 import { joinWaitlist } from "@/functions/waitlist.functions";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 type ServiceKey = "babysitter" | "badanti" | "colf" | "dogsitter" | "tutor";
 
@@ -149,6 +150,7 @@ function FamilyForm() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [city, setCity] = useState("");
   const [services, setServices] = useState<ServiceKey[]>([]);
   const [frequency, setFrequency] = useState("");
@@ -163,9 +165,24 @@ function FamilyForm() {
     }
     setLoading(true);
     try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName, user_type: "famiglia" },
+        },
+      });
+
+      if (authError) {
+        toast.error("Errore durante la registrazione: " + authError.message);
+        setLoading(false);
+        return;
+      }
+
       const res = await join({
         data: {
           email,
+          auth_id: authData.user?.id,
           full_name: fullName,
           userType: "famiglia",
           city,
@@ -177,6 +194,11 @@ function FamilyForm() {
           urgency,
         },
       });
+      if (res.duplicate) {
+        toast.error("Questa email è già registrata. Effettua il login.");
+        return;
+      }
+
       if (res.success) {
         setDone(true);
         toast.success("Richiesta inviata. Ti contattiamo entro 24 ore.");
@@ -236,6 +258,20 @@ function FamilyForm() {
             className="h-11 rounded-xl"
           />
         </Field>
+        <Field label="Scegli una password *">
+          <Input
+            required
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Minimo 6 caratteri"
+            className="h-11 rounded-xl"
+            minLength={6}
+          />
+        </Field>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Città *">
           <Select value={city} onValueChange={setCity}>
             <SelectTrigger className="h-11 rounded-xl">
@@ -324,6 +360,7 @@ function ProForm() {
   const [birthDate, setBirthDate] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [nationality, setNationality] = useState("");
   const [city, setCity] = useState("");
   const [services, setServices] = useState<ServiceKey[]>([]);
@@ -339,9 +376,24 @@ function ProForm() {
     }
     setLoading(true);
     try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName, user_type: "professionista" },
+        },
+      });
+
+      if (authError) {
+        toast.error("Errore durante la registrazione: " + authError.message);
+        setLoading(false);
+        return;
+      }
+
       const res = await join({
         data: {
           email,
+          auth_id: authData.user?.id,
           full_name: fullName,
           userType: "professionista",
           city,
@@ -355,8 +407,13 @@ function ProForm() {
           birth_date: birthDate,
         },
       });
+      if (res.duplicate) {
+        toast.error("Questa email è già registrata. Effettua il login.");
+        return;
+      }
+
       if (res.success && res.id) {
-        navigate({ to: `/verifica-identita/${res.id}` });
+        navigate({ to: '/verifica-identita/$id', params: { id: res.id } });
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
@@ -424,6 +481,17 @@ function ProForm() {
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
+        <Field label="Scegli una password *">
+          <Input
+            required
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Minimo 6 caratteri"
+            className="h-11 rounded-xl"
+            minLength={6}
+          />
+        </Field>
         <Field label="Nazionalità *">
           <Select value={nationality} onValueChange={setNationality}>
             <SelectTrigger className="h-11 rounded-xl">

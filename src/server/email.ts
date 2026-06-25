@@ -44,7 +44,7 @@ export async function sendEmailNotification(data: {
 
   // Content for User
   const textUser = data.userType === "famiglia"
-    ? `Ciao ${data.full_name || ""},\n\nAbbiamo ricevuto la tua richiesta di assistenza per la zona ${data.city || ""}.\nTi contatteremo entro 2 ore su WhatsApp o via Email per presentarti i profili disponibili.\n\nGrazie,\nIl team di FamilyCare`
+    ? `Ciao ${data.full_name || ""},\n\nAbbiamo ricevuto la tua richiesta di assistenza per la zona ${data.city || ""}.\nTi contatteremo entro 24 ore su WhatsApp o via Email per farti vedere i profili disponibili.\n\nGrazie,\nIl team di FamilyCare`
     : `Ciao ${data.full_name || ""},\n\nGrazie per esserti candidata su FamilyCare.\nAbbiamo ricevuto il tuo profilo e verificheremo i tuoi dati entro 48 ore. Ti contatteremo su WhatsApp al numero ${data.phone || ""} per il colloquio conoscitivo.\n\nUn cordiale saluto,\nIl team di FamilyCare`;
 
   // Content for Admin
@@ -66,6 +66,7 @@ export async function sendEmailNotification(data: {
       to: data.email,
       subject: subjectUser,
       text: textUser,
+      html: textUser.replace(/\n/g, "<br>"),
     });
     console.log(`✉️ Email di conferma inviata con successo all'utente: ${data.email}`);
 
@@ -75,6 +76,7 @@ export async function sendEmailNotification(data: {
       to: EMAIL_DESTINATARIO,
       subject: subjectAdmin,
       text: textAdmin,
+      html: textAdmin.replace(/\n/g, "<br>"),
     });
     console.log(`✉️ Notifica email inviata con successo all'admin: ${EMAIL_DESTINATARIO}`);
   } catch (error) {

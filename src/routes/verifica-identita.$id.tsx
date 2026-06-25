@@ -34,7 +34,7 @@ function IdentityVerificationPage() {
       formData.append("waitlistId", id);
       formData.append("file", file);
 
-      const res = await uploadDoc(formData);
+      const res = await uploadDoc({ data: formData });
       
       if (res.success) {
         setDone(true);

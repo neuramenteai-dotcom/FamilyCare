@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getWaitlist, updateWaitlistStatus } from "@/functions/waitlist.functions";
+import { getWaitlist, updateWaitlistStatus, updateFamilyPackage } from "@/functions/waitlist.functions";
 import { toast } from "sonner";
 import {
   ShieldAlert,
@@ -19,6 +19,7 @@ import {
   Calendar,
   Lock,
   ArrowRight,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,7 @@ interface Lead {
   created_at: string;
   status: string;
   score: number | null;
+  has_active_package: boolean | null;
 }
 
 export function AdminDashboard() {
@@ -50,6 +52,7 @@ export function AdminDashboard() {
   const [password, setPassword] = useState("");
   const fetchLeads = useServerFn(getWaitlist);
   const updateStatus = useServerFn(updateWaitlistStatus);
+  const updatePackage = useServerFn(updateFamilyPackage);
 
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(false);
@@ -105,6 +108,27 @@ export function AdminDashboard() {
         toast.success(`Stato aggiornato a ${newStatus}`);
       } else {
         toast.error(res.error || "Impossibile aggiornare lo stato.");
+      }
+    } catch {
+      toast.error("Errore durante l'aggiornamento.");
+    }
+  };
+
+  const handlePackageToggle = async (id: string, currentVal: boolean) => {
+    try {
+      const res = await updatePackage({ data: { id, has_active_package: !currentVal } });
+      if (res.success) {
+        setLeads((prev) =>
+          prev.map((lead) => (lead.id === id ? { ...lead, has_active_package: !currentVal } : lead))
+        );
+        if (selectedLead && selectedLead.id === id) {
+          setSelectedLead((prev) => (prev ? { ...prev, has_active_package: !currentVal } : null));
+        }
+        toast.success(
+          !currentVal ? "Pacchetto Famiglia attivato!" : "Pacchetto Famiglia disattivato."
+        );
+      } else {
+        toast.error(res.error || "Impossibile aggiornare pacchetto.");
       }
     } catch {
       toast.error("Errore durante l'aggiornamento.");
@@ -372,13 +396,31 @@ export function AdminDashboard() {
                     Registrato il {new Date(selectedLead.created_at).toLocaleString("it-IT")}
                   </p>
                 </div>
-                <span
-                  className={`px-2.5 py-1 rounded-full text-xs font-bold ${getScoreBadgeClass(
-                    selectedLead.score
-                  )}`}
-                >
-                  Score: {selectedLead.score}%
-                </span>
+                <div className="flex flex-col items-end gap-2">
+                  <span
+                    className={`px-2.5 py-1 rounded-full text-xs font-bold ${getScoreBadgeClass(
+                      selectedLead.score
+                    )}`}
+                  >
+                    {selectedLead.user_type === "professionista" && (selectedLead as any).id_front_url 
+                      ? `AI Verifica: ${selectedLead.score}%` 
+                      : `Score Profilo: ${selectedLead.score}%`}
+                  </span>
+                  
+                  {selectedLead.user_type === "famiglia" && (
+                    <button
+                      onClick={() => handlePackageToggle(selectedLead.id, !!selectedLead.has_active_package)}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+                        selectedLead.has_active_package 
+                          ? "bg-green-100 text-green-800 border border-green-200" 
+                          : "bg-slate-100 text-slate-600 border border-slate-200"
+                      }`}
+                    >
+                      <CreditCard className="w-3 h-3" />
+                      {selectedLead.has_active_package ? "Pacchetto Attivo (Pagato)" : "Nessun Pacchetto"}
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Contact info list */}
