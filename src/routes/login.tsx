@@ -35,13 +35,13 @@ function AccediPage() {
 
     if (data.user) {
       const userType = data.user.user_metadata?.user_type;
-      if (userType === "famiglia") {
-        navigate({ to: "/famiglia/dashboard" });
+      const isAdmin = data.user.app_metadata?.role === "admin";
+      if (isAdmin) {
+        navigate({ to: "/admin" });
       } else if (userType === "professionista") {
         navigate({ to: "/professionista/dashboard" });
       } else {
-        // Fallback o Admin
-        navigate({ to: "/admin" });
+        navigate({ to: "/famiglia/dashboard" });
       }
     }
   }

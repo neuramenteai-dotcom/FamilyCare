@@ -21,8 +21,11 @@ function AdminPage() {
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      // UX guard: l'enforcement vero è nel middleware requireAdmin lato server
       if (!session) {
         navigate({ to: "/login" });
+      } else if (session.user.app_metadata?.role !== "admin") {
+        navigate({ to: "/" });
       } else {
         setIsAuthenticated(true);
       }

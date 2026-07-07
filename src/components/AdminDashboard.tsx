@@ -1,29 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getWaitlist, updateWaitlistStatus, updateFamilyPackage } from "@/functions/waitlist.functions";
+import { getWaitlist, updateWaitlistStatus, updateFamilyPackage, getIdentityDocUrl } from "@/functions/waitlist.functions";
 import { toast } from "sonner";
 import {
   ShieldAlert,
   Loader2,
-  Users,
   Search,
   Filter,
   Eye,
   Star,
   CheckCircle,
   Clock,
-  Sparkles,
   Phone,
   Mail,
   MapPin,
   Calendar,
-  Lock,
-  ArrowRight,
   CreditCard,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 
 interface Lead {
@@ -48,8 +43,6 @@ interface Lead {
 }
 
 export function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
   const fetchLeads = useServerFn(getWaitlist);
   const updateStatus = useServerFn(updateWaitlistStatus);
   const updatePackage = useServerFn(updateFamilyPackage);
@@ -62,7 +55,7 @@ export function AdminDashboard() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   // Load leads
-  const loadLeads = async () => {
+  const loadLeads = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetchLeads();
@@ -76,24 +69,11 @@ export function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchLeads]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      loadLeads();
-    }
-  }, [isAuthenticated]);
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Default MVP admin password
-    if (password === "admin123" || password === "familycare2026") {
-      setIsAuthenticated(true);
-      toast.success("Autenticato come amministratore.");
-    } else {
-      toast.error("Password errata. Riprova.");
-    }
-  };
+    loadLeads();
+  }, [loadLeads]);
 
   const handleStatusChange = async (id: string, newStatus: "nuovo" | "contattato" | "in_verifica" | "pre_approvato" | "attivo") => {
     try {
@@ -166,46 +146,6 @@ export function AdminDashboard() {
         return <ShieldAlert className="h-4 w-4 text-slate-400" />;
     }
   };
-
-  // Login Screen
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center p-4">
-        <div className="bg-card border border-border p-8 rounded-3xl shadow-soft w-full max-w-md space-y-6">
-          <div className="text-center space-y-2">
-            <div className="mx-auto h-12 w-12 rounded-2xl bg-primary-soft text-primary grid place-items-center mb-4">
-              <Lock className="h-6 w-6" />
-            </div>
-            <h2 className="font-display text-2xl font-bold text-foreground">Accesso Amministrazione</h2>
-            <p className="text-sm text-muted-foreground">
-              Inserisci la password amministratore per visionare i candidati ed i lead.
-            </p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Password Amministratore</Label>
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Inserisci la password"
-                className="h-11 rounded-xl"
-                autoFocus
-              />
-            </div>
-            <Button type="submit" className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
-              Accedi <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Button>
-          </form>
-          <div className="text-center text-xs text-muted-foreground">
-            Sfoglia i tuoi dati in tempo reale · MVP Demo (Pass: <code className="bg-muted px-1 py-0.5 rounded font-mono">familycare2026</code>)
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 py-8">
@@ -521,14 +461,7 @@ export function AdminDashboard() {
                 </div>
 
                 {(selectedLead as any).id_front_url && (
-                  <div className="space-y-1.5 border-t border-border/60 pt-3">
-                    <span className="text-xs font-semibold text-muted-foreground uppercase">Documento d'Identità Caricato</span>
-                    <div className="mt-2">
-                      <a href={(selectedLead as any).id_front_url} target="_blank" rel="noreferrer" className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity">
-                        <img src={(selectedLead as any).id_front_url} alt="Documento" className="w-full h-auto object-cover max-h-48" />
-                      </a>
-                    </div>
-                  </div>
+                  <IdentityDocViewer docRef={(selectedLead as any).id_front_url} />
                 )}
               </div>
 
@@ -559,6 +492,53 @@ export function AdminDashboard() {
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Il bucket identity_docs è privato: il documento si apre tramite signed URL
+// generato on-demand dal server (solo admin). Supporta sia i nuovi record
+// (path) sia i vecchi (URL completo, da cui viene estratto il path).
+function IdentityDocViewer({ docRef }: { docRef: string }) {
+  const fetchDocUrl = useServerFn(getIdentityDocUrl);
+  const [signedUrl, setSignedUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const path = docRef.includes("/identity_docs/")
+    ? docRef.split("/identity_docs/")[1]
+    : docRef;
+
+  const handleLoad = async () => {
+    setLoading(true);
+    try {
+      const res = await fetchDocUrl({ data: { path } });
+      if (res.success && res.url) {
+        setSignedUrl(res.url);
+      } else {
+        toast.error(res.error || "Impossibile caricare il documento.");
+      }
+    } catch {
+      toast.error("Errore di connessione.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-1.5 border-t border-border/60 pt-3">
+      <span className="text-xs font-semibold text-muted-foreground uppercase">Documento d'Identità Caricato</span>
+      <div className="mt-2">
+        {signedUrl ? (
+          <a href={signedUrl} target="_blank" rel="noreferrer" className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity">
+            <img src={signedUrl} alt="Documento" className="w-full h-auto object-cover max-h-48" />
+          </a>
+        ) : (
+          <Button onClick={handleLoad} disabled={loading} variant="outline" className="w-full h-10 rounded-xl">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <FileText className="h-4 w-4 mr-1.5" />}
+            Visualizza documento
+          </Button>
+        )}
       </div>
     </div>
   );

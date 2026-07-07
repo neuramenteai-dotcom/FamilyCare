@@ -54,9 +54,10 @@ function AggiornaPasswordPage() {
       if (user) {
         setTimeout(() => {
           const userType = user.user_metadata?.user_type;
-          if (userType === "famiglia") navigate({ to: "/famiglia/dashboard" });
+          const isAdmin = user.app_metadata?.role === "admin";
+          if (isAdmin) navigate({ to: "/admin" });
           else if (userType === "professionista") navigate({ to: "/professionista/dashboard" });
-          else navigate({ to: "/admin" });
+          else navigate({ to: "/famiglia/dashboard" });
         }, 2000);
       }
     }
