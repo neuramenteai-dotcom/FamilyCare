@@ -413,6 +413,9 @@ function ProForm() {
       }
 
       if (res.success && res.id) {
+        // joinWaitlist auto-conferma l'email: effettua il login per avere una
+        // sessione attiva, richiesta dall'upload del documento d'identità.
+        await supabase.auth.signInWithPassword({ email, password });
         navigate({ to: '/verifica-identita/$id', params: { id: res.id } });
       } else {
         toast.error(res.error || "Qualcosa è andato storto");

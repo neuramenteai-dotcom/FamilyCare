@@ -38,6 +38,8 @@ export type Database = {
           has_active_package: boolean | null
           id_front_url: string | null
           documenti: string | null
+          avatar_url: string | null
+          bio: string | null
         }
         Insert: {
           birth_date?: string | null
@@ -62,6 +64,8 @@ export type Database = {
           has_active_package?: boolean | null
           id_front_url?: string | null
           documenti?: string | null
+          avatar_url?: string | null
+          bio?: string | null
         }
         Update: {
           birth_date?: string | null
@@ -86,6 +90,8 @@ export type Database = {
           has_active_package?: boolean | null
           id_front_url?: string | null
           documenti?: string | null
+          avatar_url?: string | null
+          bio?: string | null
         }
         Relationships: []
       }

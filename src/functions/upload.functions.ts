@@ -1,38 +1,49 @@
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { verifyIdentityDocument } from "@/server/ai-verification";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export const uploadIdentityDocument = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .validator((formData: FormData) => formData)
-  .handler(async ({ data: formData }) => {
+  .handler(async ({ data: formData, context }) => {
     try {
-      const waitlistId = formData.get("waitlistId") as string;
       const file = formData.get("file") as File | null;
-      
-      if (!waitlistId || !file) {
-        return { success: false, error: "ID o File mancante." };
+
+      if (!file) {
+        return { success: false, error: "File mancante." };
       }
 
-      // 1. Leggi il record dal database per ottenere il nome
+      if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+        return { success: false, error: "Formato non supportato. Usa JPG, PNG, WEBP o PDF." };
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        return { success: false, error: "Il file supera la dimensione massima di 10 MB." };
+      }
+
+      // 1. Il record è quello dell'utente autenticato, mai un ID scelto dal client
       const { data: record, error: fetchError } = await supabaseAdmin
         .from("waitlist")
         .select("id, full_name, status")
-        .eq("id", waitlistId)
+        .eq("auth_id", context.userId)
         .single();
 
       if (fetchError || !record) {
         return { success: false, error: "Utente non trovato." };
       }
 
-      // 2. Carica il file su Supabase Storage
+      // 2. Carica il file su Supabase Storage (bucket privato)
       const fileExt = file.name.split(".").pop();
-      const fileName = `${waitlistId}_front_${Date.now()}.${fileExt}`;
+      const filePath = `${record.id}_front_${Date.now()}.${fileExt}`;
       const arrayBuffer = await file.arrayBuffer();
 
       const { error: uploadError } = await supabaseAdmin.storage
         .from("identity_docs")
-        .upload(fileName, arrayBuffer, {
+        .upload(filePath, arrayBuffer, {
           contentType: file.type,
           upsert: true,
         });
@@ -42,44 +53,38 @@ export const uploadIdentityDocument = createServerFn({ method: "POST" })
         return { success: false, error: "Errore durante il caricamento del documento." };
       }
 
-      // 3. Ottieni l'URL pubblico (o interno)
-      const { data: publicUrlData } = supabaseAdmin.storage
-        .from("identity_docs")
-        .getPublicUrl(fileName);
-        
-      const fileUrl = publicUrlData.publicUrl;
-
-      // 4. Esegui l'analisi AI
+      // 3. Esegui l'analisi AI
       const aiResult = await verifyIdentityDocument(
         arrayBuffer,
         file.type,
         record.full_name || ""
       );
 
-      // 5. Determina il nuovo stato
+      // 4. Determina il nuovo stato
       let newStatus = "in_verifica"; // Default: da controllare manualmente
       if (aiResult.isMatch) {
         newStatus = "pre_approvato"; // AI ha confermato il nome
       }
 
-      // 6. Aggiorna il database
+      // 5. Aggiorna il database. Il bucket è privato: salviamo il path,
+      // l'admin lo visualizza tramite signed URL (getIdentityDocUrl).
       const { error: updateError } = await supabaseAdmin
         .from("waitlist")
         .update({
-          id_front_url: fileUrl,
+          id_front_url: filePath,
           status: newStatus,
           score: Math.round(aiResult.confidence * 100) // Salva il rating AI nel campo score
         })
-        .eq("id", waitlistId);
+        .eq("id", record.id);
 
       if (updateError) {
         console.error("DB update error:", updateError);
         return { success: false, error: "Errore durante l'aggiornamento dello stato." };
       }
 
-      return { 
-        success: true, 
-        isMatch: aiResult.isMatch, 
+      return {
+        success: true,
+        isMatch: aiResult.isMatch,
         status: newStatus,
         extractedName: aiResult.extractedName
       };

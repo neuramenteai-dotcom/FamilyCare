@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { requireAdmin } from "@/integrations/supabase/auth-middleware";
 
 const SERVICE_VALUES = [
   "babysitter",
@@ -156,6 +157,7 @@ export const joinWaitlist = createServerFn({ method: "POST" })
   });
 
 export const getWaitlist = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
   .handler(async () => {
     try {
       const { data, error } = await supabaseAdmin
@@ -176,9 +178,10 @@ export const getWaitlist = createServerFn({ method: "GET" })
   });
 
 export const updateFamilyPackage = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .validator((input: unknown) =>
     z.object({
-      id: z.string(),
+      id: z.string().uuid(),
       has_active_package: z.boolean(),
     }).parse(input)
   )
@@ -201,9 +204,10 @@ export const updateFamilyPackage = createServerFn({ method: "POST" })
   });
 
 export const updateWaitlistStatus = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .validator((input: unknown) =>
     z.object({
-      id: z.string(),
+      id: z.string().uuid(),
       status: z.enum(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"]),
     }).parse(input)
   )
@@ -219,6 +223,30 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
         return { success: false, error: "Impossibile aggiornare lo stato." };
       }
       return { success: true };
+    } catch (err) {
+      console.error(err);
+      return { success: false, error: "Errore del server." };
+    }
+  });
+
+// Il bucket identity_docs è privato: l'admin ottiene un signed URL temporaneo
+// a partire dal path salvato in waitlist.id_front_url.
+export const getIdentityDocUrl = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
+  .validator((input: unknown) =>
+    z.object({ path: z.string().min(1).max(500) }).parse(input)
+  )
+  .handler(async ({ data }) => {
+    try {
+      const { data: signed, error } = await supabaseAdmin.storage
+        .from("identity_docs")
+        .createSignedUrl(data.path, 60 * 10); // 10 minuti
+
+      if (error || !signed?.signedUrl) {
+        console.error("signed url error:", error);
+        return { success: false, error: "Impossibile generare il link al documento." };
+      }
+      return { success: true, url: signed.signedUrl };
     } catch (err) {
       console.error(err);
       return { success: false, error: "Errore del server." };

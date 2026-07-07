@@ -28,7 +28,7 @@ function ProDashboard() {
         return;
       }
       
-      const res = await fetchDashboard({ data: { authId: authSession.session.user.id } });
+      const res = await fetchDashboard();
       if (res.success) {
         if (res.locked && (res.status === "nuovo" || res.status === "contattato")) {
           navigate({ to: '/verifica-identita/$id', params: { id: res.proId } });
@@ -48,7 +48,6 @@ function ProDashboard() {
     try {
       const res = await setInterestFn({
         data: {
-          proId: data.proId,
           familyId,
           status
         }
@@ -90,6 +89,9 @@ function ProDashboard() {
           )}
         </div>
         <div className="flex items-center gap-4">
+          <Button variant="outline" className="hidden sm:flex" onClick={() => navigate({ to: '/professionista/profilo' })}>
+            Profilo
+          </Button>
           <Button variant="outline" className="hidden sm:flex" onClick={() => navigate({ to: '/verifica-identita/$id', params: { id: data?.proId } })}>
             <FileText className="w-4 h-4 mr-2" />
             I miei Documenti
@@ -127,64 +129,73 @@ function ProDashboard() {
               </Button>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {availableFamilies.map((fam: any) => (
-                <div key={fam.id} className="bg-background rounded-3xl border border-border/60 p-6 shadow-sm flex flex-col">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                      📍
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">Famiglia a {fam.city}</h3>
-                      <p className="text-sm text-muted-foreground">{fam.urgency}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm flex-grow mb-6">
-                    <div className="flex gap-2">
-                      <span className="font-medium">Servizio:</span>
-                      <span className="text-muted-foreground">{(fam.services || []).join(", ")}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="font-medium">Frequenza:</span>
-                      <span className="text-muted-foreground">{fam.frequency || "Non specificata"}</span>
-                    </div>
-                    {fam.message && (
-                      <div className="mt-4 p-3 bg-muted/50 rounded-xl">
-                        <p className="text-muted-foreground line-clamp-3 italic">"{fam.message}"</p>
+            <div className="max-w-lg mx-auto">
+              {availableFamilies.length > 0 ? (
+                (() => {
+                  const fam = availableFamilies[0];
+                  return (
+                    <div key={fam.id} className="bg-background rounded-3xl border border-border/60 p-8 shadow-sm flex flex-col relative overflow-hidden transition-all duration-300 min-h-[400px]">
+                      <div className="absolute top-0 right-0 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        NUOVA RICHIESTA
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-3 mt-auto">
-                    <Button 
-                      variant="outline" 
-                      className="flex-1 rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
-                      onClick={() => handleAction(fam.id, "dislike")}
-                      disabled={acting === fam.id}
-                    >
-                      <ThumbsDown className="w-4 h-4 mr-2" />
-                      Scarta
-                    </Button>
-                    <Button 
-                      className="flex-1 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
-                      onClick={() => handleAction(fam.id, "like")}
-                      disabled={acting === fam.id}
-                    >
-                      <ThumbsUp className="w-4 h-4 mr-2" />
-                      Mi Interessa
-                    </Button>
-                  </div>
-                </div>
-              ))}
-              
-              {availableFamilies.length === 0 && (
-                <div className="col-span-full bg-background p-8 rounded-3xl border border-border/60 text-center">
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                      <div className="flex items-center gap-4 mb-6 mt-2">
+                        <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary text-2xl">
+                          📍
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-xl">Famiglia a {fam.city}</h3>
+                          <p className="text-sm text-muted-foreground font-medium text-red-500">{fam.urgency}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4 text-sm flex-grow mb-8 bg-muted/30 p-6 rounded-2xl">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Servizio Richiesto</span>
+                          <span className="text-base">{(fam.services || []).join(", ")}</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Frequenza</span>
+                          <span className="text-base">{fam.frequency || "Non specificata"}</span>
+                        </div>
+                        {fam.message && (
+                          <div className="flex flex-col gap-1 mt-2">
+                            <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Messaggio</span>
+                            <p className="text-foreground italic bg-background p-3 rounded-xl border border-border/50">"{fam.message}"</p>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="flex gap-4 mt-auto">
+                        <Button 
+                          variant="outline" 
+                          size="lg"
+                          className="flex-1 rounded-2xl h-14 text-red-500 hover:text-red-600 hover:bg-red-50 border-red-200"
+                          onClick={() => handleAction(fam.id, "dislike")}
+                          disabled={acting === fam.id}
+                        >
+                          <ThumbsDown className="w-5 h-5 mr-2" />
+                          Scarta
+                        </Button>
+                        <Button 
+                          size="lg"
+                          className="flex-1 rounded-2xl h-14 bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft"
+                          onClick={() => handleAction(fam.id, "like")}
+                          disabled={acting === fam.id}
+                        >
+                          <ThumbsUp className="w-5 h-5 mr-2" />
+                          Mi Interessa
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })()
+              ) : (
+                <div className="col-span-full bg-background p-10 rounded-3xl border border-border/60 text-center">
+                  <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
                     🌟
                   </div>
-                  <h2 className="text-2xl font-semibold mb-2">Hai visto tutto!</h2>
-                  <p className="text-muted-foreground max-w-md mx-auto">
+                  <h2 className="text-2xl font-semibold mb-3">Hai visto tutto!</h2>
+                  <p className="text-muted-foreground text-lg">
                     Non ci sono nuove richieste nella tua zona. Ti avviseremo appena una famiglia cercherà un professionista come te.
                   </p>
                 </div>

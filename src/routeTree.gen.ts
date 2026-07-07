@@ -20,6 +20,7 @@ import { Route as AggiornaPasswordRouteImport } from './routes/aggiorna-password
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerificaIdentitaIdRouteImport } from './routes/verifica-identita.$id'
+import { Route as ProfessionistaProfiloRouteImport } from './routes/professionista.profilo'
 import { Route as ProfessionistaDashboardRouteImport } from './routes/professionista.dashboard'
 import { Route as FamigliaDashboardRouteImport } from './routes/famiglia.dashboard'
 
@@ -78,6 +79,11 @@ const VerificaIdentitaIdRoute = VerificaIdentitaIdRouteImport.update({
   path: '/verifica-identita/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfessionistaProfiloRoute = ProfessionistaProfiloRouteImport.update({
+  id: '/professionista/profilo',
+  path: '/professionista/profilo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfessionistaDashboardRoute = ProfessionistaDashboardRouteImport.update({
   id: '/professionista/dashboard',
   path: '/professionista/dashboard',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/sicurezza': typeof SicurezzaRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
+  '/professionista/profilo': typeof ProfessionistaProfiloRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/sicurezza': typeof SicurezzaRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
+  '/professionista/profilo': typeof ProfessionistaProfiloRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRoutesById {
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/sicurezza': typeof SicurezzaRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
+  '/professionista/profilo': typeof ProfessionistaProfiloRoute
   '/verifica-identita/$id': typeof VerificaIdentitaIdRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
+    | '/professionista/profilo'
     | '/verifica-identita/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
+    | '/professionista/profilo'
     | '/verifica-identita/$id'
   id:
     | '__root__'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
+    | '/professionista/profilo'
     | '/verifica-identita/$id'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   SicurezzaRoute: typeof SicurezzaRoute
   FamigliaDashboardRoute: typeof FamigliaDashboardRoute
   ProfessionistaDashboardRoute: typeof ProfessionistaDashboardRoute
+  ProfessionistaProfiloRoute: typeof ProfessionistaProfiloRoute
   VerificaIdentitaIdRoute: typeof VerificaIdentitaIdRoute
 }
 
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerificaIdentitaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/professionista/profilo': {
+      id: '/professionista/profilo'
+      path: '/professionista/profilo'
+      fullPath: '/professionista/profilo'
+      preLoaderRoute: typeof ProfessionistaProfiloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/professionista/dashboard': {
       id: '/professionista/dashboard'
       path: '/professionista/dashboard'
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   SicurezzaRoute: SicurezzaRoute,
   FamigliaDashboardRoute: FamigliaDashboardRoute,
   ProfessionistaDashboardRoute: ProfessionistaDashboardRoute,
+  ProfessionistaProfiloRoute: ProfessionistaProfiloRoute,
   VerificaIdentitaIdRoute: VerificaIdentitaIdRoute,
 }
 export const routeTree = rootRouteImport

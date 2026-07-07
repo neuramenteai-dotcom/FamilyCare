@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { uploadIdentityDocument } from "@/functions/upload.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, UploadCloud, CheckCircle } from "lucide-react";
 
@@ -10,11 +11,19 @@ export const Route = createFileRoute("/verifica-identita/$id")({
 });
 
 function IdentityVerificationPage() {
-  const { id } = Route.useParams();
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [done, setDone] = useState(false);
   const uploadDoc = useServerFn(uploadIdentityDocument);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        navigate({ to: "/login" });
+      }
+    });
+  }, [navigate]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -31,7 +40,6 @@ function IdentityVerificationPage() {
     setIsUploading(true);
     try {
       const formData = new FormData();
-      formData.append("waitlistId", id);
       formData.append("file", file);
 
       const res = await uploadDoc({ data: formData });
