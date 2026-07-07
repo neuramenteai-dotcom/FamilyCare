@@ -8,7 +8,7 @@ type UserType = "famiglia" | "professionista";
  */
 export async function getOwnedWaitlistRecord(
   userId: string,
-  options: { userType?: UserType; columns?: string } = {}
+  options: { userType?: UserType; columns?: string } = {},
 ) {
   let query = supabaseAdmin
     .from("waitlist")

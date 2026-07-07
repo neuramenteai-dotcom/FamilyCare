@@ -43,7 +43,7 @@ function IdentityVerificationPage() {
       formData.append("file", file);
 
       const res = await uploadDoc({ data: formData });
-      
+
       if (res.success) {
         setDone(true);
         if (res.isMatch) {
@@ -68,10 +68,13 @@ function IdentityVerificationPage() {
         <CheckCircle className="w-20 h-20 text-green-500 mb-6" />
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Documento Inviato!</h1>
         <p className="text-lg text-gray-600 max-w-md">
-          Grazie per aver completato la verifica dell'identità. 
-          Il nostro team revisionerà il tuo profilo al più presto e ti avviserà non appena sarà attivo.
+          Grazie per aver completato la verifica dell'identità. Il nostro team revisionerà il tuo
+          profilo al più presto e ti avviserà non appena sarà attivo.
         </p>
-        <a href="/" className="mt-8 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors">
+        <a
+          href="/"
+          className="mt-8 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
+        >
           Torna alla Home
         </a>
       </div>
@@ -87,14 +90,15 @@ function IdentityVerificationPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Verifica la tua Identità</h2>
           <p className="text-gray-600">
-            Per garantire la massima sicurezza alle famiglie, ti chiediamo di caricare una foto del tuo <b>Documento d'Identità</b> (fronte).
+            Per garantire la massima sicurezza alle famiglie, ti chiediamo di caricare una foto del
+            tuo <b>Documento d'Identità</b> (fronte).
           </p>
         </div>
 
         <div className="space-y-6">
-          <div 
+          <div
             className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer relative"
-            onClick={() => document.getElementById('file-upload')?.click()}
+            onClick={() => document.getElementById("file-upload")?.click()}
           >
             {file ? (
               <div className="text-primary font-medium flex flex-col items-center">
@@ -108,11 +112,11 @@ function IdentityVerificationPage() {
                 <span className="text-sm mt-1">Formati supportati: JPG, PNG, PDF</span>
               </div>
             )}
-            <input 
-              id="file-upload" 
-              type="file" 
+            <input
+              id="file-upload"
+              type="file"
               accept="image/jpeg,image/png,application/pdf"
-              className="hidden" 
+              className="hidden"
               onChange={handleFileChange}
             />
           </div>
@@ -134,7 +138,8 @@ function IdentityVerificationPage() {
         </div>
 
         <div className="mt-6 text-center text-xs text-gray-500">
-          I tuoi dati sono protetti e crittografati secondo le normative GDPR. Utilizziamo intelligenza artificiale per verificare l'autenticità dei documenti.
+          I tuoi dati sono protetti e crittografati secondo le normative GDPR. Utilizziamo
+          intelligenza artificiale per verificare l'autenticità dei documenti.
         </div>
       </div>
     </div>

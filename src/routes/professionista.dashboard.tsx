@@ -27,11 +27,11 @@ function ProDashboard() {
         navigate({ to: "/login" });
         return;
       }
-      
+
       const res = await fetchDashboard();
       if (res.success) {
         if (res.locked && (res.status === "nuovo" || res.status === "contattato")) {
-          navigate({ to: '/verifica-identita/$id', params: { id: res.proId } });
+          navigate({ to: "/verifica-identita/$id", params: { id: res.proId } });
           return;
         }
         setData(res);
@@ -49,14 +49,14 @@ function ProDashboard() {
       const res = await setInterestFn({
         data: {
           familyId,
-          status
-        }
+          status,
+        },
       });
       if (res.success) {
         // Update local state to hide the card or show it as acted
         setData((prev: any) => ({
           ...prev,
-          interests: [...prev.interests, { family_id: familyId, status }]
+          interests: [...prev.interests, { family_id: familyId, status }],
         }));
         toast.success(status === "like" ? "Interesse inviato con successo!" : "Richiesta scartata");
       } else {
@@ -70,7 +70,11 @@ function ProDashboard() {
   }
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin w-8 h-8 text-primary" /></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin w-8 h-8 text-primary" />
+      </div>
+    );
   }
 
   // Filter out families we already acted upon
@@ -89,19 +93,32 @@ function ProDashboard() {
           )}
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="hidden sm:flex" onClick={() => navigate({ to: '/professionista/profilo' })}>
+          <Button
+            variant="outline"
+            className="hidden sm:flex"
+            onClick={() => navigate({ to: "/professionista/profilo" })}
+          >
             Profilo
           </Button>
-          <Button variant="outline" className="hidden sm:flex" onClick={() => navigate({ to: '/verifica-identita/$id', params: { id: data?.proId } })}>
-            <FileText className="w-4 h-4 mr-2" />
-            I miei Documenti
+          <Button
+            variant="outline"
+            className="hidden sm:flex"
+            onClick={() => navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })}
+          >
+            <FileText className="w-4 h-4 mr-2" />I miei Documenti
           </Button>
-          <Button variant="ghost" onClick={() => { supabase.auth.signOut(); navigate({ to: "/" }); }}>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              supabase.auth.signOut();
+              navigate({ to: "/" });
+            }}
+          >
             Esci
           </Button>
         </div>
       </header>
-      
+
       <main className="container max-w-5xl mx-auto py-8 px-4">
         {data?.locked ? (
           <div className="bg-background p-8 rounded-3xl border border-border/60 text-center shadow-sm max-w-2xl mx-auto mt-12">
@@ -110,11 +127,17 @@ function ProDashboard() {
             </div>
             <h2 className="text-3xl font-semibold mb-4">Profilo in Verifica</h2>
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              {data?.status === "nuovo" || data?.status === "contattato" ? 
-                "Devi caricare un documento d'identità per procedere. Senza un documento verificato non potrai accedere alla bacheca degli annunci." :
-                "Abbiamo ricevuto i tuoi documenti. Il nostro team sta revisionando il tuo profilo manualmente per garantirti l'accesso alla bacheca."}
+              {data?.status === "nuovo" || data?.status === "contattato"
+                ? "Devi caricare un documento d'identità per procedere. Senza un documento verificato non potrai accedere alla bacheca degli annunci."
+                : "Abbiamo ricevuto i tuoi documenti. Il nostro team sta revisionando il tuo profilo manualmente per garantirti l'accesso alla bacheca."}
             </p>
-            <Button size="lg" className="rounded-xl h-14 px-8 text-base shadow-soft" onClick={() => navigate({ to: '/verifica-identita/$id', params: { id: data?.proId } })}>
+            <Button
+              size="lg"
+              className="rounded-xl h-14 px-8 text-base shadow-soft"
+              onClick={() =>
+                navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })
+              }
+            >
               Vai alla pagina di Verifica Documenti
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
@@ -123,9 +146,14 @@ function ProDashboard() {
           <>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
               <h1 className="text-3xl font-semibold">Bacheca Lavoro</h1>
-              <Button variant="outline" className="sm:hidden w-full" onClick={() => navigate({ to: '/verifica-identita/$id', params: { id: data?.proId } })}>
-                <FileText className="w-4 h-4 mr-2" />
-                I miei Documenti
+              <Button
+                variant="outline"
+                className="sm:hidden w-full"
+                onClick={() =>
+                  navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })
+                }
+              >
+                <FileText className="w-4 h-4 mr-2" />I miei Documenti
               </Button>
             </div>
 
@@ -134,7 +162,10 @@ function ProDashboard() {
                 (() => {
                   const fam = availableFamilies[0];
                   return (
-                    <div key={fam.id} className="bg-background rounded-3xl border border-border/60 p-8 shadow-sm flex flex-col relative overflow-hidden transition-all duration-300 min-h-[400px]">
+                    <div
+                      key={fam.id}
+                      className="bg-background rounded-3xl border border-border/60 p-8 shadow-sm flex flex-col relative overflow-hidden transition-all duration-300 min-h-[400px]"
+                    >
                       <div className="absolute top-0 right-0 bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-bl-lg">
                         NUOVA RICHIESTA
                       </div>
@@ -144,30 +175,40 @@ function ProDashboard() {
                         </div>
                         <div>
                           <h3 className="font-semibold text-xl">Famiglia a {fam.city}</h3>
-                          <p className="text-sm text-muted-foreground font-medium text-red-500">{fam.urgency}</p>
+                          <p className="text-sm text-muted-foreground font-medium text-red-500">
+                            {fam.urgency}
+                          </p>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-4 text-sm flex-grow mb-8 bg-muted/30 p-6 rounded-2xl">
                         <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Servizio Richiesto</span>
+                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">
+                            Servizio Richiesto
+                          </span>
                           <span className="text-base">{(fam.services || []).join(", ")}</span>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Frequenza</span>
+                          <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">
+                            Frequenza
+                          </span>
                           <span className="text-base">{fam.frequency || "Non specificata"}</span>
                         </div>
                         {fam.message && (
                           <div className="flex flex-col gap-1 mt-2">
-                            <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">Messaggio</span>
-                            <p className="text-foreground italic bg-background p-3 rounded-xl border border-border/50">"{fam.message}"</p>
+                            <span className="font-semibold text-muted-foreground uppercase tracking-wider text-xs">
+                              Messaggio
+                            </span>
+                            <p className="text-foreground italic bg-background p-3 rounded-xl border border-border/50">
+                              "{fam.message}"
+                            </p>
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="flex gap-4 mt-auto">
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           size="lg"
                           className="flex-1 rounded-2xl h-14 text-red-500 hover:text-red-600 hover:bg-red-50 border-red-200"
                           onClick={() => handleAction(fam.id, "dislike")}
@@ -176,7 +217,7 @@ function ProDashboard() {
                           <ThumbsDown className="w-5 h-5 mr-2" />
                           Scarta
                         </Button>
-                        <Button 
+                        <Button
                           size="lg"
                           className="flex-1 rounded-2xl h-14 bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft"
                           onClick={() => handleAction(fam.id, "like")}
@@ -196,7 +237,8 @@ function ProDashboard() {
                   </div>
                   <h2 className="text-2xl font-semibold mb-3">Hai visto tutto!</h2>
                   <p className="text-muted-foreground text-lg">
-                    Non ci sono nuove richieste nella tua zona. Ti avviseremo appena una famiglia cercherà un professionista come te.
+                    Non ci sono nuove richieste nella tua zona. Ti avviseremo appena una famiglia
+                    cercherà un professionista come te.
                   </p>
                 </div>
               )}

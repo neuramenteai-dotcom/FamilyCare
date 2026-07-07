@@ -416,7 +416,7 @@ function ProForm() {
         // joinWaitlist auto-conferma l'email: effettua il login per avere una
         // sessione attiva, richiesta dall'upload del documento d'identità.
         await supabase.auth.signInWithPassword({ email, password });
-        navigate({ to: '/verifica-identita/$id', params: { id: res.id } });
+        navigate({ to: "/verifica-identita/$id", params: { id: res.id } });
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
@@ -574,11 +574,7 @@ function ProForm() {
         disabled={loading}
         className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
       >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          "Crea il mio profilo — è gratis"
-        )}
+        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crea il mio profilo — è gratis"}
       </Button>
       <p className="text-xs text-muted-foreground text-center">
         Iscrizione 100% gratuita · Profilo verificato prima della pubblicazione.

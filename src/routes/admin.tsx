@@ -20,7 +20,9 @@ function AdminPage() {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       // UX guard: l'enforcement vero è nel middleware requireAdmin lato server
       if (!session) {
         navigate({ to: "/login" });
@@ -36,7 +38,11 @@ function AdminPage() {
   }, [navigate]);
 
   if (isLoading) {
-    return <div className="bg-background min-h-screen flex items-center justify-center">Caricamento...</div>;
+    return (
+      <div className="bg-background min-h-screen flex items-center justify-center">
+        Caricamento...
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

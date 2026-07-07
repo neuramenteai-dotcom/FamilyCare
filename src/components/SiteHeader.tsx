@@ -16,10 +16,10 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  const isReservedArea = 
-    location.pathname.includes('/dashboard') || 
-    location.pathname.includes('/admin') ||
-    location.pathname.includes('/verifica-identita');
+  const isReservedArea =
+    location.pathname.includes("/dashboard") ||
+    location.pathname.includes("/admin") ||
+    location.pathname.includes("/verifica-identita");
 
   if (isReservedArea) return null;
 
@@ -45,8 +45,13 @@ export function SiteHeader() {
           <Button variant="ghost" asChild>
             <Link to="/login">Accedi</Link>
           </Button>
-          <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5">
-            <Link to="/" hash="iscriviti">Iscriviti gratis</Link>
+          <Button
+            asChild
+            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5"
+          >
+            <Link to="/" hash="iscriviti">
+              Iscriviti gratis
+            </Link>
           </Button>
         </div>
 

@@ -42,9 +42,7 @@ export function SectionHeader({
       <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.1] text-foreground">
         {title}
       </h2>
-      {subtitle && (
-        <p className="mt-4 text-lg text-muted-foreground">{subtitle}</p>
-      )}
+      {subtitle && <p className="mt-4 text-lg text-muted-foreground">{subtitle}</p>}
     </div>
   );
 }

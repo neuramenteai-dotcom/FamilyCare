@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { getWaitlist, updateWaitlistStatus, updateFamilyPackage, getIdentityDocUrl } from "@/functions/waitlist.functions";
+import {
+  getWaitlist,
+  updateWaitlistStatus,
+  updateFamilyPackage,
+  getIdentityDocUrl,
+} from "@/functions/waitlist.functions";
 import { toast } from "sonner";
 import {
   ShieldAlert,
@@ -19,7 +24,6 @@ import {
   FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 
 interface Lead {
   id: string;
@@ -75,12 +79,15 @@ export function AdminDashboard() {
     loadLeads();
   }, [loadLeads]);
 
-  const handleStatusChange = async (id: string, newStatus: "nuovo" | "contattato" | "in_verifica" | "pre_approvato" | "attivo") => {
+  const handleStatusChange = async (
+    id: string,
+    newStatus: "nuovo" | "contattato" | "in_verifica" | "pre_approvato" | "attivo",
+  ) => {
     try {
       const res = await updateStatus({ data: { id, status: newStatus } });
       if (res.success) {
         setLeads((prev) =>
-          prev.map((lead) => (lead.id === id ? { ...lead, status: newStatus } : lead))
+          prev.map((lead) => (lead.id === id ? { ...lead, status: newStatus } : lead)),
         );
         if (selectedLead && selectedLead.id === id) {
           setSelectedLead((prev) => (prev ? { ...prev, status: newStatus } : null));
@@ -99,13 +106,15 @@ export function AdminDashboard() {
       const res = await updatePackage({ data: { id, has_active_package: !currentVal } });
       if (res.success) {
         setLeads((prev) =>
-          prev.map((lead) => (lead.id === id ? { ...lead, has_active_package: !currentVal } : lead))
+          prev.map((lead) =>
+            lead.id === id ? { ...lead, has_active_package: !currentVal } : lead,
+          ),
         );
         if (selectedLead && selectedLead.id === id) {
           setSelectedLead((prev) => (prev ? { ...prev, has_active_package: !currentVal } : null));
         }
         toast.success(
-          !currentVal ? "Pacchetto Famiglia attivato!" : "Pacchetto Famiglia disattivato."
+          !currentVal ? "Pacchetto Famiglia attivato!" : "Pacchetto Famiglia disattivato.",
         );
       } else {
         toast.error(res.error || "Impossibile aggiornare pacchetto.");
@@ -129,8 +138,10 @@ export function AdminDashboard() {
 
   const getScoreBadgeClass = (score: number | null) => {
     const val = score || 0;
-    if (val >= 80) return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400";
-    if (val >= 50) return "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400";
+    if (val >= 80)
+      return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400";
+    if (val >= 50)
+      return "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400";
     return "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-900/30 dark:text-rose-400";
   };
 
@@ -139,9 +150,17 @@ export function AdminDashboard() {
       case "attivo":
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case "in_verifica":
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800"><Clock className="w-3 h-3 mr-1" /> In Verifica</span>;
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+            <Clock className="w-3 h-3 mr-1" /> In Verifica
+          </span>
+        );
       case "pre_approvato":
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><ShieldAlert className="w-3 h-3 mr-1" /> Pre-Approvato (AI)</span>;
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <ShieldAlert className="w-3 h-3 mr-1" /> Pre-Approvato (AI)
+          </span>
+        );
       default:
         return <ShieldAlert className="h-4 w-4 text-slate-400" />;
     }
@@ -152,12 +171,20 @@ export function AdminDashboard() {
       {/* Header Stat Cards */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="font-display text-3xl font-bold text-foreground">Pipeline Leads & Candidati</h2>
+          <h2 className="font-display text-3xl font-bold text-foreground">
+            Pipeline Leads & Candidati
+          </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Gestisci le registrazioni delle famiglie e delle candidate collaboratrici domestiche in tempo reale.
+            Gestisci le registrazioni delle famiglie e delle candidate collaboratrici domestiche in
+            tempo reale.
           </p>
         </div>
-        <Button onClick={loadLeads} disabled={loading} variant="outline" className="h-10 rounded-xl">
+        <Button
+          onClick={loadLeads}
+          disabled={loading}
+          variant="outline"
+          className="h-10 rounded-xl"
+        >
           {loading ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : null}
           Aggiorna dati
         </Button>
@@ -165,23 +192,33 @@ export function AdminDashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-card border border-border p-5 rounded-2xl">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leads Totali</span>
-          <span className="block text-3xl font-bold font-display mt-2 text-foreground">{leads.length}</span>
+          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Leads Totali
+          </span>
+          <span className="block text-3xl font-bold font-display mt-2 text-foreground">
+            {leads.length}
+          </span>
         </div>
         <div className="bg-card border border-border p-5 rounded-2xl">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Famiglie</span>
+          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Famiglie
+          </span>
           <span className="block text-3xl font-bold font-display mt-2 text-primary">
             {leads.filter((l) => l.user_type === "famiglia").length}
           </span>
         </div>
         <div className="bg-card border border-border p-5 rounded-2xl">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Professionisti</span>
+          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Professionisti
+          </span>
           <span className="block text-3xl font-bold font-display mt-2 text-accent">
             {leads.filter((l) => l.user_type === "professionista").length}
           </span>
         </div>
         <div className="bg-card border border-border p-5 rounded-2xl">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Da Contattare</span>
+          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Da Contattare
+          </span>
           <span className="block text-3xl font-bold font-display mt-2 text-rose-500">
             {leads.filter((l) => l.status === "nuovo").length}
           </span>
@@ -289,7 +326,9 @@ export function AdminDashboard() {
                           </td>
                           <td className="p-4 text-center">
                             <div className="inline-flex items-center gap-1">
-                              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${getScoreBadgeClass(lead.score)}`}>
+                              <span
+                                className={`px-2 py-0.5 rounded-full text-xs font-bold ${getScoreBadgeClass(lead.score)}`}
+                              >
                                 {lead.score}%
                               </span>
                               <div className="hidden sm:flex text-amber-500">
@@ -331,7 +370,9 @@ export function AdminDashboard() {
             <div className="bg-card border border-border p-6 rounded-2xl shadow-soft space-y-6 sticky top-24">
               <div className="flex justify-between items-start border-b border-border pb-4">
                 <div>
-                  <h3 className="font-display text-xl font-bold text-foreground">Dettaglio Profilo</h3>
+                  <h3 className="font-display text-xl font-bold text-foreground">
+                    Dettaglio Profilo
+                  </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     Registrato il {new Date(selectedLead.created_at).toLocaleString("it-IT")}
                   </p>
@@ -339,25 +380,30 @@ export function AdminDashboard() {
                 <div className="flex flex-col items-end gap-2">
                   <span
                     className={`px-2.5 py-1 rounded-full text-xs font-bold ${getScoreBadgeClass(
-                      selectedLead.score
+                      selectedLead.score,
                     )}`}
                   >
-                    {selectedLead.user_type === "professionista" && (selectedLead as any).id_front_url 
-                      ? `AI Verifica: ${selectedLead.score}%` 
+                    {selectedLead.user_type === "professionista" &&
+                    (selectedLead as any).id_front_url
+                      ? `AI Verifica: ${selectedLead.score}%`
                       : `Score Profilo: ${selectedLead.score}%`}
                   </span>
-                  
+
                   {selectedLead.user_type === "famiglia" && (
                     <button
-                      onClick={() => handlePackageToggle(selectedLead.id, !!selectedLead.has_active_package)}
+                      onClick={() =>
+                        handlePackageToggle(selectedLead.id, !!selectedLead.has_active_package)
+                      }
                       className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
-                        selectedLead.has_active_package 
-                          ? "bg-green-100 text-green-800 border border-green-200" 
+                        selectedLead.has_active_package
+                          ? "bg-green-100 text-green-800 border border-green-200"
                           : "bg-slate-100 text-slate-600 border border-slate-200"
                       }`}
                     >
                       <CreditCard className="w-3 h-3" />
-                      {selectedLead.has_active_package ? "Pacchetto Attivo (Pagato)" : "Nessun Pacchetto"}
+                      {selectedLead.has_active_package
+                        ? "Pacchetto Attivo (Pagato)"
+                        : "Nessun Pacchetto"}
                     </button>
                   )}
                 </div>
@@ -366,8 +412,12 @@ export function AdminDashboard() {
               {/* Contact info list */}
               <div className="space-y-4 text-sm">
                 <div className="space-y-1">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase">Nome completo</span>
-                  <div className="font-medium text-foreground">{selectedLead.full_name || "N/A"}</div>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase">
+                    Nome completo
+                  </span>
+                  <div className="font-medium text-foreground">
+                    {selectedLead.full_name || "N/A"}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -377,7 +427,10 @@ export function AdminDashboard() {
                     </span>
                     <div>
                       {selectedLead.phone ? (
-                        <a href={`tel:${selectedLead.phone}`} className="text-primary hover:underline font-medium">
+                        <a
+                          href={`tel:${selectedLead.phone}`}
+                          className="text-primary hover:underline font-medium"
+                        >
                           {selectedLead.phone}
                         </a>
                       ) : (
@@ -391,7 +444,10 @@ export function AdminDashboard() {
                     </span>
                     <div className="truncate">
                       {selectedLead.email ? (
-                        <a href={`mailto:${selectedLead.email}`} className="text-primary hover:underline font-medium">
+                        <a
+                          href={`mailto:${selectedLead.email}`}
+                          className="text-primary hover:underline font-medium"
+                        >
                           {selectedLead.email}
                         </a>
                       ) : (
@@ -421,11 +477,15 @@ export function AdminDashboard() {
                 {selectedLead.user_type === "professionista" && (
                   <div className="grid grid-cols-2 gap-4 border-t border-border/60 pt-3">
                     <div className="space-y-1">
-                      <span className="text-xs font-semibold text-muted-foreground uppercase">Nazionalità</span>
+                      <span className="text-xs font-semibold text-muted-foreground uppercase">
+                        Nazionalità
+                      </span>
                       <div className="text-foreground">{selectedLead.nationality || "N/A"}</div>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-xs font-semibold text-muted-foreground uppercase">Esperienza</span>
+                      <span className="text-xs font-semibold text-muted-foreground uppercase">
+                        Esperienza
+                      </span>
                       <div className="text-foreground">{selectedLead.experience || "N/A"}</div>
                     </div>
                   </div>
@@ -433,28 +493,39 @@ export function AdminDashboard() {
 
                 {selectedLead.user_type === "professionista" && (
                   <div className="space-y-1 border-t border-border/60 pt-3">
-                    <span className="text-xs font-semibold text-muted-foreground uppercase">Lingua Italiana</span>
+                    <span className="text-xs font-semibold text-muted-foreground uppercase">
+                      Lingua Italiana
+                    </span>
                     <div className="text-foreground">{selectedLead.italian_level || "N/A"}</div>
                   </div>
                 )}
 
                 <div className="space-y-1.5 border-t border-border/60 pt-3">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase">Servizi Richiesti/Offerti</span>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase">
+                    Servizi Richiesti/Offerti
+                  </span>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedLead.services && selectedLead.services.length > 0 ? (
                       selectedLead.services.map((s) => (
-                        <span key={s} className="px-2 py-0.5 bg-muted border border-border text-xs rounded font-medium text-foreground">
+                        <span
+                          key={s}
+                          className="px-2 py-0.5 bg-muted border border-border text-xs rounded font-medium text-foreground"
+                        >
                           {s}
                         </span>
                       ))
                     ) : (
-                      <span className="text-xs text-muted-foreground">Nessun servizio specificato</span>
+                      <span className="text-xs text-muted-foreground">
+                        Nessun servizio specificato
+                      </span>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-1.5 border-t border-border/60 pt-3">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase">Presentazione / Messaggio</span>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase">
+                    Presentazione / Messaggio
+                  </span>
                   <div className="p-3 bg-muted rounded-xl text-xs text-foreground whitespace-pre-wrap max-h-[160px] overflow-y-auto leading-relaxed border border-border/60">
                     {selectedLead.message || "Nessun dettaglio aggiuntivo."}
                   </div>
@@ -467,28 +538,33 @@ export function AdminDashboard() {
 
               {/* Status Update section */}
               <div className="border-t border-border pt-4 space-y-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase">Modifica Stato Pipeline</span>
+                <span className="text-xs font-semibold text-muted-foreground uppercase">
+                  Modifica Stato Pipeline
+                </span>
                 <div className="grid grid-cols-2 gap-2">
-                  {(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"] as const).map((st) => (
-                    <button
-                      key={st}
-                      onClick={() => handleStatusChange(selectedLead.id, st)}
-                      className={`h-9 rounded-xl text-xs font-semibold capitalize border transition-all ${
-                        selectedLead.status === st
-                          ? "bg-primary text-primary-foreground border-primary shadow-soft"
-                          : "bg-background border-border text-muted-foreground hover:border-primary/30"
-                      }`}
-                    >
-                      {st}
-                    </button>
-                  ))}
+                  {(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"] as const).map(
+                    (st) => (
+                      <button
+                        key={st}
+                        onClick={() => handleStatusChange(selectedLead.id, st)}
+                        className={`h-9 rounded-xl text-xs font-semibold capitalize border transition-all ${
+                          selectedLead.status === st
+                            ? "bg-primary text-primary-foreground border-primary shadow-soft"
+                            : "bg-background border-border text-muted-foreground hover:border-primary/30"
+                        }`}
+                      >
+                        {st}
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
             </div>
           ) : (
             <div className="bg-card border border-border border-dashed p-10 rounded-2xl text-center text-muted-foreground sticky top-24">
               <Eye className="h-8 w-8 mx-auto opacity-40 mb-3" />
-              Seleziona un lead dalla tabella per visualizzare il profilo dettagliato e gestirne la pipeline amministrativa.
+              Seleziona un lead dalla tabella per visualizzare il profilo dettagliato e gestirne la
+              pipeline amministrativa.
             </div>
           )}
         </div>
@@ -505,9 +581,7 @@ function IdentityDocViewer({ docRef }: { docRef: string }) {
   const [signedUrl, setSignedUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const path = docRef.includes("/identity_docs/")
-    ? docRef.split("/identity_docs/")[1]
-    : docRef;
+  const path = docRef.includes("/identity_docs/") ? docRef.split("/identity_docs/")[1] : docRef;
 
   const handleLoad = async () => {
     setLoading(true);
@@ -527,15 +601,31 @@ function IdentityDocViewer({ docRef }: { docRef: string }) {
 
   return (
     <div className="space-y-1.5 border-t border-border/60 pt-3">
-      <span className="text-xs font-semibold text-muted-foreground uppercase">Documento d'Identità Caricato</span>
+      <span className="text-xs font-semibold text-muted-foreground uppercase">
+        Documento d'Identità Caricato
+      </span>
       <div className="mt-2">
         {signedUrl ? (
-          <a href={signedUrl} target="_blank" rel="noreferrer" className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity">
+          <a
+            href={signedUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity"
+          >
             <img src={signedUrl} alt="Documento" className="w-full h-auto object-cover max-h-48" />
           </a>
         ) : (
-          <Button onClick={handleLoad} disabled={loading} variant="outline" className="w-full h-10 rounded-xl">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <FileText className="h-4 w-4 mr-1.5" />}
+          <Button
+            onClick={handleLoad}
+            disabled={loading}
+            variant="outline"
+            className="w-full h-10 rounded-xl"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+            ) : (
+              <FileText className="h-4 w-4 mr-1.5" />
+            )}
             Visualizza documento
           </Button>
         )}

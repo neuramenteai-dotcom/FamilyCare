@@ -30,12 +30,13 @@ function SecurityPage() {
             Sicurezza
           </span>
           <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05]">
-            La fiducia non si chiede,<br />
+            La fiducia non si chiede,
+            <br />
             <em className="italic text-primary">si dimostra.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Ogni persona che entra in casa tua è stata verificata da noi, in 4 step,
-            prima di poter ricevere il primo "swipe".
+            Ogni persona che entra in casa tua è stata verificata da noi, in 4 step, prima di poter
+            ricevere il primo "swipe".
           </p>
         </div>
       </Section>
@@ -43,10 +44,26 @@ function SecurityPage() {
       <Section>
         <div className="grid md:grid-cols-2 gap-6">
           {[
-            { icon: FileCheck, title: "1. Documenti certificati", text: "Carta d'identità, codice fiscale e permesso di soggiorno (se applicabile) verificati uno per uno dal nostro team." },
-            { icon: UserCheck, title: "2. Colloquio personale", text: "Ogni candidato fa un colloquio in videochiamata con un nostro operatore. Niente bot, niente automatismi." },
-            { icon: Star, title: "3. Referenze contattate", text: "Chiamiamo direttamente almeno 2 referenze precedenti per ogni profilo. Le valutazioni le scriviamo noi." },
-            { icon: ShieldCheck, title: "4. Background check", text: "Controllo del casellario giudiziale per i ruoli di assistenza a minori e anziani. Aggiornato annualmente." },
+            {
+              icon: FileCheck,
+              title: "1. Documenti certificati",
+              text: "Carta d'identità, codice fiscale e permesso di soggiorno (se applicabile) verificati uno per uno dal nostro team.",
+            },
+            {
+              icon: UserCheck,
+              title: "2. Colloquio personale",
+              text: "Ogni candidato fa un colloquio in videochiamata con un nostro operatore. Niente bot, niente automatismi.",
+            },
+            {
+              icon: Star,
+              title: "3. Referenze contattate",
+              text: "Chiamiamo direttamente almeno 2 referenze precedenti per ogni profilo. Le valutazioni le scriviamo noi.",
+            },
+            {
+              icon: ShieldCheck,
+              title: "4. Background check",
+              text: "Controllo del casellario giudiziale per i ruoli di assistenza a minori e anziani. Aggiornato annualmente.",
+            },
           ].map((it) => (
             <div key={it.title} className="bg-card border border-border rounded-3xl p-7">
               <div className="h-12 w-12 rounded-xl bg-primary text-primary-foreground grid place-items-center mb-4">
@@ -63,9 +80,21 @@ function SecurityPage() {
         <SectionHeader eyebrow="Privacy" title="I tuoi dati sono solo tuoi" />
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { icon: Lock, t: "Conformi al GDPR", d: "Server in Europa. Cifratura end-to-end delle conversazioni. Diritto all'oblio in 1 click." },
-            { icon: ShieldCheck, t: "Pagamenti sicuri", d: "Tutte le transazioni passano da Stripe. Family Care non vede mai i dati della tua carta." },
-            { icon: AlertTriangle, t: "Supporto 7/7", d: "Squadra dedicata in italiano, raggiungibile via chat dalle 8:00 alle 22:00, sempre." },
+            {
+              icon: Lock,
+              t: "Conformi al GDPR",
+              d: "Server in Europa. Cifratura end-to-end delle conversazioni. Diritto all'oblio in 1 click.",
+            },
+            {
+              icon: ShieldCheck,
+              t: "Pagamenti sicuri",
+              d: "Tutte le transazioni passano da Stripe. Family Care non vede mai i dati della tua carta.",
+            },
+            {
+              icon: AlertTriangle,
+              t: "Supporto 7/7",
+              d: "Squadra dedicata in italiano, raggiungibile via chat dalle 8:00 alle 22:00, sempre.",
+            },
           ].map((it) => (
             <div key={it.t} className="bg-card rounded-3xl p-7 border border-border">
               <it.icon className="h-8 w-8 text-primary mb-4" />

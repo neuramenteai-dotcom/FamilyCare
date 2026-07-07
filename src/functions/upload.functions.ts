@@ -54,11 +54,7 @@ export const uploadIdentityDocument = createServerFn({ method: "POST" })
       }
 
       // 3. Esegui l'analisi AI
-      const aiResult = await verifyIdentityDocument(
-        arrayBuffer,
-        file.type,
-        record.full_name || ""
-      );
+      const aiResult = await verifyIdentityDocument(arrayBuffer, file.type, record.full_name || "");
 
       // 4. Determina il nuovo stato
       let newStatus = "in_verifica"; // Default: da controllare manualmente
@@ -73,7 +69,7 @@ export const uploadIdentityDocument = createServerFn({ method: "POST" })
         .update({
           id_front_url: filePath,
           status: newStatus,
-          score: Math.round(aiResult.confidence * 100) // Salva il rating AI nel campo score
+          score: Math.round(aiResult.confidence * 100), // Salva il rating AI nel campo score
         })
         .eq("id", record.id);
 
@@ -86,9 +82,8 @@ export const uploadIdentityDocument = createServerFn({ method: "POST" })
         success: true,
         isMatch: aiResult.isMatch,
         status: newStatus,
-        extractedName: aiResult.extractedName
+        extractedName: aiResult.extractedName,
       };
-
     } catch (err) {
       console.error("Upload error:", err);
       return { success: false, error: "Errore imprevisto del server." };

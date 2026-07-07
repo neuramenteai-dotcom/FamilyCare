@@ -48,9 +48,11 @@ function AggiornaPasswordPage() {
       setDone(true);
       toast.success("Password aggiornata con successo!");
       setLoading(false);
-      
+
       // Navigate to dashboard based on role
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         setTimeout(() => {
           const userType = user.user_metadata?.user_type;
@@ -72,7 +74,8 @@ function AggiornaPasswordPage() {
           </div>
           <h1 className="text-2xl font-semibold mb-2">Tutto pronto!</h1>
           <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
-            La tua password è stata aggiornata con successo. Ti stiamo reindirizzando alla tua dashboard...
+            La tua password è stata aggiornata con successo. Ti stiamo reindirizzando alla tua
+            dashboard...
           </p>
         </div>
       </div>

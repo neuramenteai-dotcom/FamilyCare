@@ -10,8 +10,8 @@ export function SiteFooter() {
           <div className="col-span-2 lg:col-span-2">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-              La piattaforma italiana che connette famiglie e professionisti
-              della cura, in modo semplice, sicuro e veloce.
+              La piattaforma italiana che connette famiglie e professionisti della cura, in modo
+              semplice, sicuro e veloce.
             </p>
             <div className="flex items-center gap-3 mt-5">
               {[Instagram, Facebook, Linkedin, Mail].map((Icon, i) => (
@@ -30,21 +30,57 @@ export function SiteFooter() {
           <div>
             <h4 className="font-display font-semibold mb-3">Servizi</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/servizi" hash="badanti" className="hover:text-foreground">Collaboratrici domestiche</Link></li>
-              <li><Link to="/servizi" hash="colf" className="hover:text-foreground">Colf</Link></li>
-              <li><Link to="/servizi" hash="babysitter" className="hover:text-foreground">Babysitter</Link></li>
-              <li><Link to="/servizi" hash="dogsitter" className="hover:text-foreground">Dog sitter</Link></li>
-              <li><Link to="/servizi" hash="tutor" className="hover:text-foreground">Tutor</Link></li>
+              <li>
+                <Link to="/servizi" hash="badanti" className="hover:text-foreground">
+                  Collaboratrici domestiche
+                </Link>
+              </li>
+              <li>
+                <Link to="/servizi" hash="colf" className="hover:text-foreground">
+                  Colf
+                </Link>
+              </li>
+              <li>
+                <Link to="/servizi" hash="babysitter" className="hover:text-foreground">
+                  Babysitter
+                </Link>
+              </li>
+              <li>
+                <Link to="/servizi" hash="dogsitter" className="hover:text-foreground">
+                  Dog sitter
+                </Link>
+              </li>
+              <li>
+                <Link to="/servizi" hash="tutor" className="hover:text-foreground">
+                  Tutor
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-display font-semibold mb-3">Azienda</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/come-funziona" className="hover:text-foreground">Come funziona</Link></li>
-              <li><Link to="/sicurezza" className="hover:text-foreground">Sicurezza</Link></li>
-              <li><Link to="/prezzi" className="hover:text-foreground">Prezzi</Link></li>
-              <li><Link to="/contatti" className="hover:text-foreground">Contatti</Link></li>
+              <li>
+                <Link to="/come-funziona" className="hover:text-foreground">
+                  Come funziona
+                </Link>
+              </li>
+              <li>
+                <Link to="/sicurezza" className="hover:text-foreground">
+                  Sicurezza
+                </Link>
+              </li>
+              <li>
+                <Link to="/prezzi" className="hover:text-foreground">
+                  Prezzi
+                </Link>
+              </li>
+              <li>
+                <Link to="/contatti" className="hover:text-foreground">
+                  Contatti
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -63,9 +99,15 @@ export function SiteFooter() {
         <div className="border-t border-border/60 mt-12 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Family Care. Tutti i diritti riservati.</p>
           <div className="flex gap-5">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Termini</a>
-            <a href="#" className="hover:text-foreground">Cookie</a>
+            <a href="#" className="hover:text-foreground">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Termini
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Cookie
+            </a>
           </div>
         </div>
       </div>

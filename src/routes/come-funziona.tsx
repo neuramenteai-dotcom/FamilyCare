@@ -24,10 +24,26 @@ export const Route = createFileRoute("/come-funziona")({
 
 function HowPage() {
   const steps = [
-    { icon: Search, title: "Dimmi cosa cerchi", text: "Scegli categoria, zona, giorni e orari. Aggiungi esigenze speciali (allergie, animali, lingue, ecc.)." },
-    { icon: Heart, title: "Scopri con uno swipe", text: "Profili verificati con foto, video di presentazione, esperienza, recensioni reali. Salva quelli che ti piacciono." },
-    { icon: MessageCircle, title: "Chatta o videocall", text: "Messaggia in app, fissa una chiamata conoscitiva senza impegno. Tutto resta privato." },
-    { icon: Calendar, title: "Prenota e rilassati", text: "Conferma data, contratto e pagamento gestiti da noi. Recensioni reciproche dopo ogni servizio." },
+    {
+      icon: Search,
+      title: "Dimmi cosa cerchi",
+      text: "Scegli categoria, zona, giorni e orari. Aggiungi esigenze speciali (allergie, animali, lingue, ecc.).",
+    },
+    {
+      icon: Heart,
+      title: "Scopri con uno swipe",
+      text: "Profili verificati con foto, video di presentazione, esperienza, recensioni reali. Salva quelli che ti piacciono.",
+    },
+    {
+      icon: MessageCircle,
+      title: "Chatta o videocall",
+      text: "Messaggia in app, fissa una chiamata conoscitiva senza impegno. Tutto resta privato.",
+    },
+    {
+      icon: Calendar,
+      title: "Prenota e rilassati",
+      text: "Conferma data, contratto e pagamento gestiti da noi. Recensioni reciproche dopo ogni servizio.",
+    },
   ];
 
   return (
@@ -38,7 +54,8 @@ function HowPage() {
             Come funziona
           </span>
           <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05]">
-            Da <em className="italic text-primary">"mi serve aiuto"</em> a "tutto fatto"<br />
+            Da <em className="italic text-primary">"mi serve aiuto"</em> a "tutto fatto"
+            <br />
             in cinque minuti.
           </h1>
         </div>
@@ -71,9 +88,21 @@ function HowPage() {
         />
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { icon: ShieldCheck, t: "Pagamenti garantiti", d: "Riceverai sempre il compenso dopo ogni servizio. Niente attese." },
-            { icon: Sparkles, t: "Profilo professionale", d: "Foto, video, certificazioni, recensioni: il tuo CV vivente." },
-            { icon: Calendar, t: "Agenda intelligente", d: "Gestisci disponibilità, blocca giorni, accetta o rifiuta in 1 tap." },
+            {
+              icon: ShieldCheck,
+              t: "Pagamenti garantiti",
+              d: "Riceverai sempre il compenso dopo ogni servizio. Niente attese.",
+            },
+            {
+              icon: Sparkles,
+              t: "Profilo professionale",
+              d: "Foto, video, certificazioni, recensioni: il tuo CV vivente.",
+            },
+            {
+              icon: Calendar,
+              t: "Agenda intelligente",
+              d: "Gestisci disponibilità, blocca giorni, accetta o rifiuta in 1 tap.",
+            },
           ].map((it) => (
             <div key={it.t} className="bg-card rounded-3xl p-7 border border-border">
               <div className="h-12 w-12 rounded-xl bg-primary text-primary-foreground grid place-items-center mb-4">
@@ -85,8 +114,14 @@ function HowPage() {
           ))}
         </div>
         <div className="text-center mt-10">
-          <Button asChild size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-7">
-            <Link to="/" hash="iscriviti">Iscriviti come professionista</Link>
+          <Button
+            asChild
+            size="lg"
+            className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-7"
+          >
+            <Link to="/" hash="iscriviti">
+              Iscriviti come professionista
+            </Link>
           </Button>
         </div>
       </Section>

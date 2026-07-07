@@ -15,7 +15,8 @@ export const Route = createFileRoute("/prezzi")({
       { property: "og:title", content: "Prezzi Family Care — Trasparenti e flessibili" },
       {
         property: "og:description",
-        content: "Piani da €0 a €19.99/mese. Nessun costo di iscrizione, nessuna commissione nascosta.",
+        content:
+          "Piani da €0 a €19.99/mese. Nessun costo di iscrizione, nessuna commissione nascosta.",
       },
     ],
   }),
@@ -28,7 +29,11 @@ const PLANS = [
     price: "€0",
     period: "per sempre",
     desc: "Per esplorare la piattaforma senza impegno.",
-    features: ["Navigazione profili illimitata", "Salva fino a 3 preferiti", "Visualizzazione profili base"],
+    features: [
+      "Navigazione profili illimitata",
+      "Salva fino a 3 preferiti",
+      "Visualizzazione profili base",
+    ],
     cta: "Inizia gratis",
     featured: false,
   },
@@ -76,8 +81,8 @@ function PricingPage() {
             Trasparenti. <em className="italic text-primary">Sempre.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            I professionisti non pagano mai per essere su Family Care.
-            Le famiglie scelgono il piano che preferiscono. Disdici quando vuoi.
+            I professionisti non pagano mai per essere su Family Care. Le famiglie scelgono il piano
+            che preferiscono. Disdici quando vuoi.
           </p>
         </div>
       </Section>
@@ -99,19 +104,26 @@ function PricingPage() {
                 </span>
               )}
               <h3 className="font-display text-2xl font-semibold">{p.name}</h3>
-              <p className={`text-sm mt-1 ${p.featured ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+              <p
+                className={`text-sm mt-1 ${p.featured ? "text-primary-foreground/80" : "text-muted-foreground"}`}
+              >
                 {p.desc}
               </p>
               <div className="mt-6 mb-6">
                 <span className="font-display text-5xl font-semibold">{p.price}</span>
-                <span className={`ml-1.5 text-sm ${p.featured ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+                <span
+                  className={`ml-1.5 text-sm ${p.featured ? "text-primary-foreground/80" : "text-muted-foreground"}`}
+                >
                   {p.period}
                 </span>
               </div>
               <ul className="space-y-2.5 mb-8 flex-1">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm">
-                    <Check className={`h-5 w-5 shrink-0 ${p.featured ? "text-primary-foreground" : "text-primary"}`} strokeWidth={2.5} />
+                    <Check
+                      className={`h-5 w-5 shrink-0 ${p.featured ? "text-primary-foreground" : "text-primary"}`}
+                      strokeWidth={2.5}
+                    />
                     {f}
                   </li>
                 ))}
@@ -124,7 +136,9 @@ function PricingPage() {
                     : "bg-primary text-primary-foreground hover:bg-primary/90"
                 }`}
               >
-                <Link to="/" hash="iscriviti">{p.cta}</Link>
+                <Link to="/" hash="iscriviti">
+                  {p.cta}
+                </Link>
               </Button>
             </div>
           ))}
@@ -135,15 +149,32 @@ function PricingPage() {
         <SectionHeader eyebrow="Domande frequenti" title="Le risposte più cercate" />
         <div className="max-w-3xl mx-auto space-y-3">
           {[
-            { q: "Posso disdire quando voglio?", a: "Sì. Cancelli l'abbonamento dal tuo profilo, senza penali, in 1 click." },
-            { q: "I professionisti pagano qualcosa?", a: "No. Family Care è completamente gratuito per i professionisti." },
-            { q: "Cosa succede se non sono soddisfatto?", a: "Con il piano Premium hai la garanzia di sostituzione entro 48 ore. Senza domande." },
-            { q: "I prezzi indicati includono il compenso del professionista?", a: "I prezzi dei servizi (es. €8/h babysitter) sono il compenso del professionista. L'abbonamento copre l'uso della piattaforma." },
+            {
+              q: "Posso disdire quando voglio?",
+              a: "Sì. Cancelli l'abbonamento dal tuo profilo, senza penali, in 1 click.",
+            },
+            {
+              q: "I professionisti pagano qualcosa?",
+              a: "No. Family Care è completamente gratuito per i professionisti.",
+            },
+            {
+              q: "Cosa succede se non sono soddisfatto?",
+              a: "Con il piano Premium hai la garanzia di sostituzione entro 48 ore. Senza domande.",
+            },
+            {
+              q: "I prezzi indicati includono il compenso del professionista?",
+              a: "I prezzi dei servizi (es. €8/h babysitter) sono il compenso del professionista. L'abbonamento copre l'uso della piattaforma.",
+            },
           ].map((f) => (
-            <details key={f.q} className="group bg-card border border-border rounded-2xl p-5 cursor-pointer">
+            <details
+              key={f.q}
+              className="group bg-card border border-border rounded-2xl p-5 cursor-pointer"
+            >
               <summary className="font-semibold flex items-center justify-between list-none">
                 {f.q}
-                <span className="text-primary text-2xl group-open:rotate-45 transition-transform">+</span>
+                <span className="text-primary text-2xl group-open:rotate-45 transition-transform">
+                  +
+                </span>
               </summary>
               <p className="text-muted-foreground text-sm mt-3">{f.a}</p>
             </details>

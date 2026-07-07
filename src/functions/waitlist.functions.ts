@@ -3,13 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireAdmin } from "@/integrations/supabase/auth-middleware";
 
-const SERVICE_VALUES = [
-  "babysitter",
-  "badanti",
-  "colf",
-  "dogsitter",
-  "tutor",
-] as const;
+const SERVICE_VALUES = ["babysitter", "badanti", "colf", "dogsitter", "tutor"] as const;
 
 const Schema = z.object({
   email: z.string().trim().toLowerCase().email().max(255),
@@ -25,7 +19,12 @@ const Schema = z.object({
   experience: z.string().trim().max(40).optional().or(z.literal("")),
   italian_level: z.string().trim().max(40).optional().or(z.literal("")),
   nationality: z.string().trim().max(60).optional().or(z.literal("")),
-  birth_date: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal("")),
+  birth_date: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .or(z.literal("")),
   zona: z.string().trim().max(100).optional().or(z.literal("")),
   documenti: z.array(z.string()).optional(),
   competenze: z.array(z.string()).optional(),
@@ -54,13 +53,20 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         if (data.nationality && data.nationality.trim().length > 0) score += 10;
         if (data.services && data.services.length > 0) score += 15;
         if (data.experience) {
-          if (data.experience.includes("5") || data.experience.includes("10") || data.experience.includes("Più")) {
+          if (
+            data.experience.includes("5") ||
+            data.experience.includes("10") ||
+            data.experience.includes("Più")
+          ) {
             score += 15;
           } else if (data.experience.includes("3")) {
             score += 10;
           }
         }
-        if (data.italian_level && (data.italian_level.includes("Ottimo") || data.italian_level.includes("madrelingua"))) {
+        if (
+          data.italian_level &&
+          (data.italian_level.includes("Ottimo") || data.italian_level.includes("madrelingua"))
+        ) {
           score += 10;
         }
         if (data.message && data.message.trim().length > 50) score += 15;
@@ -90,31 +96,44 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         }
       }
 
-      const { data: insertedData, error } = await supabaseAdmin.from("waitlist").insert({
-        email: data.email,
-        full_name: data.full_name || null,
-        user_type: data.userType,
-        city: finalCity,
-        message: finalMessage || null,
-        source: data.source,
-        phone: data.phone || null,
-        services: data.services && data.services.length > 0 ? data.services : null,
-        frequency: data.frequency || null,
-        urgency: data.urgency || null,
-        experience: data.experience || null,
-        italian_level: data.italian_level || null,
-        nationality: data.nationality || null,
-        birth_date: data.birth_date || null,
-        status: "nuovo",
-        score,
-        auth_id: data.auth_id || null,
-      }).select("id").single();
+      const { data: insertedData, error } = await supabaseAdmin
+        .from("waitlist")
+        .insert({
+          email: data.email,
+          full_name: data.full_name || null,
+          user_type: data.userType,
+          city: finalCity,
+          message: finalMessage || null,
+          source: data.source,
+          phone: data.phone || null,
+          services: data.services && data.services.length > 0 ? data.services : null,
+          frequency: data.frequency || null,
+          urgency: data.urgency || null,
+          experience: data.experience || null,
+          italian_level: data.italian_level || null,
+          nationality: data.nationality || null,
+          birth_date: data.birth_date || null,
+          status: "nuovo",
+          score,
+          auth_id: data.auth_id || null,
+        })
+        .select("id")
+        .single();
 
       if (error) {
         if (error.code === "23505") {
           return { success: true, duplicate: true };
         }
-        console.error("waitlist insert error — code:", error.code, "| message:", error.message, "| details:", error.details, "| hint:", error.hint);
+        console.error(
+          "waitlist insert error — code:",
+          error.code,
+          "| message:",
+          error.message,
+          "| details:",
+          error.details,
+          "| hint:",
+          error.hint,
+        );
         return { success: false, error: "Impossibile salvare l'iscrizione." };
       }
 
@@ -180,10 +199,12 @@ export const getWaitlist = createServerFn({ method: "GET" })
 export const updateFamilyPackage = createServerFn({ method: "POST" })
   .middleware([requireAdmin])
   .validator((input: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      has_active_package: z.boolean(),
-    }).parse(input)
+    z
+      .object({
+        id: z.string().uuid(),
+        has_active_package: z.boolean(),
+      })
+      .parse(input),
   )
   .handler(async ({ data }) => {
     try {
@@ -206,10 +227,12 @@ export const updateFamilyPackage = createServerFn({ method: "POST" })
 export const updateWaitlistStatus = createServerFn({ method: "POST" })
   .middleware([requireAdmin])
   .validator((input: unknown) =>
-    z.object({
-      id: z.string().uuid(),
-      status: z.enum(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"]),
-    }).parse(input)
+    z
+      .object({
+        id: z.string().uuid(),
+        status: z.enum(["nuovo", "contattato", "in_verifica", "pre_approvato", "attivo"]),
+      })
+      .parse(input),
   )
   .handler(async ({ data }) => {
     try {
@@ -233,9 +256,7 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
 // a partire dal path salvato in waitlist.id_front_url.
 export const getIdentityDocUrl = createServerFn({ method: "POST" })
   .middleware([requireAdmin])
-  .validator((input: unknown) =>
-    z.object({ path: z.string().min(1).max(500) }).parse(input)
-  )
+  .validator((input: unknown) => z.object({ path: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data }) => {
     try {
       const { data: signed, error } = await supabaseAdmin.storage

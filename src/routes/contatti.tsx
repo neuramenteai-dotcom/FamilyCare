@@ -72,8 +72,7 @@ function ContactPage() {
             Parliamone.
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Domande, segnalazioni, partnership: scrivici e ti rispondiamo
-            entro 24 ore lavorative.
+            Domande, segnalazioni, partnership: scrivici e ti rispondiamo entro 24 ore lavorative.
           </p>
 
           <div className="mt-10 space-y-5">
@@ -103,7 +102,8 @@ function ContactPage() {
               </div>
               <p className="font-display text-2xl font-semibold">Grazie!</p>
               <p className="text-muted-foreground mt-2">
-                Abbiamo ricevuto il tuo messaggio.<br />
+                Abbiamo ricevuto il tuo messaggio.
+                <br />
                 Ti rispondiamo entro 24 ore.
               </p>
             </div>

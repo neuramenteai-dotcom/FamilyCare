@@ -43,8 +43,8 @@ function RecuperaPasswordPage() {
           </div>
           <h1 className="text-2xl font-semibold mb-2">Controlla la tua email</h1>
           <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
-            Ti abbiamo inviato un link magico per reimpostare la tua password all'indirizzo <strong>{email}</strong>.
-            Se non la trovi, controlla nello Spam.
+            Ti abbiamo inviato un link magico per reimpostare la tua password all'indirizzo{" "}
+            <strong>{email}</strong>. Se non la trovi, controlla nello Spam.
           </p>
           <Button asChild variant="outline" className="w-full h-12 rounded-xl">
             <Link to="/login">Torna al login</Link>
@@ -62,7 +62,8 @@ function RecuperaPasswordPage() {
         </div>
         <h1 className="text-2xl font-semibold text-center mb-2">Recupera password</h1>
         <p className="text-sm text-muted-foreground text-center mb-8 leading-relaxed">
-          Inserisci l'email associata al tuo account. Ti invieremo un link per creare una nuova password.
+          Inserisci l'email associata al tuo account. Ti invieremo un link per creare una nuova
+          password.
         </p>
 
         <form onSubmit={onSubmit} className="space-y-5">
@@ -88,7 +89,10 @@ function RecuperaPasswordPage() {
         </form>
 
         <div className="mt-8 text-center">
-          <Link to="/login" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link
+            to="/login"
+            className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Torna al login
           </Link>

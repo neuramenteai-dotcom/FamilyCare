@@ -32,7 +32,10 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Family Care — Trova babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati" },
+      {
+        title:
+          "Family Care — Trova babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati",
+      },
       {
         name: "description",
         content:

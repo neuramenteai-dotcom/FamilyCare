@@ -10,7 +10,7 @@ if (apiKey) {
 export async function verifyIdentityDocument(
   fileBuffer: ArrayBuffer,
   mimeType: string,
-  expectedName: string
+  expectedName: string,
 ): Promise<{ isMatch: boolean; extractedName?: string; confidence: number }> {
   if (!ai) {
     console.warn("GEMINI_API_KEY non configurata. Salto la verifica AI automatica.");

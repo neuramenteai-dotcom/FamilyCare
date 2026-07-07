@@ -22,6 +22,9 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      // Debito tecnico pre-esistente nelle route UI (stati dashboard non tipizzati):
+      // segnalato come warning, da ripulire tipizzando le risposte delle server functions.
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   },
   eslintPluginPrettier,

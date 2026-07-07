@@ -46,25 +46,25 @@
   --radius: 0.875rem;
 
   /* Brand: warm coral on cream */
-  --background: oklch(0.985 0.012 60);          /* cream #fdf8f3 */
-  --foreground: oklch(0.22 0.04 25);            /* deep warm brown */
+  --background: oklch(0.985 0.012 60); /* cream #fdf8f3 */
+  --foreground: oklch(0.22 0.04 25); /* deep warm brown */
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.22 0.04 25);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.22 0.04 25);
 
-  --primary: oklch(0.52 0.18 25);               /* deeper coral red for WCAG AA contrast */
+  --primary: oklch(0.52 0.18 25); /* deeper coral red for WCAG AA contrast */
   --primary-foreground: oklch(0.99 0.005 60);
-  --primary-soft: oklch(0.97 0.03 25);          /* lighter pink for contrast against primary */
+  --primary-soft: oklch(0.97 0.03 25); /* lighter pink for contrast against primary */
 
-  --secondary: oklch(0.96 0.02 60);             /* light cream */
+  --secondary: oklch(0.96 0.02 60); /* light cream */
   --secondary-foreground: oklch(0.28 0.05 25);
 
   --muted: oklch(0.95 0.015 60);
   --muted-foreground: oklch(0.48 0.03 30);
 
-  --accent: oklch(0.94 0.05 50);                /* peach accent */
+  --accent: oklch(0.94 0.05 50); /* peach accent */
   --accent-foreground: oklch(0.28 0.06 30);
 
   --cream: oklch(0.97 0.022 70);
@@ -119,7 +119,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, .font-display {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
     font-family: var(--font-display);
     font-feature-settings: "ss01", "ss02";
     letter-spacing: -0.01em;
@@ -129,15 +133,25 @@
 @layer utilities {
   .bg-gradient-warm {
     background-image:
-      radial-gradient(ellipse 80% 60% at 80% 0%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 50% at 0% 100%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 60%),
+      radial-gradient(
+        ellipse 80% 60% at 80% 0%,
+        color-mix(in oklab, var(--primary) 14%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at 0% 100%,
+        color-mix(in oklab, var(--accent) 35%, transparent),
+        transparent 60%
+      ),
       var(--background);
   }
   .bg-gradient-hero {
-    background-image: linear-gradient(135deg,
+    background-image: linear-gradient(
+      135deg,
       color-mix(in oklab, var(--primary-soft) 60%, var(--background)),
       var(--background) 60%,
-      color-mix(in oklab, var(--accent) 30%, var(--background)));
+      color-mix(in oklab, var(--accent) 30%, var(--background))
+    );
   }
   .text-gradient-primary {
     background-image: linear-gradient(135deg, var(--primary), var(--terracotta));
@@ -145,6 +159,10 @@
     background-clip: text;
     color: transparent;
   }
-  .shadow-soft { box-shadow: var(--shadow-soft); }
-  .shadow-card { box-shadow: var(--shadow-card); }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
 }

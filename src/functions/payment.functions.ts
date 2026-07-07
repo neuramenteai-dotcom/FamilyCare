@@ -15,9 +15,11 @@ const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID; // The Price ID for the sub
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .validator(z.object({
-    returnUrl: z.string().url(),
-  }))
+  .validator(
+    z.object({
+      returnUrl: z.string().url(),
+    }),
+  )
   .handler(async ({ data, context }) => {
     try {
       if (!stripeSecretKey) {
@@ -76,9 +78,12 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       });
 
       return { success: true, url: session.url };
-    } catch (err: any) {
+    } catch (err) {
       console.error("Stripe Checkout Error:", err);
-      return { success: false, error: err.message || "Errore durante la creazione del pagamento." };
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : "Errore durante la creazione del pagamento.",
+      };
     }
   });
 
@@ -87,9 +92,11 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 // questa funzione aggiorna subito lo stato solo per l'utente proprietario.
 export const verifyCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .validator(z.object({
-    sessionId: z.string().max(500),
-  }))
+  .validator(
+    z.object({
+      sessionId: z.string().max(500),
+    }),
+  )
   .handler(async ({ data, context }) => {
     try {
       if (!stripeSecretKey) {
@@ -116,14 +123,17 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
 
         if (error) {
           console.error("Error updating family package after payment:", error);
-          return { success: false, error: "Pagamento ricevuto, ma errore nell'aggiornamento del database." };
+          return {
+            success: false,
+            error: "Pagamento ricevuto, ma errore nell'aggiornamento del database.",
+          };
         }
 
         return { success: true, has_active_package: true };
       }
 
       return { success: true, has_active_package: false };
-    } catch (err: any) {
+    } catch (err) {
       console.error("Stripe Verify Error:", err);
       return { success: false, error: "Sessione non trovata o errore di verifica." };
     }

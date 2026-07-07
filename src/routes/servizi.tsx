@@ -7,7 +7,10 @@ import { Check, ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
-      { title: "Servizi — Babysitter, Collaboratrici domestiche, Colf, Dog sitter, Tutor | Family Care" },
+      {
+        title:
+          "Servizi — Babysitter, Collaboratrici domestiche, Colf, Dog sitter, Tutor | Family Care",
+      },
       {
         name: "description",
         content:
@@ -16,7 +19,8 @@ export const Route = createFileRoute("/servizi")({
       { property: "og:title", content: "I servizi Family Care" },
       {
         property: "og:description",
-        content: "5 categorie di servizi alla famiglia con professionisti verificati in tutta Italia.",
+        content:
+          "5 categorie di servizi alla famiglia con professionisti verificati in tutta Italia.",
       },
     ],
   }),
@@ -35,15 +39,17 @@ function ServicesPage() {
             Cinque modi di prenderci cura della tua famiglia
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Tutti i nostri professionisti passano un processo di verifica in 4 step:
-            documenti, referenze, colloquio e background check.
+            Tutti i nostri professionisti passano un processo di verifica in 4 step: documenti,
+            referenze, colloquio e background check.
           </p>
         </div>
       </Section>
 
       {SERVICES.map((s, i) => (
         <Section key={s.slug} id={s.slug} className={i % 2 === 1 ? "bg-secondary/30" : ""}>
-          <div className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+          <div
+            className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}
+          >
             <div className="rounded-3xl overflow-hidden shadow-card aspect-[4/3]">
               <img
                 src={s.image}
@@ -78,7 +84,9 @@ function ServicesPage() {
               <div className="mt-7 flex flex-wrap items-center gap-4">
                 <div className="rounded-2xl bg-card border border-border px-5 py-3">
                   <p className="text-xs text-muted-foreground">A partire da</p>
-                  <p className="font-display text-2xl font-semibold text-primary">{s.priceFrom}/h</p>
+                  <p className="font-display text-2xl font-semibold text-primary">
+                    {s.priceFrom}/h
+                  </p>
                 </div>
                 <div className="rounded-2xl bg-card border border-border px-5 py-3">
                   <p className="text-xs text-muted-foreground">Disponibilità</p>
@@ -86,7 +94,10 @@ function ServicesPage() {
                 </div>
               </div>
 
-              <Button asChild className="mt-7 rounded-full h-12 px-6 bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button
+                asChild
+                className="mt-7 rounded-full h-12 px-6 bg-primary text-primary-foreground hover:bg-primary/90"
+              >
                 <Link to="/" hash="iscriviti">
                   Cerca {s.name.toLowerCase()} <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>

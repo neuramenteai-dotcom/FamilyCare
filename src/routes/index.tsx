@@ -12,7 +12,10 @@ import t3 from "@/assets/testimonial-3.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Family Care — Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati" },
+      {
+        title:
+          "Family Care — Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati",
+      },
       {
         name: "description",
         content:
@@ -54,21 +57,30 @@ function Hero() {
             Nuovo · Iscrizioni aperte
           </span>
           <h1 className="mt-5 font-display text-5xl md:text-6xl lg:text-7xl font-semibold leading-[0.98] tracking-tight">
-            La cura che la tua{" "}
-            <span className="text-gradient-primary italic">famiglia</span> merita.
+            La cura che la tua <span className="text-gradient-primary italic">famiglia</span>{" "}
+            merita.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-            Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati.
-            Trova la persona giusta in pochi minuti, non in settimane.
+            Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati. Trova la
+            persona giusta in pochi minuti, non in settimane.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg" className="h-14 px-7 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-base shadow-soft">
+            <Button
+              asChild
+              size="lg"
+              className="h-14 px-7 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-base shadow-soft"
+            >
               <Link to="/" hash="iscriviti">
                 Iscriviti gratis <ArrowRight className="ml-1 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="h-14 px-7 rounded-full border-2 text-base">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-14 px-7 rounded-full border-2 text-base"
+            >
               <Link to="/come-funziona">Come funziona</Link>
             </Button>
           </div>
@@ -142,7 +154,11 @@ function AudienceSplit() {
     <Section className="bg-secondary/20" id="per-chi">
       <SectionHeader
         eyebrow="Family Care è per te se…"
-        title={<>Una piattaforma. <em className="italic text-primary">Due percorsi.</em></>}
+        title={
+          <>
+            Una piattaforma. <em className="italic text-primary">Due percorsi.</em>
+          </>
+        }
         subtitle="Famiglie e professionisti hanno bisogni diversi. Per questo abbiamo costruito due esperienze su misura."
       />
       <div className="grid md:grid-cols-2 gap-6">
@@ -150,10 +166,12 @@ function AudienceSplit() {
           <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground grid place-items-center mb-4">
             <Heart className="h-5 w-5 fill-current" />
           </div>
-          <h3 className="font-display text-2xl font-semibold mb-2">Sei una famiglia che cerca aiuto</h3>
+          <h3 className="font-display text-2xl font-semibold mb-2">
+            Sei una famiglia che cerca aiuto
+          </h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-            Raccontaci di cosa hai bisogno. Ti proponiamo profili verificati e
-            disponibili nella tua zona, entro 24 ore.
+            Raccontaci di cosa hai bisogno. Ti proponiamo profili verificati e disponibili nella tua
+            zona, entro 24 ore.
           </p>
           <ul className="space-y-2 text-sm mb-6">
             {[
@@ -162,12 +180,17 @@ function AudienceSplit() {
               "Contratto e gestione paghe inclusi",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
-                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary-soft text-primary grid place-items-center text-xs font-bold">✓</span>
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary-soft text-primary grid place-items-center text-xs font-bold">
+                  ✓
+                </span>
                 {b}
               </li>
             ))}
           </ul>
-          <Button asChild className="mt-auto h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground">
+          <Button
+            asChild
+            className="mt-auto h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
             <Link to="/" hash="iscriviti">
               Cerco aiuto per la mia famiglia <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
@@ -178,7 +201,9 @@ function AudienceSplit() {
           <div className="h-12 w-12 rounded-2xl bg-foreground text-background grid place-items-center mb-4">
             <Users className="h-5 w-5" />
           </div>
-          <h3 className="font-display text-2xl font-semibold mb-2">Sei un professionista della cura</h3>
+          <h3 className="font-display text-2xl font-semibold mb-2">
+            Sei un professionista della cura
+          </h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
             Babysitter, collaboratrice domestica, colf, dog sitter o tutor: crea il tuo profilo e
             ricevi richieste dalle famiglie della tua zona.
@@ -190,7 +215,9 @@ function AudienceSplit() {
               "Visibilità nella tua città in 48 ore",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
-                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">✓</span>
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">
+                  ✓
+                </span>
                 {b}
               </li>
             ))}
@@ -232,7 +259,11 @@ function ServicesPreview() {
     <Section id="servizi">
       <SectionHeader
         eyebrow="Cinque servizi, una sola app"
-        title={<>Tutto quello che serve <em className="italic text-primary">per la tua famiglia</em></>}
+        title={
+          <>
+            Tutto quello che serve <em className="italic text-primary">per la tua famiglia</em>
+          </>
+        }
         subtitle="Non più decine di siti, gruppi Facebook o passaparola. Una sola piattaforma per ogni bisogno di cura."
       />
 
@@ -296,21 +327,40 @@ function ServicesPreview() {
 
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Racconta cosa cerchi", text: "Scegli il servizio, la zona e quando ti serve aiuto. Bastano 60 secondi." },
-    { n: "02", title: "Scopri i profili giusti", text: "Sfoglia con il nostro swipe i profili verificati nella tua zona, con foto, video e recensioni reali." },
-    { n: "03", title: "Conosci e prenota", text: "Chatta in app, fai una videocall conoscitiva, conferma. Contratto e pagamento gestiti per te." },
+    {
+      n: "01",
+      title: "Racconta cosa cerchi",
+      text: "Scegli il servizio, la zona e quando ti serve aiuto. Bastano 60 secondi.",
+    },
+    {
+      n: "02",
+      title: "Scopri i profili giusti",
+      text: "Sfoglia con il nostro swipe i profili verificati nella tua zona, con foto, video e recensioni reali.",
+    },
+    {
+      n: "03",
+      title: "Conosci e prenota",
+      text: "Chatta in app, fai una videocall conoscitiva, conferma. Contratto e pagamento gestiti per te.",
+    },
   ];
 
   return (
     <Section className="bg-secondary/30">
       <SectionHeader
         eyebrow="Come funziona"
-        title={<>Tre passi. <span className="text-primary italic">Zero stress.</span></>}
+        title={
+          <>
+            Tre passi. <span className="text-primary italic">Zero stress.</span>
+          </>
+        }
         subtitle="Dimentica le settimane di ricerca. Con Family Care trovi la persona giusta in pochi minuti."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {steps.map((s) => (
-          <div key={s.n} className="bg-card border border-border rounded-3xl p-7 relative overflow-hidden">
+          <div
+            key={s.n}
+            className="bg-card border border-border rounded-3xl p-7 relative overflow-hidden"
+          >
             <span className="font-display text-7xl font-semibold text-primary-soft absolute -top-2 -right-2 select-none">
               {s.n}
             </span>
@@ -332,14 +382,16 @@ function Testimonials() {
   const items = [
     {
       img: t1,
-      quote: "Cercavo da mesi una babysitter affidabile. Su Family Care l'ho trovata in 2 giorni. Mia figlia la adora.",
+      quote:
+        "Cercavo da mesi una babysitter affidabile. Su Family Care l'ho trovata in 2 giorni. Mia figlia la adora.",
       name: "Giulia M.",
       city: "Milano",
       service: "Babysitter",
     },
     {
       img: t3,
-      quote: "Per mia mamma serviva una persona davvero competente. Le verifiche di Family Care mi hanno dato pace.",
+      quote:
+        "Per mia mamma serviva una persona davvero competente. Le verifiche di Family Care mi hanno dato pace.",
       name: "Anna R.",
       city: "Torino",
       service: "Collaboratrice domestica",
@@ -357,11 +409,18 @@ function Testimonials() {
     <Section>
       <SectionHeader
         eyebrow="Testimonianze"
-        title={<>Famiglie italiane <em className="italic text-primary">felici</em></>}
+        title={
+          <>
+            Famiglie italiane <em className="italic text-primary">felici</em>
+          </>
+        }
       />
       <div className="grid md:grid-cols-3 gap-6">
         {items.map((it) => (
-          <figure key={it.name} className="bg-card border border-border rounded-3xl p-7 flex flex-col">
+          <figure
+            key={it.name}
+            className="bg-card border border-border rounded-3xl p-7 flex flex-col"
+          >
             <div className="flex items-center gap-1 text-primary mb-4">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current" />
@@ -371,7 +430,14 @@ function Testimonials() {
               "{it.quote}"
             </blockquote>
             <figcaption className="flex items-center gap-3 mt-6 pt-6 border-t border-border">
-              <img src={it.img} alt={it.name} loading="lazy" width={48} height={48} className="h-12 w-12 rounded-full object-cover" />
+              <img
+                src={it.img}
+                alt={it.name}
+                loading="lazy"
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-full object-cover"
+              />
               <div>
                 <p className="font-semibold text-sm">{it.name}</p>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
@@ -419,17 +485,26 @@ function WaitlistCTA() {
             Inizia subito con <span className="text-gradient-primary italic">Family Care</span>.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Scegli il tuo percorso: <strong className="text-foreground">cerco aiuto</strong> per la mia famiglia,
-            oppure <strong className="text-foreground">offro servizi</strong> come professionista.
+            Scegli il tuo percorso: <strong className="text-foreground">cerco aiuto</strong> per la
+            mia famiglia, oppure <strong className="text-foreground">offro servizi</strong> come
+            professionista.
           </p>
           <ul className="mt-6 space-y-3 text-sm">
             {[
-              { t: "Famiglie", d: "Servizio da €199 — paghi solo dopo aver scelto il profilo giusto" },
-              { t: "Professionisti", d: "Iscrizione 100% gratuita, sempre. Profilo online in 48 ore" },
+              {
+                t: "Famiglie",
+                d: "Servizio da €199 — paghi solo dopo aver scelto il profilo giusto",
+              },
+              {
+                t: "Professionisti",
+                d: "Iscrizione 100% gratuita, sempre. Profilo online in 48 ore",
+              },
               { t: "Zero spam", d: "I tuoi dati restano riservati e conformi al GDPR" },
             ].map((b) => (
               <li key={b.t} className="flex items-start gap-3">
-                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs">✓</span>
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs">
+                  ✓
+                </span>
                 <div>
                   <p className="font-semibold">{b.t}</p>
                   <p className="text-muted-foreground">{b.d}</p>

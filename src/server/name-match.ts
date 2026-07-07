@@ -5,7 +5,7 @@
  */
 export function matchNames(
   extractedName: string,
-  expectedName: string
+  expectedName: string,
 ): { isMatch: boolean; confidence: number } {
   const extractedWords = extractedName.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const expectedWords = expectedName.toLowerCase().trim().split(/\s+/).filter(Boolean);

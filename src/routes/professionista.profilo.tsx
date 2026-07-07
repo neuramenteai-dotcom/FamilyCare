@@ -51,18 +51,16 @@ function ProProfilo() {
 
     setUploading(true);
     try {
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const filePath = `${proId}-${Math.random()}.${fileExt}`;
-      
+
       const { error: uploadError } = await supabase.storage
-        .from('avatars')
+        .from("avatars")
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
-      const { data: publicUrlData } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
+      const { data: publicUrlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
 
       setAvatarUrl(publicUrlData.publicUrl);
     } catch (error: any) {
@@ -100,7 +98,11 @@ function ProProfilo() {
       <header className="bg-background border-b border-border/40 sticky top-0 z-10">
         <div className="container max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate({ to: "/professionista/dashboard" })}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate({ to: "/professionista/dashboard" })}
+            >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <Logo />
@@ -110,9 +112,8 @@ function ProProfilo() {
 
       <main className="container max-w-2xl mx-auto py-10 px-4">
         <h1 className="text-3xl font-semibold mb-8">Il tuo Profilo</h1>
-        
+
         <div className="bg-background rounded-3xl border border-border/60 p-8 shadow-sm space-y-8">
-          
           {/* Avatar Section */}
           <div className="flex flex-col items-center gap-4">
             <div className="relative group">
@@ -124,11 +125,15 @@ function ProProfilo() {
                 )}
               </div>
               <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground p-3 rounded-full cursor-pointer shadow-lg hover:bg-primary/90 transition-transform hover:scale-105">
-                {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
+                {uploading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Upload className="w-5 h-5" />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
                   onChange={handleAvatarUpload}
                   disabled={uploading}
                 />
@@ -136,7 +141,9 @@ function ProProfilo() {
             </div>
             <div className="text-center">
               <h3 className="font-medium text-lg">Foto Profilo</h3>
-              <p className="text-sm text-muted-foreground">Le famiglie si fidano di più se possono vederti.</p>
+              <p className="text-sm text-muted-foreground">
+                Le famiglie si fidano di più se possono vederti.
+              </p>
             </div>
           </div>
 
@@ -151,7 +158,7 @@ function ProProfilo() {
             <p className="text-sm text-muted-foreground mb-2">
               Scrivi due righe su di te, perché ami questo lavoro e cosa ti distingue.
             </p>
-            <Textarea 
+            <Textarea
               placeholder="Es. Sono una persona solare e paziente, ho 10 anni di esperienza con gli anziani..."
               className="min-h-[150px] resize-none text-base p-4 rounded-xl"
               value={bio}
@@ -160,8 +167,8 @@ function ProProfilo() {
           </div>
 
           <div className="pt-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="w-full rounded-xl h-14 text-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft"
               onClick={handleSave}
               disabled={saving || uploading}

@@ -17,7 +17,9 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
       // 2. Fetch professionals for the Teaser or Full view
       const { data: allProfessionals, error: proError } = await supabaseAdmin
         .from("waitlist")
-        .select("id, full_name, city, experience, nationality, italian_level, services, message, avatar_url, bio")
+        .select(
+          "id, full_name, city, experience, nationality, italian_level, services, message, avatar_url, bio",
+        )
         .eq("user_type", "professionista")
         .in("status", ["pre_approvato", "attivo"])
         .order("created_at", { ascending: false });
@@ -29,9 +31,9 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
 
       // If no active package, return locked state with TEASER professionals
       if (!family.has_active_package) {
-        const teaserProfessionals = (allProfessionals || []).map((p: any) => ({
+        const teaserProfessionals = (allProfessionals || []).map((p) => ({
           id: p.id,
-          full_name: p.full_name?.split(' ')[0] || "Professionista", // Only first name
+          full_name: p.full_name?.split(" ")[0] || "Professionista", // Only first name
           city: p.city,
           experience: p.experience,
           avatar_url: p.avatar_url,
@@ -43,7 +45,7 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
           locked: true,
           familyId: family.id,
           full_name: family.full_name,
-          professionals: teaserProfessionals // Add this to feed the teaser view
+          professionals: teaserProfessionals, // Add this to feed the teaser view
         };
       }
 
@@ -57,20 +59,29 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
         .eq("family_id", family.id)
         .eq("status", "like");
 
-      let matches: any[] = [];
+      let matches: NonNullable<typeof allProfessionals> = [];
       if (!intError && interests && interests.length > 0) {
-        const proIds = interests.map(i => i.professional_id);
+        const proIds = interests.map((i) => i.professional_id);
         const { data: matchedPros } = await supabaseAdmin
           .from("waitlist")
           // Included email for direct contact + bio + avatar
-          .select("id, full_name, city, experience, nationality, italian_level, services, message, email, avatar_url, bio")
+          .select(
+            "id, full_name, city, experience, nationality, italian_level, services, message, email, avatar_url, bio",
+          )
           .in("id", proIds);
         if (matchedPros) {
           matches = matchedPros;
         }
       }
 
-      return { success: true, locked: false, professionals, matches, familyId: family.id, full_name: family.full_name };
+      return {
+        success: true,
+        locked: false,
+        professionals,
+        matches,
+        familyId: family.id,
+        full_name: family.full_name,
+      };
     } catch (err) {
       console.error(err);
       return { success: false, error: "Errore del server" };
@@ -89,7 +100,13 @@ export const getProDashboard = createServerFn({ method: "GET" })
 
       // 2. If status is not attivo, return locked
       if (pro.status !== "attivo") {
-        return { success: true, locked: true, proId: pro.id, status: pro.status, full_name: pro.full_name };
+        return {
+          success: true,
+          locked: true,
+          proId: pro.id,
+          status: pro.status,
+          full_name: pro.full_name,
+        };
       }
 
       // 3. Fetch family requests
@@ -116,7 +133,7 @@ export const getProDashboard = createServerFn({ method: "GET" })
         families,
         interests: interests || [],
         proId: pro.id,
-        full_name: pro.full_name
+        full_name: pro.full_name,
       };
     } catch (err) {
       console.error(err);
@@ -126,10 +143,14 @@ export const getProDashboard = createServerFn({ method: "GET" })
 
 export const setProInterest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .validator((input: unknown) => z.object({
-    familyId: z.string().uuid(),
-    status: z.enum(["like", "dislike"])
-  }).parse(input))
+  .validator((input: unknown) =>
+    z
+      .object({
+        familyId: z.string().uuid(),
+        status: z.enum(["like", "dislike"]),
+      })
+      .parse(input),
+  )
   .handler(async ({ data, context }) => {
     try {
       // The professional is derived from the session, never from the client
@@ -141,13 +162,14 @@ export const setProInterest = createServerFn({ method: "POST" })
         return { success: false, error: "Profilo non ancora attivo" };
       }
 
-      const { error } = await supabaseAdmin
-        .from("professional_interests")
-        .upsert({
+      const { error } = await supabaseAdmin.from("professional_interests").upsert(
+        {
           professional_id: pro.id,
           family_id: data.familyId,
-          status: data.status
-        }, { onConflict: 'professional_id, family_id' });
+          status: data.status,
+        },
+        { onConflict: "professional_id, family_id" },
+      );
 
       if (error) {
         console.error("Set interest error:", error);
@@ -163,12 +185,14 @@ export const setProInterest = createServerFn({ method: "POST" })
 export const updateFamilyRequest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) =>
-    z.object({
-      services: z.array(z.string()).max(10),
-      frequency: z.string().max(100),
-      urgency: z.string().max(100),
-      message: z.string().max(2000).optional()
-    }).parse(input)
+    z
+      .object({
+        services: z.array(z.string()).max(10),
+        frequency: z.string().max(100),
+        urgency: z.string().max(100),
+        message: z.string().max(2000).optional(),
+      })
+      .parse(input),
   )
   .handler(async ({ data, context }) => {
     try {
@@ -183,15 +207,18 @@ export const updateFamilyRequest = createServerFn({ method: "POST" })
           services: data.services,
           frequency: data.frequency,
           urgency: data.urgency,
-          message: data.message || ""
+          message: data.message || "",
         })
         .eq("id", family.id);
 
       if (error) throw error;
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      return { success: false, error: err.message || "Errore durante l'aggiornamento" };
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : "Errore durante l'aggiornamento",
+      };
     }
   });
 
@@ -224,10 +251,12 @@ export const getMyProfile = createServerFn({ method: "GET" })
 export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) =>
-    z.object({
-      bio: z.string().max(2000),
-      avatar_url: z.string().url().max(1000).nullable(),
-    }).parse(input)
+    z
+      .object({
+        bio: z.string().max(2000),
+        avatar_url: z.string().url().max(1000).nullable(),
+      })
+      .parse(input),
   )
   .handler(async ({ data, context }) => {
     try {
@@ -243,8 +272,11 @@ export const updateMyProfile = createServerFn({ method: "POST" })
 
       if (error) throw error;
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      return { success: false, error: err.message || "Errore durante il salvataggio" };
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : "Errore durante il salvataggio",
+      };
     }
   });

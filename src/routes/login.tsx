@@ -72,7 +72,10 @@ function AccediPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label>Password</Label>
-              <Link to="/recupera-password" className="text-sm font-medium text-primary hover:underline">
+              <Link
+                to="/recupera-password"
+                className="text-sm font-medium text-primary hover:underline"
+              >
                 Hai dimenticato la password?
               </Link>
             </div>
@@ -86,11 +89,7 @@ function AccediPage() {
             />
           </div>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 rounded-xl text-base"
-          >
+          <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl text-base">
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Accedi"}
           </Button>
         </form>
