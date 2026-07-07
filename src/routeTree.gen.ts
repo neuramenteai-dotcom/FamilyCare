@@ -23,6 +23,7 @@ import { Route as VerificaIdentitaIdRouteImport } from './routes/verifica-identi
 import { Route as ProfessionistaProfiloRouteImport } from './routes/professionista.profilo'
 import { Route as ProfessionistaDashboardRouteImport } from './routes/professionista.dashboard'
 import { Route as FamigliaDashboardRouteImport } from './routes/famiglia.dashboard'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 
 const SicurezzaRoute = SicurezzaRouteImport.update({
   id: '/sicurezza',
@@ -94,6 +95,11 @@ const FamigliaDashboardRoute = FamigliaDashboardRouteImport.update({
   path: '/famiglia/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe-webhook',
+  path: '/api/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -206,6 +218,7 @@ export interface RootRouteChildren {
   RecuperaPasswordRoute: typeof RecuperaPasswordRoute
   ServiziRoute: typeof ServiziRoute
   SicurezzaRoute: typeof SicurezzaRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   FamigliaDashboardRoute: typeof FamigliaDashboardRoute
   ProfessionistaDashboardRoute: typeof ProfessionistaDashboardRoute
   ProfessionistaProfiloRoute: typeof ProfessionistaProfiloRoute
@@ -312,6 +325,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FamigliaDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe-webhook': {
+      id: '/api/stripe-webhook'
+      path: '/api/stripe-webhook'
+      fullPath: '/api/stripe-webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -326,6 +346,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecuperaPasswordRoute: RecuperaPasswordRoute,
   ServiziRoute: ServiziRoute,
   SicurezzaRoute: SicurezzaRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   FamigliaDashboardRoute: FamigliaDashboardRoute,
   ProfessionistaDashboardRoute: ProfessionistaDashboardRoute,
   ProfessionistaProfiloRoute: ProfessionistaProfiloRoute,
