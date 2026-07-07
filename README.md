@@ -30,7 +30,10 @@ L'architettura del progetto è moderna e orientata al serverless, suddivisa in:
     *   **Professionisti**: Accedono a `professionista.dashboard.tsx`. Possono scorrere i profili delle famiglie ed esprimere un interesse positivo (`like`) o negativo (`dislike`), che viene salvato nel database nella tabella `professional_interests`.
 
 4.  **Flusso Amministrativo**:
-    *   Esiste una route `admin.tsx` per la gestione interna della piattaforma, degli utenti e delle verifiche in sospeso.
+    *   La route `admin.tsx` è riservata agli account con `app_metadata.role = 'admin'` su Supabase Auth (assegnato via migration `20260707100000_admin_role.sql`). Le funzioni amministrative sono protette lato server dal middleware `requireAdmin`.
+
+5.  **Pagamenti (Stripe)**:
+    *   Le famiglie attivano il pacchetto tramite Stripe Checkout. La fonte di verità per l'attivazione è il webhook `/api/stripe-webhook` (evento `checkout.session.completed`, firma verificata con `STRIPE_WEBHOOK_SECRET`); `verifyCheckoutSession` fornisce solo la conferma immediata in UI dopo il redirect.
 
 ## 4. Dipendenze Chiave
 
@@ -52,3 +55,19 @@ Il progetto sfrutta le seguenti librerie principali (evincibili dal `package.jso
     *   `@google/genai` (Intelligenza Artificiale per l'OCR/Verifica documenti)
     *   `stripe` (Gestione pagamenti/abbonamenti, indicato anche dai campi `has_active_package` nel DB)
     *   `nodemailer` (Invio email)
+
+## 5. Sicurezza
+
+*   **Autenticazione server-side**: ogni server function protetta usa il middleware `requireSupabaseAuth` (o `requireAdmin`): il client allega il token di sessione Supabase come header `Authorization: Bearer`, il server lo valida e deriva l'identità dell'utente dalla sessione — mai da ID passati dal client.
+*   **Autorizzazione**: le operazioni su dati utente verificano sempre l'ownership tramite `waitlist.auth_id` (helper `getOwnedWaitlistRecord` in `src/server/authz.ts`). Le funzioni amministrative richiedono `app_metadata.role = 'admin'`.
+*   **Service role key**: usata solo lato server (`client.server.ts`), letta esclusivamente da `SUPABASE_SERVICE_ROLE_KEY`. Non deve MAI comparire nel codice, nei log o nel bundle client.
+*   **Documenti d'identità**: bucket Storage privato (`identity_docs`); l'admin li visualizza tramite signed URL temporanei generati server-side.
+
+## 6. Setup
+
+1.  Copia `.env.example` in `.env` e compila tutte le variabili (Supabase, Stripe, Gemini, email).
+2.  `pnpm install`
+3.  Applica le migrations in `supabase/migrations/` (via `supabase db push` o SQL editor).
+4.  Configura il webhook Stripe: endpoint `https://<dominio>/api/stripe-webhook`, evento `checkout.session.completed`, e salva il signing secret in `STRIPE_WEBHOOK_SECRET`.
+5.  Per il deploy su Cloudflare, imposta i secrets server-side con `wrangler secret put <NOME>`.
+6.  Comandi: `pnpm dev` (sviluppo), `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.

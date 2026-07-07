@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { matchNames } from "./name-match";
 
 const apiKey = process.env.GEMINI_API_KEY;
 let ai: GoogleGenAI | null = null;
@@ -56,23 +57,7 @@ Se l'immagine non è un documento d'identità valido, imposta è_documento_valid
       return { isMatch: false, confidence: 0 };
     }
 
-    const extracted = result.nome_completo.toLowerCase().trim();
-    const expected = expectedName.toLowerCase().trim();
-
-    // Semplice controllo: se contiene le stesse parole
-    const extractedWords = extracted.split(/\s+/);
-    const expectedWords = expected.split(/\s+/);
-    
-    // Controlla se tutte le parole attese sono presenti nel documento
-    let matchCount = 0;
-    for (const word of expectedWords) {
-      if (extractedWords.includes(word)) {
-        matchCount++;
-      }
-    }
-
-    const confidence = matchCount / expectedWords.length;
-    const isMatch = confidence >= 0.5; // Almeno il 50% del nome matcha (es. se ha un secondo nome non inserito nel form)
+    const { isMatch, confidence } = matchNames(result.nome_completo, expectedName);
 
     return {
       isMatch,
