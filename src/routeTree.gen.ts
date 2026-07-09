@@ -9,12 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TerminiRouteImport } from './routes/termini'
 import { Route as SicurezzaRouteImport } from './routes/sicurezza'
 import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as RecuperaPasswordRouteImport } from './routes/recupera-password'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PrezziRouteImport } from './routes/prezzi'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as ConfermaEmailRouteImport } from './routes/conferma-email'
 import { Route as ComeFunzionaRouteImport } from './routes/come-funziona'
 import { Route as AggiornaPasswordRouteImport } from './routes/aggiorna-password'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -25,6 +29,11 @@ import { Route as ProfessionistaDashboardRouteImport } from './routes/profession
 import { Route as FamigliaDashboardRouteImport } from './routes/famiglia.dashboard'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 
+const TerminiRoute = TerminiRouteImport.update({
+  id: '/termini',
+  path: '/termini',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SicurezzaRoute = SicurezzaRouteImport.update({
   id: '/sicurezza',
   path: '/sicurezza',
@@ -40,6 +49,11 @@ const RecuperaPasswordRoute = RecuperaPasswordRouteImport.update({
   path: '/recupera-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrezziRoute = PrezziRouteImport.update({
   id: '/prezzi',
   path: '/prezzi',
@@ -50,9 +64,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookieRoute = CookieRouteImport.update({
+  id: '/cookie',
+  path: '/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContattiRoute = ContattiRouteImport.update({
   id: '/contatti',
   path: '/contatti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfermaEmailRoute = ConfermaEmailRouteImport.update({
+  id: '/conferma-email',
+  path: '/conferma-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComeFunzionaRoute = ComeFunzionaRouteImport.update({
@@ -106,12 +130,16 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
+  '/conferma-email': typeof ConfermaEmailRoute
   '/contatti': typeof ContattiRoute
+  '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
@@ -123,12 +151,16 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
+  '/conferma-email': typeof ConfermaEmailRoute
   '/contatti': typeof ContattiRoute
+  '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
@@ -141,12 +173,16 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/aggiorna-password': typeof AggiornaPasswordRoute
   '/come-funziona': typeof ComeFunzionaRoute
+  '/conferma-email': typeof ConfermaEmailRoute
   '/contatti': typeof ContattiRoute
+  '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
   '/prezzi': typeof PrezziRoute
+  '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
   '/servizi': typeof ServiziRoute
   '/sicurezza': typeof SicurezzaRoute
+  '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
@@ -160,12 +196,16 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aggiorna-password'
     | '/come-funziona'
+    | '/conferma-email'
     | '/contatti'
+    | '/cookie'
     | '/login'
     | '/prezzi'
+    | '/privacy'
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/termini'
     | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
@@ -177,12 +217,16 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aggiorna-password'
     | '/come-funziona'
+    | '/conferma-email'
     | '/contatti'
+    | '/cookie'
     | '/login'
     | '/prezzi'
+    | '/privacy'
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/termini'
     | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
@@ -194,12 +238,16 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aggiorna-password'
     | '/come-funziona'
+    | '/conferma-email'
     | '/contatti'
+    | '/cookie'
     | '/login'
     | '/prezzi'
+    | '/privacy'
     | '/recupera-password'
     | '/servizi'
     | '/sicurezza'
+    | '/termini'
     | '/api/stripe-webhook'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
@@ -212,12 +260,16 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AggiornaPasswordRoute: typeof AggiornaPasswordRoute
   ComeFunzionaRoute: typeof ComeFunzionaRoute
+  ConfermaEmailRoute: typeof ConfermaEmailRoute
   ContattiRoute: typeof ContattiRoute
+  CookieRoute: typeof CookieRoute
   LoginRoute: typeof LoginRoute
   PrezziRoute: typeof PrezziRoute
+  PrivacyRoute: typeof PrivacyRoute
   RecuperaPasswordRoute: typeof RecuperaPasswordRoute
   ServiziRoute: typeof ServiziRoute
   SicurezzaRoute: typeof SicurezzaRoute
+  TerminiRoute: typeof TerminiRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   FamigliaDashboardRoute: typeof FamigliaDashboardRoute
   ProfessionistaDashboardRoute: typeof ProfessionistaDashboardRoute
@@ -227,6 +279,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/termini': {
+      id: '/termini'
+      path: '/termini'
+      fullPath: '/termini'
+      preLoaderRoute: typeof TerminiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sicurezza': {
       id: '/sicurezza'
       path: '/sicurezza'
@@ -248,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecuperaPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prezzi': {
       id: '/prezzi'
       path: '/prezzi'
@@ -262,11 +328,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookie': {
+      id: '/cookie'
+      path: '/cookie'
+      fullPath: '/cookie'
+      preLoaderRoute: typeof CookieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contatti': {
       id: '/contatti'
       path: '/contatti'
       fullPath: '/contatti'
       preLoaderRoute: typeof ContattiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conferma-email': {
+      id: '/conferma-email'
+      path: '/conferma-email'
+      fullPath: '/conferma-email'
+      preLoaderRoute: typeof ConfermaEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/come-funziona': {
@@ -340,12 +420,16 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AggiornaPasswordRoute: AggiornaPasswordRoute,
   ComeFunzionaRoute: ComeFunzionaRoute,
+  ConfermaEmailRoute: ConfermaEmailRoute,
   ContattiRoute: ContattiRoute,
+  CookieRoute: CookieRoute,
   LoginRoute: LoginRoute,
   PrezziRoute: PrezziRoute,
+  PrivacyRoute: PrivacyRoute,
   RecuperaPasswordRoute: RecuperaPasswordRoute,
   ServiziRoute: ServiziRoute,
   SicurezzaRoute: SicurezzaRoute,
+  TerminiRoute: TerminiRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   FamigliaDashboardRoute: FamigliaDashboardRoute,
   ProfessionistaDashboardRoute: ProfessionistaDashboardRoute,
