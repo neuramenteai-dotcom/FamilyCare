@@ -30,6 +30,11 @@ const Schema = z.object({
   competenze: z.array(z.string()).optional(),
   disponibilita: z.array(z.string()).optional(),
   auth_id: z.string().uuid().optional(),
+  // Consenso (GDPR): l'accettazione di privacy/termini è obbligatoria per
+  // procedere; il consenso marketing è separato e facoltativo.
+  privacy_accepted: z.literal(true),
+  marketing_consent: z.boolean().default(false),
+  consent_policy_version: z.string().min(1).max(20),
 });
 
 export const joinWaitlist = createServerFn({ method: "POST" })
@@ -116,6 +121,10 @@ export const joinWaitlist = createServerFn({ method: "POST" })
           status: "nuovo",
           score,
           auth_id: data.auth_id || null,
+          privacy_accepted_at: new Date().toISOString(),
+          marketing_consent: data.marketing_consent,
+          marketing_consent_at: data.marketing_consent ? new Date().toISOString() : null,
+          consent_policy_version: data.consent_policy_version,
         })
         .select("id")
         .single();
@@ -137,14 +146,10 @@ export const joinWaitlist = createServerFn({ method: "POST" })
         return { success: false, error: "Impossibile salvare l'iscrizione." };
       }
 
-      // Auto-conferma l'email dell'utente in Supabase per permettere l'accesso immediato
-      if (data.auth_id) {
-        try {
-          await supabaseAdmin.auth.admin.updateUserById(data.auth_id, { email_confirm: true });
-        } catch (authConfirmErr) {
-          console.error("Errore durante l'auto-conferma dell'email:", authConfirmErr);
-        }
-      }
+      // Double opt-in: l'email NON viene auto-confermata. L'utente deve
+      // cliccare il link di conferma inviato da Supabase (emailRedirectTo →
+      // /conferma-email) prima di poter accedere. Questo rende il consenso e
+      // la titolarità dell'indirizzo dimostrabili.
 
       // Invia notifiche email in background
       try {

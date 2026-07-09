@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { POLICY_VERSION } from "@/lib/legal";
 import {
   Select,
   SelectContent,
@@ -142,6 +144,56 @@ function SuccessCard({ title, message }: { title: string; message: string }) {
   );
 }
 
+// Consensi GDPR condivisi tra i due form: privacy/termini obbligatoria,
+// marketing facoltativo. Entrambe le checkbox partono non spuntate.
+function ConsentFields({
+  privacyAccepted,
+  setPrivacyAccepted,
+  marketingConsent,
+  setMarketingConsent,
+}: {
+  privacyAccepted: boolean;
+  setPrivacyAccepted: (v: boolean) => void;
+  marketingConsent: boolean;
+  setMarketingConsent: (v: boolean) => void;
+}) {
+  return (
+    <div className="space-y-3">
+      <label className="flex items-start gap-3 text-sm text-muted-foreground cursor-pointer">
+        <Checkbox
+          checked={privacyAccepted}
+          onCheckedChange={(v) => setPrivacyAccepted(v === true)}
+          className="mt-0.5"
+          aria-label="Accetto privacy e termini"
+        />
+        <span>
+          Ho letto e accetto la{" "}
+          <Link to="/privacy" target="_blank" className="text-primary underline">
+            Privacy Policy
+          </Link>{" "}
+          e i{" "}
+          <Link to="/termini" target="_blank" className="text-primary underline">
+            Termini di Servizio
+          </Link>
+          . <span className="text-destructive">*</span>
+        </span>
+      </label>
+      <label className="flex items-start gap-3 text-sm text-muted-foreground cursor-pointer">
+        <Checkbox
+          checked={marketingConsent}
+          onCheckedChange={(v) => setMarketingConsent(v === true)}
+          className="mt-0.5"
+          aria-label="Consenso comunicazioni promozionali"
+        />
+        <span>
+          Acconsento a ricevere comunicazioni promozionali e inviti via email e WhatsApp da
+          FamilyCare (facoltativo, revocabile in ogni momento).
+        </span>
+      </label>
+    </div>
+  );
+}
+
 function FamilyForm() {
   const join = useServerFn(joinWaitlist);
   const [loading, setLoading] = useState(false);
@@ -156,11 +208,17 @@ function FamilyForm() {
   const [frequency, setFrequency] = useState("");
   const [urgency, setUrgency] = useState("");
   const [message, setMessage] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (services.length === 0) {
       toast.error("Seleziona almeno un servizio");
+      return;
+    }
+    if (!privacyAccepted) {
+      toast.error("Per procedere devi accettare la Privacy Policy e i Termini di Servizio");
       return;
     }
     setLoading(true);
@@ -170,6 +228,7 @@ function FamilyForm() {
         password,
         options: {
           data: { full_name: fullName, user_type: "famiglia" },
+          emailRedirectTo: `${window.location.origin}/conferma-email`,
         },
       });
 
@@ -192,6 +251,9 @@ function FamilyForm() {
           services,
           frequency,
           urgency,
+          privacy_accepted: true,
+          marketing_consent: marketingConsent,
+          consent_policy_version: POLICY_VERSION,
         },
       });
       if (res.duplicate) {
@@ -201,7 +263,6 @@ function FamilyForm() {
 
       if (res.success) {
         setDone(true);
-        toast.success("Richiesta inviata. Ti contattiamo entro 24 ore.");
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
@@ -215,8 +276,8 @@ function FamilyForm() {
   if (done) {
     return (
       <SuccessCard
-        title="Richiesta ricevuta!"
-        message="Entro 24 ore ti scriviamo con i profili selezionati per la tua zona."
+        title="Controlla la tua email"
+        message="Ti abbiamo inviato un link per confermare l'iscrizione. Clicca sul link nell'email per attivare il tuo account e accedere alla dashboard."
       />
     );
   }
@@ -332,9 +393,16 @@ function FamilyForm() {
         />
       </Field>
 
+      <ConsentFields
+        privacyAccepted={privacyAccepted}
+        setPrivacyAccepted={setPrivacyAccepted}
+        marketingConsent={marketingConsent}
+        setMarketingConsent={setMarketingConsent}
+      />
+
       <Button
         type="submit"
-        disabled={loading}
+        disabled={loading || !privacyAccepted}
         className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
       >
         {loading ? (
@@ -343,16 +411,12 @@ function FamilyForm() {
           "Invia richiesta — risposta entro 24 ore"
         )}
       </Button>
-      <p className="text-xs text-muted-foreground text-center">
-        Conforme GDPR · I tuoi dati non vengono condivisi con terzi.
-      </p>
     </form>
   );
 }
 
 function ProForm() {
   const join = useServerFn(joinWaitlist);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -367,11 +431,17 @@ function ProForm() {
   const [experience, setExperience] = useState("");
   const [italianLevel, setItalianLevel] = useState("");
   const [message, setMessage] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (services.length === 0) {
       toast.error("Seleziona almeno un servizio che offri");
+      return;
+    }
+    if (!privacyAccepted) {
+      toast.error("Per procedere devi accettare la Privacy Policy e i Termini di Servizio");
       return;
     }
     setLoading(true);
@@ -381,6 +451,7 @@ function ProForm() {
         password,
         options: {
           data: { full_name: fullName, user_type: "professionista" },
+          emailRedirectTo: `${window.location.origin}/conferma-email`,
         },
       });
 
@@ -405,6 +476,9 @@ function ProForm() {
           italian_level: italianLevel,
           nationality,
           birth_date: birthDate,
+          privacy_accepted: true,
+          marketing_consent: marketingConsent,
+          consent_policy_version: POLICY_VERSION,
         },
       });
       if (res.duplicate) {
@@ -413,10 +487,10 @@ function ProForm() {
       }
 
       if (res.success && res.id) {
-        // joinWaitlist auto-conferma l'email: effettua il login per avere una
-        // sessione attiva, richiesta dall'upload del documento d'identità.
-        await supabase.auth.signInWithPassword({ email, password });
-        navigate({ to: "/verifica-identita/$id", params: { id: res.id } });
+        // Double opt-in: l'email non è ancora confermata, quindi non c'è
+        // sessione. L'utente conferma via email e viene poi indirizzato alla
+        // verifica del documento (/conferma-email → /verifica-identita/$id).
+        setDone(true);
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
@@ -430,8 +504,8 @@ function ProForm() {
   if (done) {
     return (
       <SuccessCard
-        title="Profilo registrato!"
-        message="Entro 48 ore il tuo profilo sarà visibile alle famiglie nella tua zona."
+        title="Controlla la tua email"
+        message="Ti abbiamo inviato un link per confermare l'iscrizione. Dopo la conferma potrai caricare il documento d'identità per completare la verifica del profilo."
       />
     );
   }
@@ -569,9 +643,16 @@ function ProForm() {
         />
       </Field>
 
+      <ConsentFields
+        privacyAccepted={privacyAccepted}
+        setPrivacyAccepted={setPrivacyAccepted}
+        marketingConsent={marketingConsent}
+        setMarketingConsent={setMarketingConsent}
+      />
+
       <Button
         type="submit"
-        disabled={loading}
+        disabled={loading || !privacyAccepted}
         className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
       >
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crea il mio profilo — è gratis"}

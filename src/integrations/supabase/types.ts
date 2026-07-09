@@ -34,6 +34,10 @@ export type Database = {
           documenti: string | null;
           avatar_url: string | null;
           bio: string | null;
+          privacy_accepted_at: string | null;
+          marketing_consent: boolean;
+          marketing_consent_at: string | null;
+          consent_policy_version: string | null;
         };
         Insert: {
           birth_date?: string | null;
@@ -60,6 +64,10 @@ export type Database = {
           documenti?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
+          privacy_accepted_at?: string | null;
+          marketing_consent?: boolean;
+          marketing_consent_at?: string | null;
+          consent_policy_version?: string | null;
         };
         Update: {
           birth_date?: string | null;
@@ -86,6 +94,10 @@ export type Database = {
           documenti?: string | null;
           avatar_url?: string | null;
           bio?: string | null;
+          privacy_accepted_at?: string | null;
+          marketing_consent?: boolean;
+          marketing_consent_at?: string | null;
+          consent_policy_version?: string | null;
         };
         Relationships: [];
       };
