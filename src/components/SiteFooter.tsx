@@ -99,15 +99,15 @@ export function SiteFooter() {
         <div className="border-t border-border/60 mt-12 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Family Care. Tutti i diritti riservati.</p>
           <div className="flex gap-5">
-            <a href="#" className="hover:text-foreground">
+            <Link to="/privacy" className="hover:text-foreground">
               Privacy
-            </a>
-            <a href="#" className="hover:text-foreground">
+            </Link>
+            <Link to="/termini" className="hover:text-foreground">
               Termini
-            </a>
-            <a href="#" className="hover:text-foreground">
+            </Link>
+            <Link to="/cookie" className="hover:text-foreground">
               Cookie
-            </a>
+            </Link>
           </div>
         </div>
       </div>
