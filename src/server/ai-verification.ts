@@ -1,10 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 import { matchNames } from "./name-match";
 
-const apiKey = process.env.GEMINI_API_KEY;
 let ai: GoogleGenAI | null = null;
-if (apiKey) {
-  ai = new GoogleGenAI({ apiKey });
+function getAI() {
+  if (!ai) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (apiKey) {
+      ai = new GoogleGenAI({ apiKey });
+    }
+  }
+  return ai;
 }
 
 export async function verifyIdentityDocument(
@@ -12,7 +17,8 @@ export async function verifyIdentityDocument(
   mimeType: string,
   expectedName: string,
 ): Promise<{ isMatch: boolean; extractedName?: string; confidence: number }> {
-  if (!ai) {
+  const currentAI = getAI();
+  if (!currentAI) {
     console.warn("GEMINI_API_KEY non configurata. Salto la verifica AI automatica.");
     return { isMatch: false, confidence: 0 };
   }
@@ -20,7 +26,7 @@ export async function verifyIdentityDocument(
   try {
     const base64Data = Buffer.from(fileBuffer).toString("base64");
 
-    const response = await ai.models.generateContent({
+    const response = await currentAI.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
         {

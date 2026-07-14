@@ -5,13 +5,17 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2026-05-27.dahlia", // Usa una versione recente
-});
-
 const PRICE_AMOUNT = 2900; // Legacy fallback amount
-const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID; // The Price ID for the subscription in Stripe Dashboard
+
+function getStripeConfig() {
+  const secretKey = process.env.STRIPE_SECRET_KEY || "";
+  const priceId = process.env.STRIPE_PRICE_ID;
+  const stripe = secretKey ? new Stripe(secretKey, {
+    apiVersion: "2026-05-27.dahlia" as any, // Usa una versione recente
+  }) : null;
+  
+  return { secretKey, priceId, stripe };
+}
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -22,7 +26,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     try {
-      if (!stripeSecretKey) {
+      const { secretKey, priceId, stripe } = getStripeConfig();
+      if (!secretKey || !stripe) {
         return { success: false, error: "Stripe non è configurato sul server." };
       }
 
@@ -43,8 +48,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       let lineItems;
       let mode: "subscription" | "payment" = "subscription";
 
-      if (STRIPE_PRICE_ID) {
-        lineItems = [{ price: STRIPE_PRICE_ID, quantity: 1 }];
+      if (priceId) {
+        lineItems = [{ price: priceId, quantity: 1 }];
       } else {
         // Fallback to one-time payment if no price ID is configured
         console.warn("STRIPE_PRICE_ID missing. Fallback to one-time payment mode.");
@@ -99,7 +104,8 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     try {
-      if (!stripeSecretKey) {
+      const { secretKey, stripe } = getStripeConfig();
+      if (!secretKey || !stripe) {
         return { success: false, error: "Stripe non è configurato sul server." };
       }
 

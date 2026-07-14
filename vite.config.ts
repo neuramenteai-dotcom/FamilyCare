@@ -10,9 +10,6 @@ export default defineConfig({
   nitro: true,
   vite: {
     build: {
-      rollupOptions: {
-        external: ["stripe"],
-      },
     },
   },
 });
