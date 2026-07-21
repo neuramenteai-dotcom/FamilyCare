@@ -52,17 +52,13 @@ function Hero() {
     <section className="relative bg-gradient-hero overflow-hidden">
       <div className="container mx-auto max-w-7xl px-4 lg:px-8 pt-16 md:pt-24 pb-20 md:pb-28 grid lg:grid-cols-2 gap-12 items-center">
         <div className="relative z-10">
-          <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft text-primary px-4 py-1.5 text-xs font-semibold tracking-wide">
-            <Sparkles className="h-3.5 w-3.5" />
-            Nuovo · Iscrizioni aperte
-          </span>
           <h1 className="mt-5 font-display text-5xl md:text-6xl lg:text-7xl font-semibold leading-[0.98] tracking-tight">
             La cura che la tua <span className="text-gradient-primary italic">famiglia</span>{" "}
             merita.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
             Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati. Trova la
-            persona giusta in pochi minuti, non in settimane.
+            persona giusta in pochi minuti.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">

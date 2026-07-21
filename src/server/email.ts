@@ -13,6 +13,8 @@ export async function sendEmailNotification(data: {
   italian_level?: string;
   nationality?: string;
   birth_date?: string;
+  gender?: string;
+  video_url?: string;
   score: number;
 }) {
   const EMAIL_MITTENTE = process.env.EMAIL_MITTENTE;

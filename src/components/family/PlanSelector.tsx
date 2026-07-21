@@ -4,7 +4,7 @@ import { PLAN_TIERS, PLANS, type PlanTier } from "@/lib/plans";
 
 const FEATURES: Record<PlanTier, string[]> = {
   base: [
-    "Vedi tutti i profili disponibili (età, nazionalità, esperienza, specializzazione, zona, video)",
+    "Vedi tutti i profili (età, nazionalità, esperienza, specializzazione, zona, video)",
     "Contatta e chatta con 5 profili",
     "Chat illimitata con i profili contattati",
   ],
@@ -37,38 +37,52 @@ export function PlanSelector({
           Abbonamento mensile, disdici quando vuoi. Sblocca i profili verificati nella tua zona.
         </p>
       </div>
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-6 items-start">
         {PLAN_TIERS.map((tier) => {
           const plan = PLANS[tier];
           const highlighted = tier === "plus";
           return (
             <div
               key={tier}
-              className={`rounded-3xl border p-6 flex flex-col bg-background shadow-sm ${
-                highlighted ? "border-primary border-2" : "border-border/60"
+              className={`relative rounded-[2rem] p-8 flex flex-col shadow-sm ${
+                highlighted
+                  ? "bg-[#b22b2b] text-white shadow-lg md:scale-105 z-10"
+                  : "bg-background border border-border/60"
               }`}
             >
               {highlighted && (
-                <div className="self-start bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full mb-3">
-                  PIÙ SCELTO
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2d2d2d] text-white text-xs font-medium px-4 py-1.5 rounded-full flex items-center gap-1.5">
+                  <span className="text-[10px]">✨</span> Più scelto
                 </div>
               )}
-              <h3 className="font-display text-xl font-bold">{plan.label}</h3>
-              <div className="mt-2 mb-4">
-                <span className="text-3xl font-bold">{plan.priceLabel}</span>
-                <span className="text-muted-foreground">/mese</span>
+              <h3 className="font-display text-2xl font-bold">{plan.label}</h3>
+              <div className="mt-2 mb-6">
+                <span className="text-5xl font-bold">{plan.priceLabel}</span>
+                <span
+                  className={`ml-1 text-sm ${highlighted ? "text-white/90" : "text-muted-foreground"}`}
+                >
+                  /mese
+                </span>
               </div>
-              <ul className="space-y-2 text-sm flex-grow mb-6">
+              <ul className="space-y-3 text-sm flex-grow mb-8">
                 {FEATURES[tier].map((f, i) => (
-                  <li key={i} className="flex gap-2">
-                    <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{f}</span>
+                  <li key={i} className="flex gap-2 items-start">
+                    <Check
+                      className={`w-4 h-4 shrink-0 mt-0.5 ${highlighted ? "text-white" : "text-[#b22b2b]"}`}
+                      strokeWidth={2.5}
+                    />
+                    <span className={highlighted ? "text-white" : "text-muted-foreground"}>
+                      {f}
+                    </span>
                   </li>
                 ))}
               </ul>
               <Button
-                className="w-full h-12 rounded-xl"
-                variant={highlighted ? "default" : "secondary"}
+                className={`w-full h-12 rounded-full font-medium ${
+                  highlighted
+                    ? "bg-[#fffcf5] text-[#b22b2b] hover:bg-[#fffcf5]/90"
+                    : "bg-[#b22b2b] hover:bg-[#b22b2b]/90 text-white"
+                }`}
                 onClick={() => onChoose(tier)}
                 disabled={loadingTier !== null}
               >

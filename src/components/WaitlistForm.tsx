@@ -436,6 +436,8 @@ function ProForm() {
   const [services, setServices] = useState<ServiceKey[]>([]);
   const [experience, setExperience] = useState("");
   const [italianLevel, setItalianLevel] = useState("");
+  const [gender, setGender] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
   const [message, setMessage] = useState("");
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -482,6 +484,8 @@ function ProForm() {
           italian_level: italianLevel,
           nationality,
           birth_date: birthDate,
+          gender,
+          video_url: videoUrl,
           privacy_accepted: true,
           marketing_consent: marketingConsent,
           consent_policy_version: POLICY_VERSION,
@@ -640,6 +644,31 @@ function ProForm() {
               <SelectItem value="Ottimo / madrelingua">Ottimo / madrelingua</SelectItem>
             </SelectContent>
           </Select>
+        </Field>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <Field label="Sesso">
+          <Select value={gender} onValueChange={setGender}>
+            <SelectTrigger className="h-11 rounded-xl">
+              <SelectValue placeholder="Seleziona" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Donna">Donna</SelectItem>
+              <SelectItem value="Uomo">Uomo</SelectItem>
+              <SelectItem value="Altro">Altro</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field label="Video di presentazione">
+          <Input
+            type="url"
+            value={videoUrl}
+            onChange={(e) => setVideoUrl(e.target.value)}
+            placeholder="Link a YouTube o Vimeo (opzionale)"
+            className="h-11 rounded-xl"
+            maxLength={1000}
+          />
         </Field>
       </div>
 

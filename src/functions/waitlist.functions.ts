@@ -25,6 +25,8 @@ const Schema = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional()
     .or(z.literal("")),
+  gender: z.string().trim().max(30).optional().or(z.literal("")),
+  video_url: z.string().trim().url().max(1000).optional().or(z.literal("")),
   zona: z.string().trim().max(100).optional().or(z.literal("")),
   documenti: z.array(z.string()).optional(),
   competenze: z.array(z.string()).optional(),
@@ -118,6 +120,8 @@ export const joinWaitlist = createServerFn({ method: "POST" })
           italian_level: data.italian_level || null,
           nationality: data.nationality || null,
           birth_date: data.birth_date || null,
+          gender: data.gender || null,
+          video_url: data.video_url || null,
           status: "nuovo",
           score,
           auth_id: data.auth_id || null,
@@ -176,6 +180,8 @@ export const joinWaitlist = createServerFn({ method: "POST" })
           italian_level: data.italian_level || undefined,
           nationality: data.nationality || undefined,
           birth_date: data.birth_date || undefined,
+          gender: data.gender || undefined,
+          video_url: data.video_url || undefined,
           score,
         });
       } catch (emailErr) {
