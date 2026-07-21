@@ -15,6 +15,7 @@ import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as RecuperaPasswordRouteImport } from './routes/recupera-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PrezziRouteImport } from './routes/prezzi'
+import { Route as MessaggiRouteImport } from './routes/messaggi'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as ContattiRouteImport } from './routes/contatti'
@@ -27,6 +28,7 @@ import { Route as VerificaIdentitaIdRouteImport } from './routes/verifica-identi
 import { Route as ProfessionistaProfiloRouteImport } from './routes/professionista.profilo'
 import { Route as ProfessionistaDashboardRouteImport } from './routes/professionista.dashboard'
 import { Route as FamigliaDashboardRouteImport } from './routes/famiglia.dashboard'
+import { Route as ChatConversationIdRouteImport } from './routes/chat.$conversationId'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 
 const TerminiRoute = TerminiRouteImport.update({
@@ -57,6 +59,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PrezziRoute = PrezziRouteImport.update({
   id: '/prezzi',
   path: '/prezzi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessaggiRoute = MessaggiRouteImport.update({
+  id: '/messaggi',
+  path: '/messaggi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -119,6 +126,11 @@ const FamigliaDashboardRoute = FamigliaDashboardRouteImport.update({
   path: '/famiglia/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatConversationIdRoute = ChatConversationIdRouteImport.update({
+  id: '/chat/$conversationId',
+  path: '/chat/$conversationId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe-webhook',
   path: '/api/stripe-webhook',
@@ -134,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/contatti': typeof ContattiRoute
   '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
+  '/messaggi': typeof MessaggiRoute
   '/prezzi': typeof PrezziRoute
   '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
@@ -141,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/sicurezza': typeof SicurezzaRoute
   '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/chat/$conversationId': typeof ChatConversationIdRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -155,6 +169,7 @@ export interface FileRoutesByTo {
   '/contatti': typeof ContattiRoute
   '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
+  '/messaggi': typeof MessaggiRoute
   '/prezzi': typeof PrezziRoute
   '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
@@ -162,6 +177,7 @@ export interface FileRoutesByTo {
   '/sicurezza': typeof SicurezzaRoute
   '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/chat/$conversationId': typeof ChatConversationIdRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -177,6 +193,7 @@ export interface FileRoutesById {
   '/contatti': typeof ContattiRoute
   '/cookie': typeof CookieRoute
   '/login': typeof LoginRoute
+  '/messaggi': typeof MessaggiRoute
   '/prezzi': typeof PrezziRoute
   '/privacy': typeof PrivacyRoute
   '/recupera-password': typeof RecuperaPasswordRoute
@@ -184,6 +201,7 @@ export interface FileRoutesById {
   '/sicurezza': typeof SicurezzaRoute
   '/termini': typeof TerminiRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
+  '/chat/$conversationId': typeof ChatConversationIdRoute
   '/famiglia/dashboard': typeof FamigliaDashboardRoute
   '/professionista/dashboard': typeof ProfessionistaDashboardRoute
   '/professionista/profilo': typeof ProfessionistaProfiloRoute
@@ -200,6 +218,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie'
     | '/login'
+    | '/messaggi'
     | '/prezzi'
     | '/privacy'
     | '/recupera-password'
@@ -207,6 +226,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/termini'
     | '/api/stripe-webhook'
+    | '/chat/$conversationId'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -221,6 +241,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie'
     | '/login'
+    | '/messaggi'
     | '/prezzi'
     | '/privacy'
     | '/recupera-password'
@@ -228,6 +249,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/termini'
     | '/api/stripe-webhook'
+    | '/chat/$conversationId'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -242,6 +264,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie'
     | '/login'
+    | '/messaggi'
     | '/prezzi'
     | '/privacy'
     | '/recupera-password'
@@ -249,6 +272,7 @@ export interface FileRouteTypes {
     | '/sicurezza'
     | '/termini'
     | '/api/stripe-webhook'
+    | '/chat/$conversationId'
     | '/famiglia/dashboard'
     | '/professionista/dashboard'
     | '/professionista/profilo'
@@ -264,6 +288,7 @@ export interface RootRouteChildren {
   ContattiRoute: typeof ContattiRoute
   CookieRoute: typeof CookieRoute
   LoginRoute: typeof LoginRoute
+  MessaggiRoute: typeof MessaggiRoute
   PrezziRoute: typeof PrezziRoute
   PrivacyRoute: typeof PrivacyRoute
   RecuperaPasswordRoute: typeof RecuperaPasswordRoute
@@ -271,6 +296,7 @@ export interface RootRouteChildren {
   SicurezzaRoute: typeof SicurezzaRoute
   TerminiRoute: typeof TerminiRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
+  ChatConversationIdRoute: typeof ChatConversationIdRoute
   FamigliaDashboardRoute: typeof FamigliaDashboardRoute
   ProfessionistaDashboardRoute: typeof ProfessionistaDashboardRoute
   ProfessionistaProfiloRoute: typeof ProfessionistaProfiloRoute
@@ -319,6 +345,13 @@ declare module '@tanstack/react-router' {
       path: '/prezzi'
       fullPath: '/prezzi'
       preLoaderRoute: typeof PrezziRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messaggi': {
+      id: '/messaggi'
+      path: '/messaggi'
+      fullPath: '/messaggi'
+      preLoaderRoute: typeof MessaggiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -405,6 +438,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FamigliaDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chat/$conversationId': {
+      id: '/chat/$conversationId'
+      path: '/chat/$conversationId'
+      fullPath: '/chat/$conversationId'
+      preLoaderRoute: typeof ChatConversationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe-webhook': {
       id: '/api/stripe-webhook'
       path: '/api/stripe-webhook'
@@ -424,6 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContattiRoute: ContattiRoute,
   CookieRoute: CookieRoute,
   LoginRoute: LoginRoute,
+  MessaggiRoute: MessaggiRoute,
   PrezziRoute: PrezziRoute,
   PrivacyRoute: PrivacyRoute,
   RecuperaPasswordRoute: RecuperaPasswordRoute,
@@ -431,6 +472,7 @@ const rootRouteChildren: RootRouteChildren = {
   SicurezzaRoute: SicurezzaRoute,
   TerminiRoute: TerminiRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
+  ChatConversationIdRoute: ChatConversationIdRoute,
   FamigliaDashboardRoute: FamigliaDashboardRoute,
   ProfessionistaDashboardRoute: ProfessionistaDashboardRoute,
   ProfessionistaProfiloRoute: ProfessionistaProfiloRoute,

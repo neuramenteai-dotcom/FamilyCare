@@ -131,6 +131,15 @@ export const joinWaitlist = createServerFn({ method: "POST" })
 
       if (error) {
         if (error.code === "23505") {
+          // L'email esiste già nel database (waitlist).
+          // Se l'utente in fase di test ha cancellato e ricreato l'account Auth,
+          // aggiorniamo l'auth_id nel record waitlist esistente per riallinearli.
+          if (data.auth_id) {
+            await supabaseAdmin
+              .from("waitlist")
+              .update({ auth_id: data.auth_id })
+              .eq("email", data.email);
+          }
           return { success: true, duplicate: true };
         }
         console.error(

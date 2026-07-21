@@ -25,6 +25,8 @@ function ProProfilo() {
 
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [gender, setGender] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -39,6 +41,8 @@ function ProProfilo() {
         setProId(res.profile.id);
         setBio(res.profile.bio || "");
         setAvatarUrl(res.profile.avatar_url || null);
+        setGender(res.profile.gender || "");
+        setVideoUrl(res.profile.video_url || "");
       }
       setLoading(false);
     }
@@ -74,7 +78,9 @@ function ProProfilo() {
     if (!proId) return;
     setSaving(true);
     try {
-      const res = await saveProfile({ data: { bio, avatar_url: avatarUrl } });
+      const res = await saveProfile({
+        data: { bio, avatar_url: avatarUrl, gender, video_url: videoUrl },
+      });
       if (!res.success) throw new Error(res.error);
       toast.success("Profilo aggiornato con successo!");
       navigate({ to: "/professionista/dashboard" });
@@ -163,6 +169,42 @@ function ProProfilo() {
               className="min-h-[150px] resize-none text-base p-4 rounded-xl"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
+            />
+          </div>
+
+          <hr className="border-border/40" />
+
+          {/* Sesso */}
+          <div className="space-y-3">
+            <label className="font-medium text-lg">Sesso</label>
+            <select
+              className="w-full h-12 rounded-xl border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
+              <option value="">Preferisco non indicarlo</option>
+              <option value="Donna">Donna</option>
+              <option value="Uomo">Uomo</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+
+          {/* Video di presentazione */}
+          <div className="space-y-3">
+            <label className="font-medium text-lg flex items-center justify-between">
+              Video di presentazione
+              <span className="text-sm font-normal text-muted-foreground">Opzionale</span>
+            </label>
+            <p className="text-sm text-muted-foreground mb-2">
+              Incolla il link a un tuo breve video (YouTube o Vimeo). Le famiglie si fidano molto di
+              più di chi possono vedere e ascoltare.
+            </p>
+            <Input
+              type="url"
+              placeholder="https://youtube.com/..."
+              className="h-12 rounded-xl"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
             />
           </div>
 

@@ -77,9 +77,19 @@ function ProDashboard() {
     );
   }
 
+  if (!data) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-muted/20">
+        <h2 className="text-2xl font-bold mb-4">Profilo non trovato</h2>
+        <p className="text-muted-foreground mb-6">Assicurati di aver completato l'iscrizione.</p>
+        <Button onClick={() => navigate({ to: "/" })}>Torna alla Home</Button>
+      </div>
+    );
+  }
+
   // Filter out families we already acted upon
-  const actedFamilyIds = new Set(data?.interests?.map((i: any) => i.family_id));
-  const availableFamilies = data?.families?.filter((f: any) => !actedFamilyIds.has(f.id)) || [];
+  const actedFamilyIds = new Set(data.interests?.map((i: any) => i.family_id));
+  const availableFamilies = data.families?.filter((f: any) => !actedFamilyIds.has(f.id)) || [];
 
   return (
     <div className="min-h-screen bg-muted/20">

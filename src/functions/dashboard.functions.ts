@@ -3,22 +3,43 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
+import { PLANS, hasActivePlan, isPlanTier, type PlanTier } from "@/lib/plans";
+
+// Calcola l'età (anni interi) da una data ISO YYYY-MM-DD.
+function computeAge(birthDate: string | null): number | null {
+  if (!birthDate) return null;
+  const d = new Date(birthDate);
+  if (Number.isNaN(d.getTime())) return null;
+  const now = new Date();
+  let age = now.getFullYear() - d.getFullYear();
+  const m = now.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+  return age >= 0 && age < 120 ? age : null;
+}
 
 export const getFamilyDashboard = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     try {
-      // 1. Get family profile (owned by the authenticated user)
-      const family = await getOwnedWaitlistRecord(context.userId, { userType: "famiglia" });
+      // 1. Profilo famiglia (con dati abbonamento)
+      const family = await getOwnedWaitlistRecord(context.userId, {
+        userType: "famiglia",
+        columns: "id, full_name, plan_tier, subscription_status",
+      });
       if (!family) {
         return { success: false, error: "Profilo non trovato" };
       }
 
-      // 2. Fetch professionals for the Teaser or Full view
-      const { data: allProfessionals, error: proError } = await supabaseAdmin
+      const planTier = family.plan_tier as string | null;
+      const subStatus = family.subscription_status as string | null;
+      const active = hasActivePlan(planTier, subStatus);
+      const tier = (active && isPlanTier(planTier) ? planTier : null) as PlanTier | null;
+
+      // 2. Tutti i professionisti visibili
+      const { data: allPros, error: proError } = await supabaseAdmin
         .from("waitlist")
         .select(
-          "id, full_name, city, experience, nationality, italian_level, services, message, avatar_url, bio",
+          "id, full_name, city, experience, nationality, italian_level, services, bio, avatar_url, birth_date, gender, video_url, email, criminal_check_verified, references_verified, certificates_verified",
         )
         .eq("user_type", "professionista")
         .in("status", ["pre_approvato", "attivo"])
@@ -28,59 +49,88 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
         console.error("Errore query professionisti:", proError);
         return { success: false, error: "Errore nel caricamento professionisti" };
       }
+      const pros = allPros || [];
 
-      // If no active package, return locked state with TEASER professionals
-      if (!family.has_active_package) {
-        const teaserProfessionals = (allProfessionals || []).map((p) => ({
+      // 3. Stato bloccato: teaser (nessun abbonamento attivo)
+      if (!tier) {
+        const teaser = pros.map((p) => ({
           id: p.id,
-          full_name: p.full_name?.split(" ")[0] || "Professionista", // Only first name
+          first_name: p.full_name?.split(" ")[0] || "Professionista",
           city: p.city,
           experience: p.experience,
           avatar_url: p.avatar_url,
-          // We intentionally leave out bio, email, nationality, services, etc.
         }));
-
         return {
           success: true,
           locked: true,
+          tier: null,
           familyId: family.id,
           full_name: family.full_name,
-          professionals: teaserProfessionals, // Add this to feed the teaser view
+          professionals: teaser,
         };
       }
 
-      // 3. Family is unlocked, return full professionals
-      const professionals = allProfessionals;
+      const plan = PLANS[tier];
 
-      // 4. Fetch matches (professionals who liked this family)
-      const { data: interests, error: intError } = await supabaseAdmin
-        .from("professional_interests")
-        .select("professional_id")
-        .eq("family_id", family.id)
-        .eq("status", "like");
+      // 4. Contatti già usati e conversazioni aperte
+      const [{ data: contacts }, { data: convos }, { data: interests }] = await Promise.all([
+        supabaseAdmin.from("family_contacts").select("professional_id").eq("family_id", family.id),
+        supabaseAdmin
+          .from("conversations")
+          .select("id, professional_id")
+          .eq("family_id", family.id),
+        supabaseAdmin
+          .from("professional_interests")
+          .select("professional_id")
+          .eq("family_id", family.id)
+          .eq("status", "like"),
+      ]);
 
-      let matches: NonNullable<typeof allProfessionals> = [];
-      if (!intError && interests && interests.length > 0) {
-        const proIds = interests.map((i) => i.professional_id);
-        const { data: matchedPros } = await supabaseAdmin
-          .from("waitlist")
-          // Included email for direct contact + bio + avatar
-          .select(
-            "id, full_name, city, experience, nationality, italian_level, services, message, email, avatar_url, bio",
-          )
-          .in("id", proIds);
-        if (matchedPros) {
-          matches = matchedPros;
-        }
-      }
+      const contactedIds = new Set((contacts || []).map((c) => c.professional_id));
+      const convoByPro = new Map((convos || []).map((c) => [c.professional_id, c.id]));
+      const likedByPro = new Set((interests || []).map((i) => i.professional_id));
+
+      // 5. Profili con campi visibili in base al tier
+      const professionals = pros.map((p) => {
+        const contacted = contactedIds.has(p.id);
+        return {
+          id: p.id,
+          // Nome intero + email svelati solo dopo il contatto
+          first_name: p.full_name?.split(" ")[0] || "Professionista",
+          full_name: contacted ? p.full_name : null,
+          email: contacted ? p.email : null,
+          conversationId: convoByPro.get(p.id) || null,
+          contacted,
+          likedByPro: likedByPro.has(p.id),
+          age: computeAge(p.birth_date),
+          nationality: p.nationality,
+          experience: p.experience,
+          italian_level: p.italian_level,
+          services: p.services,
+          city: p.city,
+          gender: p.gender,
+          bio: p.bio,
+          video_url: p.video_url,
+          avatar_url: p.avatar_url,
+          badges: plan.showVerificationBadges
+            ? {
+                criminal: p.criminal_check_verified,
+                references: p.references_verified,
+                certificates: p.certificates_verified,
+              }
+            : null,
+        };
+      });
 
       return {
         success: true,
         locked: false,
-        professionals,
-        matches,
+        tier,
         familyId: family.id,
         full_name: family.full_name,
+        professionals,
+        contactsUsed: contactedIds.size,
+        contactsCap: Number.isFinite(plan.contactCap) ? plan.contactCap : null, // null = illimitati
       };
     } catch (err) {
       console.error(err);
@@ -182,6 +232,97 @@ export const setProInterest = createServerFn({ method: "POST" })
     }
   });
 
+// Una famiglia "contatta" un professionista: rispetta il cap del tier, crea il
+// record di contatto e apre la conversazione. Ritorna id conversazione + email.
+export const contactProfessional = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => z.object({ professionalId: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    try {
+      const family = await getOwnedWaitlistRecord(context.userId, {
+        userType: "famiglia",
+        columns: "id, plan_tier, subscription_status",
+      });
+      if (!family) {
+        return { success: false, error: "Profilo non trovato" };
+      }
+
+      const active = hasActivePlan(
+        family.plan_tier as string | null,
+        family.subscription_status as string | null,
+      );
+      const tier = family.plan_tier as string | null;
+      if (!active || !isPlanTier(tier)) {
+        return { success: false, error: "Serve un abbonamento attivo per contattare i profili." };
+      }
+
+      // Il professionista deve esistere ed essere attivo/pre-approvato
+      const { data: pro } = await supabaseAdmin
+        .from("waitlist")
+        .select("id, email, full_name")
+        .eq("id", data.professionalId)
+        .eq("user_type", "professionista")
+        .in("status", ["pre_approvato", "attivo"])
+        .maybeSingle();
+      if (!pro) {
+        return { success: false, error: "Professionista non trovato" };
+      }
+
+      // Già contattato? Ritorna la conversazione esistente
+      const { data: existing } = await supabaseAdmin
+        .from("family_contacts")
+        .select("id")
+        .eq("family_id", family.id)
+        .eq("professional_id", pro.id)
+        .maybeSingle();
+
+      if (!existing) {
+        // Verifica il cap del tier
+        const cap = PLANS[tier].contactCap;
+        if (Number.isFinite(cap)) {
+          const { count } = await supabaseAdmin
+            .from("family_contacts")
+            .select("id", { count: "exact", head: true })
+            .eq("family_id", family.id);
+          if ((count || 0) >= cap) {
+            return {
+              success: false,
+              error: `Hai raggiunto il limite di ${cap} contatti del tuo piano. Passa a un piano superiore per contattarne altri.`,
+            };
+          }
+        }
+        const { error: insErr } = await supabaseAdmin
+          .from("family_contacts")
+          .insert({ family_id: family.id, professional_id: pro.id });
+        if (insErr) throw insErr;
+      }
+
+      // Apre (o riusa) la conversazione
+      const { data: convo, error: convErr } = await supabaseAdmin
+        .from("conversations")
+        .upsert(
+          { family_id: family.id, professional_id: pro.id },
+          { onConflict: "family_id, professional_id" },
+        )
+        .select("id")
+        .single();
+      if (convErr) throw convErr;
+
+      return {
+        success: true,
+        conversationId: convo.id,
+        email: pro.email,
+        full_name: pro.full_name,
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : "Errore del server",
+      };
+    }
+  });
+
 export const updateFamilyRequest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) =>
@@ -227,7 +368,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     try {
       const record = await getOwnedWaitlistRecord(context.userId, {
-        columns: "id, bio, avatar_url, full_name, user_type",
+        columns: "id, bio, avatar_url, full_name, user_type, gender, video_url",
       });
       if (!record) {
         return { success: false, error: "Profilo non trovato" };
@@ -240,6 +381,8 @@ export const getMyProfile = createServerFn({ method: "GET" })
           avatar_url: (record.avatar_url as string | null) || null,
           full_name: record.full_name,
           user_type: record.user_type,
+          gender: (record.gender as string | null) || "",
+          video_url: (record.video_url as string | null) || "",
         },
       };
     } catch (err) {
@@ -255,6 +398,8 @@ export const updateMyProfile = createServerFn({ method: "POST" })
       .object({
         bio: z.string().max(2000),
         avatar_url: z.string().url().max(1000).nullable(),
+        gender: z.string().max(30).optional(),
+        video_url: z.string().url().max(1000).or(z.literal("")).optional(),
       })
       .parse(input),
   )
@@ -267,7 +412,12 @@ export const updateMyProfile = createServerFn({ method: "POST" })
 
       const { error } = await supabaseAdmin
         .from("waitlist")
-        .update({ bio: data.bio, avatar_url: data.avatar_url })
+        .update({
+          bio: data.bio,
+          avatar_url: data.avatar_url,
+          gender: data.gender ?? null,
+          video_url: data.video_url ? data.video_url : null,
+        })
         .eq("id", record.id);
 
       if (error) throw error;

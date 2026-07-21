@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -195,6 +195,7 @@ function ConsentFields({
 }
 
 function FamilyForm() {
+  const navigate = useNavigate();
   const join = useServerFn(joinWaitlist);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -262,7 +263,11 @@ function FamilyForm() {
       }
 
       if (res.success) {
-        setDone(true);
+        if (authData.session) {
+          navigate({ to: "/famiglia/dashboard" });
+        } else {
+          setDone(true);
+        }
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }
@@ -416,6 +421,7 @@ function FamilyForm() {
 }
 
 function ProForm() {
+  const navigate = useNavigate();
   const join = useServerFn(joinWaitlist);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -487,10 +493,14 @@ function ProForm() {
       }
 
       if (res.success && res.id) {
-        // Double opt-in: l'email non è ancora confermata, quindi non c'è
-        // sessione. L'utente conferma via email e viene poi indirizzato alla
-        // verifica del documento (/conferma-email → /verifica-identita/$id).
-        setDone(true);
+        if (authData.session) {
+          navigate({ to: "/professionista/dashboard" });
+        } else {
+          // Double opt-in: l'email non è ancora confermata, quindi non c'è
+          // sessione. L'utente conferma via email e viene poi indirizzato alla
+          // verifica del documento (/conferma-email → /verifica-identita/$id).
+          setDone(true);
+        }
       } else {
         toast.error(res.error || "Qualcosa è andato storto");
       }

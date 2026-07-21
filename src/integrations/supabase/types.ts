@@ -38,6 +38,16 @@ export type Database = {
           marketing_consent: boolean;
           marketing_consent_at: string | null;
           consent_policy_version: string | null;
+          plan_tier: string | null;
+          subscription_status: string | null;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          plan_current_period_end: string | null;
+          gender: string | null;
+          video_url: string | null;
+          criminal_check_verified: boolean;
+          references_verified: boolean;
+          certificates_verified: boolean;
         };
         Insert: {
           birth_date?: string | null;
@@ -68,6 +78,16 @@ export type Database = {
           marketing_consent?: boolean;
           marketing_consent_at?: string | null;
           consent_policy_version?: string | null;
+          plan_tier?: string | null;
+          subscription_status?: string | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          plan_current_period_end?: string | null;
+          gender?: string | null;
+          video_url?: string | null;
+          criminal_check_verified?: boolean;
+          references_verified?: boolean;
+          certificates_verified?: boolean;
         };
         Update: {
           birth_date?: string | null;
@@ -98,6 +118,16 @@ export type Database = {
           marketing_consent?: boolean;
           marketing_consent_at?: string | null;
           consent_policy_version?: string | null;
+          plan_tier?: string | null;
+          subscription_status?: string | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          plan_current_period_end?: string | null;
+          gender?: string | null;
+          video_url?: string | null;
+          criminal_check_verified?: boolean;
+          references_verified?: boolean;
+          certificates_verified?: boolean;
         };
         Relationships: [];
       };
@@ -139,6 +169,75 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      family_contacts: {
+        Row: {
+          id: string;
+          family_id: string;
+          professional_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id: string;
+          professional_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string;
+          professional_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      conversations: {
+        Row: {
+          id: string;
+          family_id: string;
+          professional_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id: string;
+          professional_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string;
+          professional_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      messages: {
+        Row: {
+          id: string;
+          conversation_id: string;
+          sender_auth_id: string;
+          body: string;
+          created_at: string;
+          read_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          conversation_id: string;
+          sender_auth_id: string;
+          body: string;
+          created_at?: string;
+          read_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          conversation_id?: string;
+          sender_auth_id?: string;
+          body?: string;
+          created_at?: string;
+          read_at?: string | null;
+        };
+        Relationships: [];
       };
     };
     Views: {
