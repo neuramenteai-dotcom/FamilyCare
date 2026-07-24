@@ -97,6 +97,9 @@ function PrivacyPage() {
             d'identità;
           </li>
           <li>
+            <strong>Daily.co</strong> per le videochiamate tra famiglie e professionisti;
+          </li>
+          <li>
             <strong>Google (Gmail SMTP)</strong> per l'invio delle email transazionali.
           </li>
         </ul>

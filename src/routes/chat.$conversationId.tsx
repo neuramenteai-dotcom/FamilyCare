@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getMessages, sendMessage } from "@/functions/chat.functions";
+import { createVideoRoom } from "@/functions/video.functions";
+import { VideoCall } from "@/components/VideoCall";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, ArrowLeft, Send } from "lucide-react";
+import { Loader2, ArrowLeft, Send, Video } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/chat/$conversationId")({
@@ -19,12 +21,16 @@ function ChatPage() {
   const navigate = useNavigate();
   const loadMessages = useServerFn(getMessages);
   const send = useServerFn(sendMessage);
+  const startCall = useServerFn(createVideoRoom);
 
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [myAuthId, setMyAuthId] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
+  const [videoEnabled, setVideoEnabled] = useState(false);
+  const [startingCall, setStartingCall] = useState(false);
+  const [videoSession, setVideoSession] = useState<{ roomUrl: string; token: string } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   function appendUnique(msg: Message) {
@@ -48,6 +54,7 @@ function ChatPage() {
       }
       setMessages(res.messages as Message[]);
       setMyAuthId(res.myAuthId);
+      setVideoEnabled(!!res.videoEnabled);
       setLoading(false);
     }
     init();
@@ -110,14 +117,48 @@ function ChatPage() {
     );
   }
 
+  async function handleStartCall() {
+    setStartingCall(true);
+    try {
+      const res = await startCall({ data: { conversationId } });
+      if (res.success && res.roomUrl && res.token) {
+        setVideoSession({ roomUrl: res.roomUrl, token: res.token });
+      } else {
+        toast.error(res.error || "Impossibile avviare la videochiamata.");
+      }
+    } catch {
+      toast.error("Errore di connessione.");
+    } finally {
+      setStartingCall(false);
+    }
+  }
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col h-[calc(100vh-8rem)]">
       <div className="flex items-center gap-3 mb-4">
         <Button variant="ghost" size="icon" onClick={() => navigate({ to: "/messaggi" })}>
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <h1 className="font-display text-xl font-semibold">Conversazione</h1>
+        <h1 className="font-display text-xl font-semibold flex-1">Conversazione</h1>
+        {videoEnabled && (
+          <Button onClick={handleStartCall} disabled={startingCall} className="rounded-xl">
+            {startingCall ? (
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+            ) : (
+              <Video className="w-4 h-4 mr-2" />
+            )}
+            Videochiamata
+          </Button>
+        )}
       </div>
+
+      {videoSession && (
+        <VideoCall
+          roomUrl={videoSession.roomUrl}
+          token={videoSession.token}
+          onClose={() => setVideoSession(null)}
+        />
+      )}
 
       <div className="flex-1 overflow-y-auto space-y-2 rounded-2xl border border-border/60 bg-muted/20 p-4">
         {messages.length === 0 ? (

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
+import { PLANS, hasActivePlan, isPlanTier } from "@/lib/plans";
 
 // Carica il record waitlist dell'utente autenticato (famiglia o professionista).
 async function getMyRecord(userId: string) {
@@ -91,7 +92,24 @@ export const getMessages = createServerFn({ method: "GET" })
         .limit(500);
       if (error) throw error;
 
-      return { success: true, messages: messages || [], myAuthId: context.userId };
+      // La videochiamata è abilitata se la famiglia della conversazione ha un piano video
+      const { data: family } = await supabaseAdmin
+        .from("waitlist")
+        .select("plan_tier, subscription_status")
+        .eq("id", conversation.family_id)
+        .maybeSingle();
+      const tier = family?.plan_tier;
+      const videoEnabled =
+        hasActivePlan(tier, family?.subscription_status) &&
+        isPlanTier(tier) &&
+        PLANS[tier].videoCalls;
+
+      return {
+        success: true,
+        messages: messages || [],
+        myAuthId: context.userId,
+        videoEnabled,
+      };
     } catch (err) {
       console.error(err);
       return { success: false, error: "Errore del server" };
