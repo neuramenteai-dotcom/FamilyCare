@@ -5,7 +5,7 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ArrowLeft, Upload, UserRound } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, UserRound, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyProfile, updateMyProfile } from "@/functions/dashboard.functions";
@@ -208,7 +208,7 @@ function ProProfilo() {
             />
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 space-y-3">
             <Button
               size="lg"
               className="w-full rounded-xl h-14 text-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-soft"
@@ -217,6 +217,14 @@ function ProProfilo() {
             >
               {saving ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : null}
               Salva Profilo
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full rounded-xl h-12"
+              onClick={() => navigate({ to: "/professionista/verifica-documenti" })}
+            >
+              <ShieldCheck className="w-5 h-5 mr-2" /> Verifica approfondita (badge)
             </Button>
           </div>
         </div>

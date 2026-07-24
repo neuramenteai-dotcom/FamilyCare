@@ -239,6 +239,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      professional_documents: {
+        Row: {
+          id: string;
+          professional_id: string;
+          doc_type: string;
+          storage_path: string;
+          status: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          professional_id: string;
+          doc_type: string;
+          storage_path: string;
+          status?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          professional_id?: string;
+          doc_type?: string;
+          storage_path?: string;
+          status?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

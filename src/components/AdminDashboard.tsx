@@ -6,9 +6,14 @@ import {
   updateFamilyPackage,
   getIdentityDocUrl,
 } from "@/functions/waitlist.functions";
+import {
+  getProfessionalDocuments,
+  reviewProfessionalDocument,
+} from "@/functions/verification.functions";
 import { toast } from "sonner";
 import {
   ShieldAlert,
+  ShieldCheck,
   Loader2,
   Search,
   Filter,
@@ -22,6 +27,8 @@ import {
   Calendar,
   CreditCard,
   FileText,
+  Check,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -534,6 +541,10 @@ export function AdminDashboard() {
                 {(selectedLead as any).id_front_url && (
                   <IdentityDocViewer docRef={(selectedLead as any).id_front_url} />
                 )}
+
+                {selectedLead.user_type === "professionista" && (
+                  <ProVerificationPanel professionalId={selectedLead.id} />
+                )}
               </div>
 
               {/* Status Update section */}
@@ -630,6 +641,159 @@ function IdentityDocViewer({ docRef }: { docRef: string }) {
           </Button>
         )}
       </div>
+    </div>
+  );
+}
+
+// Pannello admin: documenti di verifica approfondita del professionista.
+// Approvare un documento imposta automaticamente il badge visibile alle famiglie.
+const DOC_LABELS: Record<string, string> = {
+  casellario: "Casellario giudiziale",
+  referenza: "Lettera di referenza",
+  attestato: "Attestato formativo",
+};
+
+type ProDoc = {
+  id: string;
+  doc_type: string;
+  status: string;
+  created_at: string;
+  url: string | null;
+};
+
+function ProVerificationPanel({ professionalId }: { professionalId: string }) {
+  const fetchDocs = useServerFn(getProfessionalDocuments);
+  const review = useServerFn(reviewProfessionalDocument);
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [docs, setDocs] = useState<ProDoc[]>([]);
+  const [badges, setBadges] = useState<Record<string, boolean>>({});
+  const [acting, setActing] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetchDocs({ data: { professionalId } });
+      if (res.success) {
+        setDocs((res.documents as ProDoc[]) || []);
+        setBadges((res.badges as Record<string, boolean>) || {});
+        setLoaded(true);
+      } else {
+        toast.error(res.error || "Impossibile caricare i documenti.");
+      }
+    } catch {
+      toast.error("Errore di connessione.");
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchDocs, professionalId]);
+
+  async function handleReview(documentId: string, status: "approved" | "rejected") {
+    setActing(documentId);
+    try {
+      const res = await review({ data: { documentId, status } });
+      if (res.success) {
+        toast.success(status === "approved" ? "Documento approvato." : "Documento rifiutato.");
+        await load();
+      } else {
+        toast.error(res.error || "Operazione non riuscita.");
+      }
+    } catch {
+      toast.error("Errore di connessione.");
+    } finally {
+      setActing(null);
+    }
+  }
+
+  return (
+    <div className="space-y-2 border-t border-border/60 pt-3">
+      <span className="text-xs font-semibold text-muted-foreground uppercase">
+        Verifica approfondita
+      </span>
+
+      {!loaded ? (
+        <Button
+          onClick={load}
+          disabled={loading}
+          variant="outline"
+          className="w-full h-10 rounded-xl"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+          ) : (
+            <ShieldCheck className="h-4 w-4 mr-1.5" />
+          )}
+          Carica documenti verifica
+        </Button>
+      ) : (
+        <>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(badges).map(([type, on]) => (
+              <span
+                key={type}
+                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                  on ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {on ? <ShieldCheck className="w-3 h-3" /> : null} {DOC_LABELS[type] || type}
+                {on ? " ✓" : ""}
+              </span>
+            ))}
+          </div>
+
+          {docs.length === 0 ? (
+            <p className="text-xs text-muted-foreground">Nessun documento caricato.</p>
+          ) : (
+            <div className="space-y-2">
+              {docs.map((d) => (
+                <div
+                  key={d.id}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border/60 p-2"
+                >
+                  <div className="min-w-0">
+                    <div className="text-xs font-medium truncate">
+                      {DOC_LABELS[d.doc_type] || d.doc_type}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground capitalize">{d.status}</div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {d.url && (
+                      <a
+                        href={d.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="h-7 px-2 grid place-items-center rounded-md border border-border/60 text-xs hover:bg-muted"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    <button
+                      onClick={() => handleReview(d.id, "approved")}
+                      disabled={acting === d.id}
+                      className="h-7 w-7 grid place-items-center rounded-md bg-green-100 text-green-800 hover:bg-green-200 disabled:opacity-50"
+                      title="Approva"
+                    >
+                      {acting === d.id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Check className="w-3.5 h-3.5" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleReview(d.id, "rejected")}
+                      disabled={acting === d.id}
+                      className="h-7 w-7 grid place-items-center rounded-md bg-rose-100 text-rose-800 hover:bg-rose-200 disabled:opacity-50"
+                      title="Rifiuta"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
