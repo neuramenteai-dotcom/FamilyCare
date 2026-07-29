@@ -10,6 +10,12 @@ import {
   getProfessionalDocuments,
   reviewProfessionalDocument,
 } from "@/functions/verification.functions";
+import {
+  getConciergeData,
+  addConciergeSelection,
+  removeConciergeSelection,
+  setPresented,
+} from "@/functions/concierge.functions";
 import { toast } from "sonner";
 import {
   ShieldAlert,
@@ -29,6 +35,9 @@ import {
   FileText,
   Check,
   X,
+  Sparkles,
+  Trash2,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -545,6 +554,13 @@ export function AdminDashboard() {
                 {selectedLead.user_type === "professionista" && (
                   <ProVerificationPanel professionalId={selectedLead.id} />
                 )}
+
+                {selectedLead.user_type === "famiglia" && (
+                  <ConciergeAdminPanel
+                    familyId={selectedLead.id}
+                    planTier={(selectedLead as any).plan_tier}
+                  />
+                )}
               </div>
 
               {/* Status Update section */}
@@ -790,6 +806,193 @@ function ProVerificationPanel({ professionalId }: { professionalId: string }) {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+// Pannello admin concierge: cura la rosa (max 10) e presenta i migliori (max 3)
+// a una famiglia. La famiglia (Premium) vede solo i profili "presentati".
+type ShortlistItem = {
+  selectionId: string;
+  professionalId: string;
+  presented: boolean;
+  notes: string | null;
+  full_name: string | null;
+  city: string | null;
+  experience: string | null;
+};
+type AvailablePro = { id: string; full_name: string | null; city: string | null };
+
+function ConciergeAdminPanel({
+  familyId,
+  planTier,
+}: {
+  familyId: string;
+  planTier?: string | null;
+}) {
+  const fetchData = useServerFn(getConciergeData);
+  const addSel = useServerFn(addConciergeSelection);
+  const removeSel = useServerFn(removeConciergeSelection);
+  const togglePresented = useServerFn(setPresented);
+
+  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [shortlist, setShortlist] = useState<ShortlistItem[]>([]);
+  const [available, setAvailable] = useState<AvailablePro[]>([]);
+  const [toAdd, setToAdd] = useState("");
+  const [acting, setActing] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetchData({ data: { familyId } });
+      if (res.success) {
+        setShortlist((res.shortlist as ShortlistItem[]) || []);
+        setAvailable((res.availablePros as AvailablePro[]) || []);
+        setLoaded(true);
+      } else {
+        toast.error(res.error || "Errore nel caricamento.");
+      }
+    } catch {
+      toast.error("Errore di connessione.");
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchData, familyId]);
+
+  async function handleAdd() {
+    if (!toAdd) return;
+    setActing(true);
+    try {
+      const res = await addSel({ data: { familyId, professionalId: toAdd } });
+      if (res.success) {
+        setToAdd("");
+        await load();
+      } else toast.error(res.error || "Impossibile aggiungere.");
+    } finally {
+      setActing(false);
+    }
+  }
+
+  async function handleRemove(selectionId: string) {
+    setActing(true);
+    try {
+      const res = await removeSel({ data: { selectionId } });
+      if (res.success) await load();
+      else toast.error(res.error || "Impossibile rimuovere.");
+    } finally {
+      setActing(false);
+    }
+  }
+
+  async function handleToggle(selectionId: string, presented: boolean) {
+    setActing(true);
+    try {
+      const res = await togglePresented({ data: { selectionId, presented } });
+      if (res.success) await load();
+      else toast.error(res.error || "Operazione non riuscita.");
+    } finally {
+      setActing(false);
+    }
+  }
+
+  const presentedCount = shortlist.filter((s) => s.presented).length;
+
+  return (
+    <div className="space-y-2 border-t border-border/60 pt-3">
+      <span className="text-xs font-semibold text-muted-foreground uppercase flex items-center gap-1">
+        <Sparkles className="w-3.5 h-3.5 text-primary" /> Concierge
+        {planTier !== "premium" && (
+          <span className="ml-1 normal-case font-normal text-[11px] text-amber-600">
+            (piano non Premium — la famiglia non vedrà i profili)
+          </span>
+        )}
+      </span>
+
+      {!loaded ? (
+        <Button
+          onClick={load}
+          disabled={loading}
+          variant="outline"
+          className="w-full h-10 rounded-xl"
+        >
+          {loading ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : null}
+          Gestisci rosa concierge
+        </Button>
+      ) : (
+        <>
+          <p className="text-[11px] text-muted-foreground">
+            Rosa: {shortlist.length}/10 · Presentati: {presentedCount}/3
+          </p>
+
+          {shortlist.length > 0 && (
+            <div className="space-y-1.5">
+              {shortlist.map((s) => (
+                <div
+                  key={s.selectionId}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-border/60 p-2"
+                >
+                  <div className="min-w-0">
+                    <div className="text-xs font-medium truncate">
+                      {s.full_name || "Professionista"}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground truncate">
+                      {s.city || "—"} · {s.experience || "—"}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      onClick={() => handleToggle(s.selectionId, !s.presented)}
+                      disabled={acting}
+                      className={`h-7 px-2 grid place-items-center rounded-md text-[11px] font-medium disabled:opacity-50 ${
+                        s.presented
+                          ? "bg-green-100 text-green-800 hover:bg-green-200"
+                          : "bg-muted text-muted-foreground hover:bg-muted/70"
+                      }`}
+                      title={s.presented ? "Nascondi" : "Presenta"}
+                    >
+                      {s.presented ? "Presentato" : "Presenta"}
+                    </button>
+                    <button
+                      onClick={() => handleRemove(s.selectionId)}
+                      disabled={acting}
+                      className="h-7 w-7 grid place-items-center rounded-md bg-rose-100 text-rose-800 hover:bg-rose-200 disabled:opacity-50"
+                      title="Rimuovi"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {shortlist.length < 10 && (
+            <div className="flex items-center gap-2 pt-1">
+              <select
+                value={toAdd}
+                onChange={(e) => setToAdd(e.target.value)}
+                className="flex-1 h-9 rounded-md border border-input bg-background px-2 text-xs outline-none"
+              >
+                <option value="">Aggiungi un professionista…</option>
+                {available.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {(p.full_name || "Professionista") + (p.city ? ` — ${p.city}` : "")}
+                  </option>
+                ))}
+              </select>
+              <Button
+                onClick={handleAdd}
+                disabled={!toAdd || acting}
+                size="icon"
+                className="h-9 w-9 rounded-md shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
             </div>
           )}
         </>

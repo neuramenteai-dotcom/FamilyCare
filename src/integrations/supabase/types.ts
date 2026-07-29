@@ -272,6 +272,36 @@ export type Database = {
         };
         Relationships: [];
       };
+      concierge_selections: {
+        Row: {
+          id: string;
+          family_id: string;
+          professional_id: string;
+          presented: boolean;
+          rank: number | null;
+          notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id: string;
+          professional_id: string;
+          presented?: boolean;
+          rank?: number | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string;
+          professional_id?: string;
+          presented?: boolean;
+          rank?: number | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
