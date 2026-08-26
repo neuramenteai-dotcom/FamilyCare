@@ -55,12 +55,26 @@ function PricingPage() {
   const [loadingTier, setLoadingTier] = useState<PlanTier | null>(null);
   const [hasSession, setHasSession] = useState(false);
 
+  // Pagina pubblica: la sessione serve solo a decidere dove mandare l'utente al
+  // clic. Se il client Supabase non è disponibile (es. variabili di build
+  // mancanti) trattiamo l'utente come non autenticato invece di far cadere la
+  // pagina: i prezzi devono restare leggibili in ogni caso.
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setHasSession(!!data.session));
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => setHasSession(!!session));
-    return () => subscription.unsubscribe();
+    let unsubscribe: (() => void) | undefined;
+    try {
+      supabase.auth
+        .getSession()
+        .then(({ data }) => setHasSession(!!data.session))
+        .catch(() => setHasSession(false));
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => setHasSession(!!session));
+      unsubscribe = () => subscription.unsubscribe();
+    } catch (err) {
+      console.error("Supabase non disponibile nel browser:", err);
+      setHasSession(false);
+    }
+    return () => unsubscribe?.();
   }, []);
 
   async function handleCheckout(tier: PlanTier) {
