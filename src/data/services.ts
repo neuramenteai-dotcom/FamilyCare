@@ -23,9 +23,9 @@ export const SERVICES: Service[] = [
     description:
       "Babysitter selezionate con esperienza con neonati, bambini e ragazzi. Anche prima infanzia, doposcuola e weekend.",
     priceFrom: "€8",
-    available: "+1.200 in Italia",
+    available: "A ore o continuativo",
     image: babysitterImg,
-    features: ["Esperienza certificata", "Pronto soccorso pediatrico", "Lingue straniere"],
+    features: ["Anche prima infanzia", "Doposcuola e weekend", "Identità verificata"],
   },
   {
     slug: "badanti",
@@ -34,9 +34,9 @@ export const SERVICES: Service[] = [
     description:
       "Assistenti familiari per anziani e persone non autosufficienti, conviventi o a ore. Esperienza con Alzheimer e Parkinson.",
     priceFrom: "€9",
-    available: "+800 in Italia",
+    available: "Convivenza o a ore",
     image: badanteImg,
-    features: ["OSS / OSA qualificati", "Convivenza o orario", "Contratto CCNL incluso"],
+    features: ["Convivenza o a ore", "Esperienza con non autosufficienti", "Identità verificata"],
   },
   {
     slug: "colf",
@@ -45,9 +45,9 @@ export const SERVICES: Service[] = [
     description:
       "Collaboratrici domestiche per pulizie, stiro, spesa e gestione casa. Una tantum o continuative.",
     priceFrom: "€10",
-    available: "+1.500 in Italia",
+    available: "Una tantum o fissa",
     image: colfImg,
-    features: ["Referenze verificate", "Prodotti professionali", "Massima discrezione"],
+    features: ["Pulizie, stiro e spesa", "Una tantum o continuativa", "Identità verificata"],
   },
   {
     slug: "dogsitter",
@@ -56,9 +56,9 @@ export const SERVICES: Service[] = [
     description:
       "Dog sitter affidabili per passeggiate, pet visit e weekend. Anche per cani con esigenze speciali.",
     priceFrom: "€7",
-    available: "+600 in Italia",
+    available: "Passeggiate e pet visit",
     image: dogsitterImg,
-    features: ["Educatori cinofili", "Foto e GPS in tempo reale", "Assicurazione inclusa"],
+    features: ["Passeggiate e pet visit", "Anche esigenze speciali", "Identità verificata"],
   },
   {
     slug: "tutor",
@@ -67,8 +67,8 @@ export const SERVICES: Service[] = [
     description:
       "Tutor universitari e insegnanti per ogni materia, dalle elementari al liceo. In presenza o online.",
     priceFrom: "€12",
-    available: "+900 in Italia",
+    available: "In presenza o online",
     image: tutorImg,
-    features: ["Tutte le materie", "Anche DSA / BES", "Online o a domicilio"],
+    features: ["Dalle elementari al liceo", "Online o a domicilio", "Identità verificata"],
   },
 ];

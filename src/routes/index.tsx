@@ -1,13 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ShieldCheck, Sparkles, Star, Heart, Users, Clock, MapPin } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  BadgeCheck,
+  Lock,
+  Sparkles,
+  Heart,
+  Users,
+  Clock,
+} from "lucide-react";
 import { Section, SectionHeader } from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { SERVICES } from "@/data/services";
 import heroFamily from "@/assets/hero-family.jpg";
-import t1 from "@/assets/testimonial-1.jpg";
-import t2 from "@/assets/testimonial-2.jpg";
-import t3 from "@/assets/testimonial-3.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,7 +46,7 @@ function Index() {
       <AudienceSplit />
       <ServicesPreview />
       <HowItWorks />
-      <Testimonials />
+      <Guarantees />
       <Stats />
       <WaitlistCTA />
     </>
@@ -52,6 +58,10 @@ function Hero() {
     <section className="relative bg-gradient-hero overflow-hidden">
       <div className="container mx-auto max-w-7xl px-4 lg:px-8 pt-16 md:pt-24 pb-20 md:pb-28 grid lg:grid-cols-2 gap-12 items-center">
         <div className="relative z-10">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft text-primary px-4 py-1.5 text-xs font-semibold tracking-wide">
+            <Sparkles className="h-3.5 w-3.5" />
+            Piattaforma in avvio · Iscrizioni aperte
+          </span>
           <h1 className="mt-5 font-display text-5xl md:text-6xl lg:text-7xl font-semibold leading-[0.98] tracking-tight">
             La cura che la tua <span className="text-gradient-primary italic">famiglia</span>{" "}
             merita.
@@ -81,31 +91,15 @@ function Hero() {
             </Button>
           </div>
 
-          <div className="mt-10 flex items-center gap-6">
-            <div className="flex -space-x-3">
-              {[t1, t2, t3].map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt=""
-                  loading="lazy"
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full border-2 border-background object-cover"
-                />
-              ))}
-            </div>
-            <div>
-              <div className="flex items-center gap-1 text-primary">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current" />
-                ))}
-                <span className="text-sm font-semibold text-foreground ml-1">4.9/5</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Da <span className="font-semibold text-foreground">5.000+ famiglie</span> italiane
-              </p>
-            </div>
+          <div className="mt-10 flex items-start gap-3 max-w-md">
+            <span className="mt-0.5 h-9 w-9 shrink-0 rounded-full bg-primary-soft text-primary grid place-items-center">
+              <ShieldCheck className="h-4.5 w-4.5" />
+            </span>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Nessun profilo diventa visibile prima che il{" "}
+              <span className="font-semibold text-foreground">documento d'identità</span> sia stato
+              verificato. È la regola da cui siamo partiti.
+            </p>
           </div>
         </div>
 
@@ -125,18 +119,18 @@ function Hero() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">100% verificati</p>
-              <p className="text-xs text-muted-foreground">Background check</p>
+              <p className="text-sm font-semibold">Identità verificata</p>
+              <p className="text-xs text-muted-foreground">Prima della pubblicazione</p>
             </div>
           </div>
 
           <div className="hidden md:flex absolute -right-4 bottom-8 bg-card rounded-2xl p-4 shadow-card items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-accent grid place-items-center text-accent-foreground">
-              <Clock className="h-5 w-5" />
+              <Heart className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">Match in 5 min</p>
-              <p className="text-xs text-muted-foreground">Media nazionale</p>
+              <p className="text-sm font-semibold">Gratis per i pro</p>
+              <p className="text-xs text-muted-foreground">Nessun costo, mai</p>
             </div>
           </div>
         </div>
@@ -166,14 +160,13 @@ function AudienceSplit() {
             Sei una famiglia che cerca aiuto
           </h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-            Raccontaci di cosa hai bisogno. Ti proponiamo profili verificati e disponibili nella tua
-            zona, entro 24 ore.
+            Raccontaci di cosa hai bisogno e scopri i profili verificati disponibili nella tua zona.
           </p>
           <ul className="space-y-2 text-sm mb-6">
             {[
-              "Profili con foto, esperienza e referenze",
-              "Background check su tutti i professionisti",
-              "Contratto e gestione paghe inclusi",
+              "Profili con foto, video ed esperienza",
+              "Documento d'identità verificato prima della pubblicazione",
+              "Chat e videochiamate direttamente in piattaforma",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary-soft text-primary grid place-items-center text-xs font-bold">
@@ -207,8 +200,8 @@ function AudienceSplit() {
           <ul className="space-y-2 text-sm mb-6">
             {[
               "Iscrizione 100% gratuita, sempre",
-              "Famiglie in regola — niente lavoro nero",
-              "Visibilità nella tua città in 48 ore",
+              "Ti contattano solo famiglie abbonate",
+              "Profilo online dopo la verifica del documento",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">
@@ -231,10 +224,10 @@ function AudienceSplit() {
 
 function TrustStrip() {
   const items = [
-    { icon: ShieldCheck, label: "Background check obbligatorio" },
+    { icon: ShieldCheck, label: "Documento d'identità verificato" },
     { icon: Heart, label: "Conforme GDPR" },
-    { icon: Users, label: "Recensioni verificate" },
-    { icon: Clock, label: "Supporto 7 giorni su 7" },
+    { icon: Users, label: "Chat e videochiamate integrate" },
+    { icon: Clock, label: "Gratis per i professionisti" },
   ];
   return (
     <div className="border-y border-border/60 bg-secondary/40">
@@ -331,12 +324,12 @@ function HowItWorks() {
     {
       n: "02",
       title: "Scopri i profili giusti",
-      text: "Sfoglia con il nostro swipe i profili verificati nella tua zona, con foto, video e recensioni reali.",
+      text: "Sfoglia i profili verificati nella tua zona: età, esperienza, specializzazione, video di presentazione.",
     },
     {
       n: "03",
-      title: "Conosci e prenota",
-      text: "Chatta in app, fai una videocall conoscitiva, conferma. Contratto e pagamento gestiti per te.",
+      title: "Conosci e decidi",
+      text: "Chatta in piattaforma e fai una videochiamata conoscitiva, poi accordati direttamente con la persona che hai scelto.",
     },
   ];
 
@@ -374,74 +367,48 @@ function HowItWorks() {
   );
 }
 
-function Testimonials() {
+function Guarantees() {
   const items = [
     {
-      img: t1,
-      quote:
-        "Cercavo da mesi una babysitter affidabile. Su Family Care l'ho trovata in 2 giorni. Mia figlia la adora.",
-      name: "Giulia M.",
-      city: "Milano",
-      service: "Babysitter",
+      icon: ShieldCheck,
+      title: "Identità verificata",
+      text: "Ogni professionista carica un documento d'identità. Viene controllato prima che il profilo diventi visibile alle famiglie.",
     },
     {
-      img: t3,
-      quote:
-        "Per mia mamma serviva una persona davvero competente. Le verifiche di Family Care mi hanno dato pace.",
-      name: "Anna R.",
-      city: "Torino",
-      service: "Collaboratrice domestica",
+      icon: BadgeCheck,
+      title: "Verifica approfondita",
+      text: "Casellario giudiziale, lettere di referenza e attestati formativi: chi li fornisce ottiene un bollino di verifica sul profilo.",
     },
     {
-      img: t2,
-      quote: "Lavoro tanto e viaggio. Sapere che il mio cane è in buone mani vale ogni euro speso.",
-      name: "Marco T.",
-      city: "Roma",
-      service: "Dog sitter",
+      icon: Lock,
+      title: "Documenti mai condivisi",
+      text: "I file restano in un archivio privato. Alle famiglie mostriamo l'esito della verifica, mai il documento originale.",
     },
   ];
 
   return (
     <Section>
       <SectionHeader
-        eyebrow="Testimonianze"
+        eyebrow="Le nostre garanzie"
         title={
           <>
-            Famiglie italiane <em className="italic text-primary">felici</em>
+            La fiducia non si chiede, <em className="italic text-primary">si dimostra.</em>
           </>
         }
+        subtitle="Far entrare qualcuno in casa è una decisione seria. Ecco cosa controlliamo prima che accada."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {items.map((it) => (
-          <figure
-            key={it.name}
+          <div
+            key={it.title}
             className="bg-card border border-border rounded-3xl p-7 flex flex-col"
           >
-            <div className="flex items-center gap-1 text-primary mb-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-current" />
-              ))}
+            <div className="h-12 w-12 rounded-2xl bg-primary-soft text-primary grid place-items-center mb-4">
+              <it.icon className="h-5 w-5" />
             </div>
-            <blockquote className="font-display text-lg leading-snug text-foreground flex-1">
-              "{it.quote}"
-            </blockquote>
-            <figcaption className="flex items-center gap-3 mt-6 pt-6 border-t border-border">
-              <img
-                src={it.img}
-                alt={it.name}
-                loading="lazy"
-                width={48}
-                height={48}
-                className="h-12 w-12 rounded-full object-cover"
-              />
-              <div>
-                <p className="font-semibold text-sm">{it.name}</p>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <MapPin className="h-3 w-3" /> {it.city} · {it.service}
-                </p>
-              </div>
-            </figcaption>
-          </figure>
+            <h3 className="font-display text-xl font-semibold mb-2">{it.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{it.text}</p>
+          </div>
         ))}
       </div>
     </Section>
@@ -450,10 +417,10 @@ function Testimonials() {
 
 function Stats() {
   const stats = [
-    { n: "5.000+", l: "Famiglie iscritte" },
-    { n: "5.000+", l: "Professionisti verificati" },
-    { n: "4.9/5", l: "Soddisfazione media" },
-    { n: "5 min", l: "Tempo medio di match" },
+    { n: "5", l: "Servizi in un'unica piattaforma" },
+    { n: "0 €", l: "Costo per i professionisti" },
+    { n: "100%", l: "Profili con identità verificata" },
+    { n: "3", l: "Piani per le famiglie, da 29,99 €" },
   ];
   return (
     <Section className="bg-primary text-primary-foreground" containerClassName="">
@@ -489,11 +456,11 @@ function WaitlistCTA() {
             {[
               {
                 t: "Famiglie",
-                d: "Servizio da €199 — paghi solo dopo aver scelto il profilo giusto",
+                d: "Abbonamento mensile da 29,99 € — disdici quando vuoi",
               },
               {
                 t: "Professionisti",
-                d: "Iscrizione 100% gratuita, sempre. Profilo online in 48 ore",
+                d: "Iscrizione 100% gratuita, sempre. Nessuna commissione",
               },
               { t: "Zero spam", d: "I tuoi dati restano riservati e conformi al GDPR" },
             ].map((b) => (

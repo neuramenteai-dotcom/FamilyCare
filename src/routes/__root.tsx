@@ -5,6 +5,10 @@ import { SiteFooter } from "@/components/SiteFooter";
 
 import appCss from "../styles.css?url";
 
+// URL pubblico del sito, usato per i meta tag assoluti (og:image, canonical).
+// I crawler social non accettano percorsi relativi.
+const SITE_URL = "https://familycare.familycareitalia.workers.dev";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -49,7 +53,18 @@ export const Route = createRootRoute({
           "Babysitter, colf, collaboratrici domestiche, dog sitter e tutor verificati. Tutto in un'unica piattaforma.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "it_IT" },
+      { property: "og:site_name", content: "Family Care" },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { property: "og:image", content: `${SITE_URL}/og-image.jpg` },
+      { property: "og:image:width", content: "1536" },
+      { property: "og:image:height", content: "1024" },
+      {
+        property: "og:image:alt",
+        content: "Family Care — professionisti verificati per la tua famiglia",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.jpg` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -64,6 +79,7 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
       },
+      { rel: "canonical", href: `${SITE_URL}/` },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", href: "/favicon.ico" },
     ],
@@ -75,7 +91,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <head>
         <HeadContent />
       </head>
