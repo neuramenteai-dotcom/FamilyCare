@@ -22,9 +22,13 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# File di lavoro locali (script usa e getta, non parte del progetto)
+scratch/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+.claude/settings.local.json
 .idea
 .DS_Store
 *.suo
