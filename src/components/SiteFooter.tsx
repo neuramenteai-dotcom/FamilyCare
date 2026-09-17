@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
-import { Instagram, Facebook, Linkedin, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -14,16 +14,13 @@ export function SiteFooter() {
               semplice, sicuro e veloce.
             </p>
             <div className="flex items-center gap-3 mt-5">
-              {[Instagram, Facebook, Linkedin, Mail].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  aria-label="social"
-                  className="h-9 w-9 grid place-items-center rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors border border-border"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+              <Link
+                to="/contatti"
+                aria-label="Contattaci"
+                className="h-9 w-9 grid place-items-center rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors border border-border"
+              >
+                <Mail className="h-4 w-4" />
+              </Link>
             </div>
           </div>
 
