@@ -6,16 +6,16 @@ import { Search, Heart, MessageCircle, Calendar, ShieldCheck, Sparkles } from "l
 export const Route = createFileRoute("/come-funziona")({
   head: () => ({
     meta: [
-      { title: "Come funziona — Trova aiuto in 5 minuti | Family Care" },
+      { title: "Come funziona — Dalla ricerca alla videochiamata | Family Care" },
       {
         name: "description",
         content:
-          "Scopri come funziona Family Care: scegli il servizio, sfoglia profili verificati, chatta e prenota. Tutto in pochi minuti, dal cellulare.",
+          "Scopri come funziona Family Care: dimmi cosa cerchi, guarda i profili verificati, chatta e fai una videochiamata conoscitiva prima di scegliere.",
       },
       { property: "og:title", content: "Come funziona Family Care" },
       {
         property: "og:description",
-        content: "Dal primo swipe alla prenotazione confermata. Tutto in 5 minuti.",
+        content: "Profili verificati, chat illimitata e videochiamata conoscitiva prima di scegliere.",
       },
     ],
   }),
@@ -31,18 +31,18 @@ function HowPage() {
     },
     {
       icon: Heart,
-      title: "Scopri con uno swipe",
-      text: "Profili verificati con foto, video di presentazione, esperienza, recensioni reali. Salva quelli che ti piacciono.",
+      title: "Guarda i profili verificati",
+      text: "Foto, video di presentazione, esperienza, zona e servizi. Ogni profilo ha il documento d'identità già verificato dal nostro team.",
     },
     {
       icon: MessageCircle,
-      title: "Chatta o videocall",
-      text: "Messaggia in app, fissa una chiamata conoscitiva senza impegno. Tutto resta privato.",
+      title: "Chatta senza limiti",
+      text: "Messaggi illimitati con i profili che contatti, dentro la piattaforma. Il tuo numero privato non viene mai condiviso.",
     },
     {
       icon: Calendar,
-      title: "Prenota e rilassati",
-      text: "Conferma data, contratto e pagamento gestiti da noi. Recensioni reciproche dopo ogni servizio.",
+      title: "Vedetevi in videochiamata",
+      text: "Con i piani Plus e Premium fissi una videochiamata conoscitiva senza impegno, poi decidi con calma. L'accordo lo prendete direttamente voi.",
     },
   ];
 
@@ -54,9 +54,9 @@ function HowPage() {
             Come funziona
           </span>
           <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05]">
-            Da <em className="italic text-primary">"mi serve aiuto"</em> a "tutto fatto"
+            Dalla ricerca alla <em className="italic text-primary">videochiamata</em>,
             <br />
-            in cinque minuti.
+            senza uscire dalla piattaforma.
           </h1>
         </div>
       </Section>
@@ -84,24 +84,24 @@ function HowPage() {
         <SectionHeader
           eyebrow="Per i professionisti"
           title="Lavora con chi ti rispetta"
-          subtitle="Anche tu sei un professionista della cura? Su Family Care gestisci agenda, clienti e pagamenti con un'unica app."
+          subtitle="Anche tu sei un professionista della cura? Su Family Care ti iscrivi gratis e ti fai trovare dalle famiglie della tua zona."
         />
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
               icon: ShieldCheck,
-              t: "Pagamenti garantiti",
-              d: "Riceverai sempre il compenso dopo ogni servizio. Niente attese.",
+              t: "Iscrizione gratuita",
+              d: "Nessun costo di iscrizione e nessuna commissione sul rapporto tra te e la famiglia.",
             },
             {
               icon: Sparkles,
-              t: "Profilo professionale",
-              d: "Foto, video, certificazioni, recensioni: il tuo CV vivente.",
+              t: "Profilo con video",
+              d: "Foto, video di presentazione, esperienza e attestati: ti presenti per come sei davvero.",
             },
             {
               icon: Calendar,
-              t: "Agenda intelligente",
-              d: "Gestisci disponibilità, blocca giorni, accetta o rifiuta in 1 tap.",
+              t: "Contatti da famiglie abbonate",
+              d: "Ti scrivono solo famiglie con un piano attivo: chi ti contatta sta cercando davvero.",
             },
           ].map((it) => (
             <div key={it.t} className="bg-card rounded-3xl p-7 border border-border">

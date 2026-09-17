@@ -39,8 +39,8 @@ function ServicesPage() {
             Cinque modi di prenderci cura della tua famiglia
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Tutti i nostri professionisti passano un processo di verifica in 4 step: documenti,
-            referenze, colloquio e background check.
+            Il documento d'identità di ogni professionista è verificato dal nostro team prima che il
+            profilo diventi visibile. Casellario, referenze e attestati danno bollini aggiuntivi.
           </p>
         </div>
       </Section>
