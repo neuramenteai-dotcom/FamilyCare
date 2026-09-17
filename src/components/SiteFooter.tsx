@@ -82,13 +82,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="font-display font-semibold mb-3">Città</h4>
+            <h4 className="font-display font-semibold mb-3">Dove siamo</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Milano</li>
-              <li>Roma</li>
-              <li>Torino</li>
-              <li>Napoli</li>
-              <li>Bologna</li>
+              <li className="text-foreground font-medium">Roma</li>
+              <li>Stiamo partendo da qui.</li>
+              <li>Le altre città arriveranno dopo.</li>
             </ul>
           </div>
         </div>
