@@ -1,14 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  ShieldCheck,
-  BadgeCheck,
-  Lock,
-  Sparkles,
-  Heart,
-  Users,
-  Clock,
-} from "lucide-react";
+import { ArrowRight, ShieldCheck, BadgeCheck, Lock, Sparkles, Heart, Users } from "lucide-react";
 import { Section, SectionHeader } from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { WaitlistForm } from "@/components/WaitlistForm";
@@ -25,7 +16,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia. Cerchi aiuto o vuoi offrire i tuoi servizi: iscrizione gratuita.",
+          "Family Care è la piattaforma italiana per trovare professionisti con identità verificata per la tua famiglia. Cerchi aiuto o vuoi offrire i tuoi servizi: iscrizione gratuita.",
       },
       { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
       {
@@ -42,7 +33,6 @@ function Index() {
   return (
     <>
       <Hero />
-      <TrustStrip />
       <AudienceSplit />
       <ServicesPreview />
       <HowItWorks />
@@ -67,8 +57,8 @@ function Hero() {
             merita.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-            Babysitter, assistenti familiari, colf, dog sitter e tutor verificati. Trova la persona
-            giusta in pochi minuti.
+            Babysitter, assistenti familiari, colf, dog sitter e tutor con identità verificata.
+            Trova la persona giusta per la tua famiglia.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -97,8 +87,8 @@ function Hero() {
             </span>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Nessun profilo diventa visibile prima che{" "}
-              <span className="font-semibold text-foreground">l'identità</span> sia stata verificata.
-              È la regola da cui siamo partiti.
+              <span className="font-semibold text-foreground">l'identità</span> sia stata
+              verificata. È la regola da cui siamo partiti.
             </p>
           </div>
         </div>
@@ -130,7 +120,7 @@ function Hero() {
             </div>
             <div>
               <p className="text-sm font-semibold">Gratis per i pro</p>
-              <p className="text-xs text-muted-foreground">Nessun costo, mai</p>
+              <p className="text-xs text-muted-foreground">Nessun costo di iscrizione</p>
             </div>
           </div>
         </div>
@@ -143,7 +133,6 @@ function AudienceSplit() {
   return (
     <Section className="bg-secondary/20" id="per-chi">
       <SectionHeader
-        eyebrow="Family Care è per te se…"
         title={
           <>
             Una piattaforma. <em className="italic text-primary">Due percorsi.</em>
@@ -151,6 +140,9 @@ function AudienceSplit() {
         }
         subtitle="Famiglie e professionisti hanno bisogni diversi. Per questo abbiamo costruito due esperienze su misura."
       />
+      <p className="text-center text-sm font-semibold tracking-[0.18em] uppercase text-primary mb-6">
+        Family Care è per te se…
+      </p>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-card border border-border rounded-3xl p-8 flex flex-col">
           <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground grid place-items-center mb-4">
@@ -218,32 +210,11 @@ function AudienceSplit() {
   );
 }
 
-function TrustStrip() {
-  const items = [
-    { icon: ShieldCheck, label: "Identità verificata" },
-    { icon: Heart, label: "Conforme GDPR" },
-    { icon: Users, label: "Chat e videochiamate integrate" },
-    { icon: Clock, label: "Gratis per i professionisti" },
-  ];
-  return (
-    <div className="border-y border-border/60 bg-secondary/40">
-      <div className="container mx-auto max-w-7xl px-4 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {items.map((it) => (
-          <div key={it.label} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-            <it.icon className="h-4 w-4 text-primary shrink-0" />
-            <span className="font-medium">{it.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function ServicesPreview() {
   return (
     <Section id="servizi">
       <SectionHeader
-        eyebrow="Cinque servizi, una sola app"
+        eyebrow="Una sola piattaforma"
         title={
           <>
             Tutto quello che serve <em className="italic text-primary">per la tua famiglia</em>
@@ -315,7 +286,7 @@ function HowItWorks() {
     {
       n: "01",
       title: "Racconta cosa cerchi",
-      text: "Scegli il servizio, la zona e quando ti serve aiuto. Bastano 60 secondi.",
+      text: "Scegli il servizio, la zona e quando ti serve aiuto.",
     },
     {
       n: "02",
@@ -338,7 +309,7 @@ function HowItWorks() {
             Tre passi. <span className="text-primary italic">Zero stress.</span>
           </>
         }
-        subtitle="Dimentica le settimane di ricerca. Con Family Care trovi la persona giusta in pochi minuti."
+        subtitle="Racconti cosa cerchi, guardi i profili verificati e conosci le persone prima di decidere."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {steps.map((s) => (
@@ -415,7 +386,7 @@ function Stats() {
   const stats = [
     { n: "5", l: "Servizi in un'unica piattaforma" },
     { n: "0 €", l: "Costo per i professionisti" },
-    { n: "100%", l: "Profili con identità verificata" },
+    { n: "Roma", l: "La città da cui partiamo" },
     { n: "3", l: "Piani per le famiglie, da 29,99 €" },
   ];
   return (
@@ -456,7 +427,7 @@ function WaitlistCTA() {
               },
               {
                 t: "Professionisti",
-                d: "Iscrizione 100% gratuita, sempre. Nessuna commissione",
+                d: "Iscrizione gratuita, nessuna commissione",
               },
               { t: "Zero spam", d: "I tuoi dati restano riservati e conformi al GDPR" },
             ].map((b) => (
