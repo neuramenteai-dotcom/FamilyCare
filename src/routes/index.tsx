@@ -156,16 +156,14 @@ function AudienceSplit() {
           <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground grid place-items-center mb-4">
             <Heart className="h-5 w-5 fill-current" />
           </div>
-          <h3 className="font-display text-2xl font-semibold mb-2">
-            Sei una famiglia che cerca aiuto
-          </h3>
+          <h3 className="font-display text-2xl font-semibold mb-2">Sei una famiglia</h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
             Raccontaci di cosa hai bisogno e scopri i profili verificati disponibili nella tua zona.
           </p>
           <ul className="space-y-2 text-sm mb-6">
             {[
-              "Profili con foto, video ed esperienza",
-              "Identità verificata prima della pubblicazione",
+              "Profilo con foto, esperienza dichiarata dal professionista ed eventuali video di presentazione",
+              "Identità verificata",
               "Chat e videochiamate direttamente in piattaforma",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
@@ -190,18 +188,16 @@ function AudienceSplit() {
           <div className="h-12 w-12 rounded-2xl bg-foreground text-background grid place-items-center mb-4">
             <Users className="h-5 w-5" />
           </div>
-          <h3 className="font-display text-2xl font-semibold mb-2">
-            Sei un professionista della cura
-          </h3>
+          <h3 className="font-display text-2xl font-semibold mb-2">Sei un professionista</h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
             Babysitter, assistente familiare, colf, dog sitter o tutor: crea il tuo profilo e ricevi
             richieste dalle famiglie della tua zona.
           </p>
           <ul className="space-y-2 text-sm mb-6">
             {[
-              "Iscrizione 100% gratuita, sempre",
-              "Ti contattano solo famiglie abbonate",
-              "Profilo online dopo la verifica del documento",
+              "Iscrizione gratuita",
+              "Ti scrivono famiglie che hanno davvero bisogno",
+              "Profilo online dopo la verifica del documento d'identità",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">
