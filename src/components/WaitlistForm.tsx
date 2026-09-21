@@ -410,11 +410,7 @@ function FamilyForm() {
         disabled={loading || !privacyAccepted}
         className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold shadow-soft"
       >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          "Invia richiesta — risposta entro 24 ore"
-        )}
+        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crea il mio account"}
       </Button>
     </form>
   );

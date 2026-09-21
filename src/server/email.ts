@@ -40,19 +40,44 @@ export async function sendEmailNotification(data: {
 
   const subjectUser =
     data.userType === "famiglia"
-      ? "Conferma Richiesta Assistenza - FamilyCare"
-      : "Conferma Iscrizione Candidatura - FamilyCare";
+      ? "Iscrizione ricevuta — Family Care"
+      : "Iscrizione ricevuta — Family Care";
 
   const subjectAdmin =
     data.userType === "famiglia"
       ? `🏠 Nuovo Lead Famiglia — ${data.full_name || "Anonimo"}`
       : `👩‍💼 Nuova Candidata — ${data.full_name || "Anonima"}`;
 
-  // Content for User
+  // Testo per l'utente.
+  // Nessuna promessa di tempi, nessun contatto WhatsApp (non e' un canale che
+  // usiamo e non e' stato consentito), nessun riferimento a profili disponibili
+  // o a colloqui che non facciamo: si dichiara solo cio' che accade davvero.
+  const nome = (data.full_name || "").trim();
+  const saluto = nome ? `Ciao ${nome},` : "Ciao,";
+  const dove = (data.city || "").trim();
+
   const textUser =
     data.userType === "famiglia"
-      ? `Ciao ${data.full_name || ""},\n\nAbbiamo ricevuto la tua richiesta di assistenza per la zona ${data.city || ""}.\nTi contatteremo entro 24 ore su WhatsApp o via Email per farti vedere i profili disponibili.\n\nGrazie,\nIl team di FamilyCare`
-      : `Ciao ${data.full_name || ""},\n\nGrazie per esserti candidata su FamilyCare.\nAbbiamo ricevuto il tuo profilo e verificheremo i tuoi dati entro 48 ore. Ti contatteremo su WhatsApp al numero ${data.phone || ""} per il colloquio conoscitivo.\n\nUn cordiale saluto,\nIl team di FamilyCare`;
+      ? `${saluto}
+
+grazie per esserti iscritto a Family Care.
+
+Family Care è in fase di avvio: stiamo selezionando i primi professionisti verificati, a partire da Roma. Ti scriviamo a questo indirizzo appena ci saranno profili${dove ? ` nella zona di ${dove}` : ""}.
+
+Nel frattempo non devi fare nulla e non ti viene chiesto alcun pagamento.
+
+A presto,
+Il team di Family Care`
+      : `${saluto}
+
+grazie per esserti iscritto a Family Care. Abbiamo ricevuto il tuo profilo.
+
+Prima che diventi visibile alle famiglie, il nostro team verifica il tuo documento d'identità. Ti scriviamo a questo indirizzo quando la verifica è completata, oppure se ci serve qualcosa in più.
+
+L'iscrizione è gratuita e Family Care non trattiene commissioni sul rapporto tra te e la famiglia.
+
+A presto,
+Il team di Family Care`;
 
   // Content for Admin
   const textAdmin =
