@@ -14,13 +14,13 @@ export const Route = createFileRoute("/servizi")({
       {
         name: "description",
         content:
-          "Scopri i 5 servizi di Family Care: babysitter, collaboratrici domestiche, colf, dog sitter e tutor. Professionisti verificati, prezzi trasparenti, contratto incluso.",
+          "Babysitter, assistenti familiari, colf, dog sitter e tutor. L'identità di ogni professionista è verificata prima che il profilo diventi visibile.",
       },
       { property: "og:title", content: "I servizi Family Care" },
       {
         property: "og:description",
         content:
-          "5 categorie di servizi alla famiglia con professionisti verificati in tutta Italia.",
+          "Professionisti della cura con identità verificata prima della pubblicazione del profilo.",
       },
     ],
   }),
@@ -36,11 +36,12 @@ function ServicesPage() {
             I nostri servizi
           </span>
           <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05]">
-            Cinque modi di prenderci cura della tua famiglia
+            Come ci prendiamo cura della tua famiglia…
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Il documento d'identità di ogni professionista è verificato dal nostro team prima che il
-            profilo diventi visibile. Casellario, referenze e attestati danno bollini aggiuntivi.
+            Prima di rendere visibile un profilo, verifichiamo l'identità di ogni professionista.
+            Casellario giudiziale, referenze e attestati permettono di ottenere bollini di verifica
+            aggiuntivi, per aiutarti a scegliere in modo più consapevole e sicuro.
           </p>
         </div>
       </Section>
@@ -61,10 +62,7 @@ function ServicesPage() {
               />
             </div>
             <div>
-              <span className="text-xs font-semibold tracking-[0.18em] uppercase text-primary">
-                Servizio {String(i + 1).padStart(2, "0")}
-              </span>
-              <h2 className="mt-2 font-display text-3xl md:text-5xl font-semibold leading-[1.05]">
+              <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.05]">
                 {s.name}
               </h2>
               <p className="mt-3 text-xl text-primary font-medium italic">{s.tagline}</p>
