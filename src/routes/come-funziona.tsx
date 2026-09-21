@@ -33,7 +33,7 @@ function HowPage() {
     {
       icon: Heart,
       title: "Guarda i profili verificati",
-      text: "Foto, video di presentazione, esperienza, zona e servizi. Ogni profilo ha il documento d'identità già verificato dal nostro team.",
+      text: "Foto, video di presentazione, esperienza, zona e servizi. Ogni profilo ha l'identità già verificata dal nostro team.",
     },
     {
       icon: MessageCircle,

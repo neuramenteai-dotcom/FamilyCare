@@ -97,8 +97,8 @@ function Hero() {
             </span>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Nessun profilo diventa visibile prima che il{" "}
-              <span className="font-semibold text-foreground">documento d'identità</span> sia stato
-              verificato. È la regola da cui siamo partiti.
+              <span className="font-semibold text-foreground">identità</span> sia stata verificata.
+              È la regola da cui siamo partiti.
             </p>
           </div>
         </div>
@@ -165,7 +165,7 @@ function AudienceSplit() {
           <ul className="space-y-2 text-sm mb-6">
             {[
               "Profili con foto, video ed esperienza",
-              "Documento d'identità verificato prima della pubblicazione",
+              "Identità verificata prima della pubblicazione",
               "Chat e videochiamate direttamente in piattaforma",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
@@ -224,7 +224,7 @@ function AudienceSplit() {
 
 function TrustStrip() {
   const items = [
-    { icon: ShieldCheck, label: "Documento d'identità verificato" },
+    { icon: ShieldCheck, label: "Identità verificata" },
     { icon: Heart, label: "Conforme GDPR" },
     { icon: Users, label: "Chat e videochiamate integrate" },
     { icon: Clock, label: "Gratis per i professionisti" },
@@ -372,7 +372,7 @@ function Guarantees() {
     {
       icon: ShieldCheck,
       title: "Identità verificata",
-      text: "Ogni professionista carica un documento d'identità. Viene controllato prima che il profilo diventi visibile alle famiglie.",
+      text: "L'identità di ogni professionista è verificata prima che il profilo diventi visibile alle famiglie.",
     },
     {
       icon: BadgeCheck,

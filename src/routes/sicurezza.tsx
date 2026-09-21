@@ -9,13 +9,13 @@ export const Route = createFileRoute("/sicurezza")({
       {
         name: "description",
         content:
-          "Documento d'identità verificato prima della pubblicazione, bollini di verifica aggiuntivi, videochiamata conoscitiva e conformità GDPR.",
+          "Identità verificata prima della pubblicazione, bollini di verifica aggiuntivi, videochiamata conoscitiva e conformità GDPR.",
       },
       { property: "og:title", content: "Sicurezza Family Care" },
       {
         property: "og:description",
         content:
-          "Nessun profilo è visibile prima che il documento d'identità sia stato verificato dal nostro team.",
+          "Nessun profilo è visibile prima che l'identità sia stata verificata dal nostro team.",
       },
     ],
   }),
@@ -36,9 +36,8 @@ function SecurityPage() {
             <em className="italic text-primary">si dimostra.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Nessun profilo diventa visibile alle famiglie prima che il documento d'identità sia
-            stato controllato dal nostro team. Qui sotto trovi esattamente cosa verifichiamo — e
-            cosa no.
+            Nessun profilo diventa visibile alle famiglie prima che l'identità sia stata verificata
+            dal nostro team. Qui sotto trovi esattamente cosa verifichiamo — e cosa no.
           </p>
         </div>
       </Section>
@@ -48,7 +47,7 @@ function SecurityPage() {
           {[
             {
               icon: FileCheck,
-              title: "1. Documento d'identità verificato",
+              title: "1. Identità verificata",
               text: "Obbligatorio per tutti. Il professionista carica carta d'identità o passaporto, il nostro team li controlla e solo dopo il profilo diventa visibile alle famiglie.",
             },
             {
@@ -85,10 +84,10 @@ function SecurityPage() {
             <h2 className="font-display text-2xl font-semibold">Cosa non verifichiamo</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
-            Preferiamo dirtelo prima. Un documento d'identità verificato conferma che la persona è
-            chi dice di essere: non è una garanzia sul suo comportamento, sulle sue capacità
-            professionali o sull'esito del rapporto di lavoro. Non svolgiamo indagini investigative,
-            non verifichiamo lo stato di salute e non sostituiamo il colloquio che farai tu.
+            Preferiamo dirtelo prima. Un'identità verificata conferma che la persona è chi dice di
+            essere: non è una garanzia sul suo comportamento, sulle sue capacità professionali o
+            sull'esito del rapporto di lavoro. Non svolgiamo indagini investigative, non
+            verifichiamo lo stato di salute e non sostituiamo il colloquio che farai tu.
           </p>
           <p className="text-muted-foreground leading-relaxed mt-4">
             Il casellario giudiziale e le referenze sono documenti che il professionista sceglie di
