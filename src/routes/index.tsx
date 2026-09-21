@@ -96,8 +96,8 @@ function Hero() {
               <ShieldCheck className="h-4.5 w-4.5" />
             </span>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Nessun profilo diventa visibile prima che il{" "}
-              <span className="font-semibold text-foreground">identità</span> sia stata verificata.
+              Nessun profilo diventa visibile prima che{" "}
+              <span className="font-semibold text-foreground">l'identità</span> sia stata verificata.
               È la regola da cui siamo partiti.
             </p>
           </div>
