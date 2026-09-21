@@ -38,19 +38,19 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         title:
-          "Family Care — Trova babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati",
+          "Family Care — Trova babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
       },
       {
         name: "description",
         content:
-          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, collaboratrici domestiche, dog sitter e tutor.",
+          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, assistenti familiari, dog sitter e tutor.",
       },
       { name: "author", content: "Family Care" },
       { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
       {
         property: "og:description",
         content:
-          "Babysitter, colf, collaboratrici domestiche, dog sitter e tutor verificati. Tutto in un'unica piattaforma.",
+          "Babysitter, colf, assistenti familiari, dog sitter e tutor verificati. Tutto in un'unica piattaforma.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },

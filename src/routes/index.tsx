@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Family Care — Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati",
+          "Family Care — Babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
       },
       {
         name: "description",
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Babysitter, colf, collaboratrici domestiche, dog sitter e tutor verificati. Cerchi aiuto o offri i tuoi servizi: tutto in un'unica piattaforma.",
+          "Babysitter, colf, assistenti familiari, dog sitter e tutor verificati. Cerchi aiuto o offri i tuoi servizi: tutto in un'unica piattaforma.",
       },
     ],
   }),
@@ -67,8 +67,8 @@ function Hero() {
             merita.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-            Babysitter, collaboratrici domestiche, colf, dog sitter e tutor verificati. Trova la
-            persona giusta in pochi minuti.
+            Babysitter, assistenti familiari, colf, dog sitter e tutor verificati. Trova la persona
+            giusta in pochi minuti.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -194,8 +194,8 @@ function AudienceSplit() {
             Sei un professionista della cura
           </h3>
           <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-            Babysitter, collaboratrice domestica, colf, dog sitter o tutor: crea il tuo profilo e
-            ricevi richieste dalle famiglie della tua zona.
+            Babysitter, assistente familiare, colf, dog sitter o tutor: crea il tuo profilo e ricevi
+            richieste dalle famiglie della tua zona.
           </p>
           <ul className="space-y-2 text-sm mb-6">
             {[

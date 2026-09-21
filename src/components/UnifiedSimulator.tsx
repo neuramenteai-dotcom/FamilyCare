@@ -39,7 +39,7 @@ const LIVEL_RATES: Record<string, { label: string; rate: number; desc: string }>
   CS: {
     label: "Livello CS (Assistenti a non autosufficienti - non formati)",
     rate: 9.0,
-    desc: "Accudimento di persone non autosufficienti (collaboratrici domestiche standard).",
+    desc: "Accudimento di persone non autosufficienti (assistenti familiari senza formazione specifica).",
   },
   D: {
     label: "Livello D (Profili gestionali o infermieristici)",
@@ -49,13 +49,13 @@ const LIVEL_RATES: Record<string, { label: string; rate: number; desc: string }>
   DS: {
     label: "Livello DS (Assistenti a non autosufficienti - formati)",
     rate: 11.5,
-    desc: "Infermieri, collaboratrici domestiche con certificazione professionale riconosciuta.",
+    desc: "Infermieri, assistenti familiari con certificazione professionale riconosciuta.",
   },
 };
 
 const SERVICE_RATES: Record<string, { label: string; rate: number }> = {
   babysitter: { label: "Babysitter", rate: 9.0 },
-  badanti: { label: "Collaboratrice domestica / Assistente familiare", rate: 9.5 },
+  badanti: { label: "Assistente familiare", rate: 9.5 },
   colf: { label: "Colf e pulizie", rate: 10.0 },
   dogsitter: { label: "Dog sitter", rate: 8.0 },
   tutor: { label: "Ripetizioni / Tutor scolastico", rate: 13.0 },

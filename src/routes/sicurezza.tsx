@@ -36,8 +36,9 @@ function SecurityPage() {
             <em className="italic text-primary">si dimostra.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Nessun profilo diventa visibile alle famiglie prima che il documento d'identità sia stato
-            controllato dal nostro team. Qui sotto trovi esattamente cosa verifichiamo — e cosa no.
+            Nessun profilo diventa visibile alle famiglie prima che il documento d'identità sia
+            stato controllato dal nostro team. Qui sotto trovi esattamente cosa verifichiamo — e
+            cosa no.
           </p>
         </div>
       </Section>

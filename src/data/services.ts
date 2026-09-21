@@ -33,7 +33,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "badanti",
-    name: "Collaboratrici domestiche",
+    name: "Assistenti familiari",
     tagline: "Assistenza qualificata, vicino a te",
     description:
       "Assistenti familiari conviventi o a ore, con esperienza nella cura di anziani e persone non autosufficienti, anche con Alzheimer e Parkinson.",

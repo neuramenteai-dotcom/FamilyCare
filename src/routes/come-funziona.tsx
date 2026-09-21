@@ -15,7 +15,8 @@ export const Route = createFileRoute("/come-funziona")({
       { property: "og:title", content: "Come funziona Family Care" },
       {
         property: "og:description",
-        content: "Profili verificati, chat illimitata e videochiamata conoscitiva prima di scegliere.",
+        content:
+          "Profili verificati, chat illimitata e videochiamata conoscitiva prima di scegliere.",
       },
     ],
   }),

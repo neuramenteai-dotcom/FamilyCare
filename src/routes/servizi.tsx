@@ -8,8 +8,7 @@ export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
       {
-        title:
-          "Servizi — Babysitter, Collaboratrici domestiche, Colf, Dog sitter, Tutor | Family Care",
+        title: "Servizi — Babysitter, Assistenti familiari, Colf, Dog sitter, Tutor | Family Care",
       },
       {
         name: "description",

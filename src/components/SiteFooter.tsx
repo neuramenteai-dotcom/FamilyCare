@@ -29,7 +29,7 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/servizi" hash="badanti" className="hover:text-foreground">
-                  Collaboratrici domestiche
+                  Assistenti familiari
                 </Link>
               </li>
               <li>

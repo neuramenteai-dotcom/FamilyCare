@@ -311,8 +311,7 @@ export function AdminDashboard() {
             Pipeline Leads & Candidati
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Gestisci le registrazioni delle famiglie e delle candidate collaboratrici domestiche in
-            tempo reale.
+            Gestisci in tempo reale le registrazioni delle famiglie e dei professionisti.
           </p>
         </div>
         <Button
