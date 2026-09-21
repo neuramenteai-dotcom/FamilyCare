@@ -1,6 +1,14 @@
 // Configurazione centralizzata dei piani famiglia. Riutilizzata da billing,
 // visibilità profili e limiti di contatto.
 
+// Interruttore di vendita. Finché è false la pagina prezzi mostra i piani ma
+// non permette di acquistarli: raccoglie interesse in lista d'attesa. Va messo
+// a true quando a Roma ci sono abbastanza professionisti verificati da rendere
+// l'abbonamento effettivamente utilizzabile (la soglia è nel pannello admin,
+// sezione "Copertura per città"). Vendere l'accesso a un catalogo vuoto è un
+// servizio non erogabile: il cliente chiede il rimborso e non torna.
+export const ABBONAMENTI_ATTIVI = false;
+
 export type PlanTier = "base" | "plus" | "premium";
 
 export interface PlanConfig {
