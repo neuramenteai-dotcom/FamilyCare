@@ -196,7 +196,7 @@ function AudienceSplit() {
           <ul className="space-y-2 text-sm mb-6">
             {[
               "Iscrizione gratuita",
-              "Contatti veri, niente perditempo",
+              "I contatti che riceverai provengono esclusivamente da famiglie motivate",
               "Profilo online dopo la verifica del documento d'identità",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
