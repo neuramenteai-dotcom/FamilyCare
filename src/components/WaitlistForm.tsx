@@ -433,6 +433,7 @@ function ProForm() {
   const [password, setPassword] = useState("");
   const [nationality, setNationality] = useState("");
   const [city, setCity] = useState("");
+  const [zona, setZona] = useState("");
   const [services, setServices] = useState<ServiceKey[]>([]);
   const [experience, setExperience] = useState("");
   const [italianLevel, setItalianLevel] = useState("");
@@ -476,6 +477,7 @@ function ProForm() {
           full_name: fullName,
           userType: "professionista",
           city,
+          zona,
           message,
           source: "pro_form",
           phone,
@@ -613,6 +615,20 @@ function ProForm() {
           </Select>
         </Field>
       </div>
+
+      <Field label="Zona in cui lavori">
+        <Input
+          value={zona}
+          onChange={(e) => setZona(e.target.value)}
+          placeholder="Es. Prati, Monteverde, Ostia, Roma nord…"
+          className="h-11 rounded-xl"
+          maxLength={100}
+        />
+        <p className="mt-1.5 text-xs text-muted-foreground">
+          Nelle città grandi la distanza conta: indicare il quartiere o la zona aiuta le famiglie
+          vicino a te a trovarti.
+        </p>
+      </Field>
 
       <Field label="Servizi offerti * (puoi sceglierne più di uno)">
         <ServiceChips value={services} onChange={setServices} />

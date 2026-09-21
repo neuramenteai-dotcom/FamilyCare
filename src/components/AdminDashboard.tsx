@@ -41,6 +41,126 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Soglia oltre la quale una citta ha densita sufficiente per essere aperta
+// alle famiglie: sotto questo numero una ricerca reale restituisce troppo poco.
+const SOGLIA_APERTURA = 15;
+
+// La zona viene salvata dentro il campo citta, composta come "Roma (Prati)".
+// Per contare la densita serve la citta base; la zona si legge a parte.
+function cittaBase(city: string | null): string {
+  if (!city) return "Non indicata";
+  return city.replace(/\s*\(.*\)\s*$/, "").trim() || "Non indicata";
+}
+
+function zonaDi(city: string | null): string | null {
+  const m = city?.match(/\(([^)]+)\)\s*$/);
+  return m ? m[1].trim() : null;
+}
+
+function CoperturaPerCitta({ leads }: { leads: Lead[] }) {
+  const pros = leads.filter((l) => l.user_type === "professionista");
+
+  const perCitta = new Map<
+    string,
+    { totale: number; servizi: Map<string, number>; zone: Set<string> }
+  >();
+
+  for (const p of pros) {
+    const citta = cittaBase(p.city);
+    if (!perCitta.has(citta)) {
+      perCitta.set(citta, { totale: 0, servizi: new Map(), zone: new Set() });
+    }
+    const voce = perCitta.get(citta)!;
+    voce.totale += 1;
+
+    const zona = zonaDi(p.city);
+    if (zona) voce.zone.add(zona);
+
+    for (const s of p.services && p.services.length > 0 ? p.services : ["Non indicato"]) {
+      voce.servizi.set(s, (voce.servizi.get(s) || 0) + 1);
+    }
+  }
+
+  const righe = [...perCitta.entries()].sort((a, b) => b[1].totale - a[1].totale);
+
+  return (
+    <div className="bg-card border border-border p-5 rounded-2xl mb-8">
+      <div className="flex items-baseline justify-between gap-4 flex-wrap mb-1">
+        <h3 className="font-display text-lg font-semibold">Copertura per città</h3>
+        <span className="text-xs text-muted-foreground">
+          Una città è pronta ad aprire alle famiglie da {SOGLIA_APERTURA} professionisti nella
+          stessa categoria
+        </span>
+      </div>
+
+      {righe.length === 0 ? (
+        <p className="text-sm text-muted-foreground mt-3">Nessun professionista iscritto finora.</p>
+      ) : (
+        <div className="mt-4 space-y-3">
+          {righe.map(([citta, voce]) => {
+            const servizi = [...voce.servizi.entries()].sort((a, b) => b[1] - a[1]);
+            const massimo = servizi[0]?.[1] ?? 0;
+            const pronta = massimo >= SOGLIA_APERTURA;
+            return (
+              <div key={citta} className="border border-border rounded-xl p-4">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-semibold">{citta}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {voce.totale} {voce.totale === 1 ? "professionista" : "professionisti"}
+                    </span>
+                    {voce.zone.size > 0 && (
+                      <span className="text-xs text-muted-foreground">
+                        · {voce.zone.size} {voce.zone.size === 1 ? "zona" : "zone"}
+                      </span>
+                    )}
+                  </div>
+                  <span
+                    className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                      pronta
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-secondary text-muted-foreground"
+                    }`}
+                  >
+                    {pronta ? "Pronta ad aprire" : `Mancano ${SOGLIA_APERTURA - massimo}`}
+                  </span>
+                </div>
+
+                <div className="mt-3 space-y-1.5">
+                  {servizi.map(([servizio, n]) => (
+                    <div key={servizio} className="flex items-center gap-3 text-sm">
+                      <span className="w-44 shrink-0 truncate text-muted-foreground">
+                        {servizio}
+                      </span>
+                      <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${n >= SOGLIA_APERTURA ? "bg-emerald-500" : "bg-primary"}`}
+                          style={{
+                            width: `${Math.min(100, (n / SOGLIA_APERTURA) * 100)}%`,
+                          }}
+                        />
+                      </div>
+                      <span className="w-14 shrink-0 text-right tabular-nums font-medium">
+                        {n}/{SOGLIA_APERTURA}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {voce.zone.size > 0 && (
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    Zone: {[...voce.zone].sort().join(", ")}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface Lead {
   id: string;
   email: string;
@@ -240,6 +360,8 @@ export function AdminDashboard() {
           </span>
         </div>
       </div>
+
+      <CoperturaPerCitta leads={leads} />
 
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-12 gap-8 items-start">
