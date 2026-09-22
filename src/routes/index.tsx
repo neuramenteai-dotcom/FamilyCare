@@ -429,7 +429,10 @@ function WaitlistCTA() {
                 t: "Professionisti",
                 d: "Iscrizione gratuita, nessuna commissione",
               },
-              { t: "Zero spam", d: "I tuoi dati restano riservati e conformi al GDPR" },
+              {
+                t: "Il tuo numero resta tuo",
+                d: "Chatti e fai videochiamate dentro la piattaforma, senza dare il numero privato",
+              },
             ].map((b) => (
               <li key={b.t} className="flex items-start gap-3">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs">
