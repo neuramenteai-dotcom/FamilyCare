@@ -6,8 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Amministrazione | Family Care" },
-      { name: "description", content: "Pannello di controllo e pipeline dei lead di Family Care." },
+      { title: "Amministrazione | FamilyCare" },
+      { name: "description", content: "Pannello di controllo e pipeline dei lead di FamilyCare." },
     ],
   }),
   component: AdminPage,

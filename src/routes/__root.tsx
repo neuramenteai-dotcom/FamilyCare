@@ -38,15 +38,15 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         title:
-          "Family Care — Trova babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
+          "FamilyCare — Trova babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
       },
       {
         name: "description",
         content:
-          "Family Care è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, assistenti familiari, dog sitter e tutor.",
+          "FamilyCare è la piattaforma italiana per trovare in pochi minuti professionisti verificati per la tua famiglia: babysitter, colf, assistenti familiari, dog sitter e tutor.",
       },
-      { name: "author", content: "Family Care" },
-      { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
+      { name: "author", content: "FamilyCare" },
+      { property: "og:title", content: "FamilyCare — La cura che la tua famiglia merita" },
       {
         property: "og:description",
         content:
@@ -54,14 +54,14 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:site_name", content: "Family Care" },
+      { property: "og:site_name", content: "FamilyCare" },
       { property: "og:url", content: `${SITE_URL}/` },
       { property: "og:image", content: `${SITE_URL}/og-image.jpg` },
       { property: "og:image:width", content: "1536" },
       { property: "og:image:height", content: "1024" },
       {
         property: "og:image:alt",
-        content: "Family Care — professionisti verificati per la tua famiglia",
+        content: "FamilyCare — professionisti verificati per la tua famiglia",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: `${SITE_URL}/og-image.jpg` },

@@ -32,17 +32,16 @@ const CITTA = ["Roma", "Milano", "Torino", "Napoli", "Bologna", "Firenze", "Altr
 export const Route = createFileRoute("/prezzi")({
   head: () => ({
     meta: [
-      { title: "Prezzi — Piani flessibili per famiglie | Family Care" },
+      { title: "Prezzi — Piani flessibili per famiglie | FamilyCare" },
       {
         name: "description",
-        content:
-          "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano mai.",
+        content: "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano.",
       },
-      { property: "og:title", content: "Prezzi Family Care — Trasparenti e flessibili" },
+      { property: "og:title", content: "Prezzi FamilyCare — Trasparenti e flessibili" },
       {
         property: "og:description",
         content:
-          "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano mai.",
+          "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano.",
       },
     ],
   }),
@@ -270,11 +269,11 @@ function PricingPage() {
             Prezzi
           </span>
           <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05]">
-            Trasparenti. <em className="italic text-primary">Sempre.</em>
+            Trasparenti. <em className="italic text-primary">Senza sorprese.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            I professionisti non pagano mai per essere su Family Care. Le famiglie scelgono il piano
-            che preferiscono. Disdici quando vuoi.
+            I professionisti non pagano per essere su FamilyCare. Le famiglie scelgono il piano che
+            preferiscono. Disdici quando vuoi.
           </p>
 
           {!ABBONAMENTI_ATTIVI && (
@@ -365,11 +364,11 @@ function PricingPage() {
                 ]),
             {
               q: "Posso disdire quando voglio?",
-              a: "Sì. Gestisci o disdici l'abbonamento dal tuo profilo, senza penali, in 1 click.",
+              a: "Sì. Gestisci o disdici l'abbonamento dal tuo profilo, senza penali, in un clic.",
             },
             {
               q: "I professionisti pagano qualcosa?",
-              a: "No. Family Care è completamente gratuito per i professionisti.",
+              a: "No. FamilyCare è completamente gratuito per i professionisti.",
             },
             {
               q: "Cosa include il piano Premium?",

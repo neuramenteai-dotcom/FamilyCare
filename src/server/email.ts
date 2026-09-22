@@ -40,8 +40,8 @@ export async function sendEmailNotification(data: {
 
   const subjectUser =
     data.userType === "famiglia"
-      ? "Iscrizione ricevuta — Family Care"
-      : "Iscrizione ricevuta — Family Care";
+      ? "Iscrizione ricevuta — FamilyCare"
+      : "Iscrizione ricevuta — FamilyCare";
 
   const subjectAdmin =
     data.userType === "famiglia"
@@ -60,24 +60,24 @@ export async function sendEmailNotification(data: {
     data.userType === "famiglia"
       ? `${saluto}
 
-grazie per esserti iscritto a Family Care.
+grazie per esserti iscritto a FamilyCare.
 
-Family Care è in fase di avvio: stiamo selezionando i primi professionisti verificati, a partire da Roma. Ti scriviamo a questo indirizzo appena ci saranno profili${dove ? ` nella zona di ${dove}` : ""}.
+FamilyCare è in fase di avvio: stiamo selezionando i primi professionisti verificati, a partire da Roma. Ti scriviamo a questo indirizzo appena ci saranno profili${dove ? ` nella zona di ${dove}` : ""}.
 
 Nel frattempo non devi fare nulla e non ti viene chiesto alcun pagamento.
 
 A presto,
-Il team di Family Care`
+Il team di FamilyCare`
       : `${saluto}
 
-grazie per esserti iscritto a Family Care. Abbiamo ricevuto il tuo profilo.
+grazie per esserti iscritto a FamilyCare. Abbiamo ricevuto il tuo profilo.
 
 Prima che diventi visibile alle famiglie, il nostro team verifica il tuo documento d'identità. Ti scriviamo a questo indirizzo quando la verifica è completata, oppure se ci serve qualcosa in più.
 
-L'iscrizione è gratuita e Family Care non trattiene commissioni sul rapporto tra te e la famiglia.
+L'iscrizione è gratuita e FamilyCare non trattiene commissioni sul rapporto tra te e la famiglia.
 
 A presto,
-Il team di Family Care`;
+Il team di FamilyCare`;
 
   // Content for Admin
   const textAdmin =

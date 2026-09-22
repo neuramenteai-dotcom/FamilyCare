@@ -4,11 +4,11 @@ import { LegalPage, LegalSection } from "@/components/LegalPage";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Family Care" },
+      { title: "Privacy Policy — FamilyCare" },
       {
         name: "description",
         content:
-          "Informativa sul trattamento dei dati personali di Family Care ai sensi degli artt. 13-14 del Regolamento UE 2016/679 (GDPR).",
+          "Informativa sul trattamento dei dati personali di FamilyCare ai sensi degli artt. 13-14 del Regolamento UE 2016/679 (GDPR).",
       },
     ],
   }),

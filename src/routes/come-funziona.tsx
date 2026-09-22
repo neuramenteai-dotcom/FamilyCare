@@ -6,13 +6,13 @@ import { Search, Heart, MessageCircle, Calendar, ShieldCheck, Sparkles } from "l
 export const Route = createFileRoute("/come-funziona")({
   head: () => ({
     meta: [
-      { title: "Come funziona — Dalla ricerca alla videochiamata | Family Care" },
+      { title: "Come funziona — Dalla ricerca alla videochiamata | FamilyCare" },
       {
         name: "description",
         content:
-          "Scopri come funziona Family Care: dimmi cosa cerchi, guarda i profili verificati, chatta e fai una videochiamata conoscitiva prima di scegliere.",
+          "Scopri come funziona FamilyCare: dimmi cosa cerchi, guarda i profili verificati, chatta e fai una videochiamata conoscitiva prima di scegliere.",
       },
-      { property: "og:title", content: "Come funziona Family Care" },
+      { property: "og:title", content: "Come funziona FamilyCare" },
       {
         property: "og:description",
         content:
@@ -85,7 +85,7 @@ function HowPage() {
         <SectionHeader
           eyebrow="Per i professionisti"
           title="Lavora con chi ti rispetta"
-          subtitle="Anche tu sei un professionista della cura? Su Family Care ti iscrivi gratis e ti fai trovare dalle famiglie della tua zona."
+          subtitle="Anche tu sei un professionista? Su FamilyCare ti iscrivi gratis e ti fai trovare dalle famiglie della tua zona."
         />
         <div className="grid md:grid-cols-3 gap-6">
           {[
@@ -101,8 +101,8 @@ function HowPage() {
             },
             {
               icon: Calendar,
-              t: "Contatti da famiglie abbonate",
-              d: "Ti scrivono solo famiglie con un piano attivo: chi ti contatta sta cercando davvero.",
+              t: "Contatti da famiglie motivate",
+              d: "I contatti che riceverai provengono esclusivamente da famiglie con un piano attivo.",
             },
           ].map((it) => (
             <div key={it.t} className="bg-card rounded-3xl p-7 border border-border">

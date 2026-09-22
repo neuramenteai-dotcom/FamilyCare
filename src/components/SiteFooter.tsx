@@ -10,8 +10,8 @@ export function SiteFooter() {
           <div className="col-span-2 lg:col-span-2">
             <Logo />
             <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-              La piattaforma italiana che connette famiglie e professionisti della cura, in modo
-              semplice, sicuro e veloce.
+              La piattaforma italiana che connette famiglie e professionisti, con identità
+              verificata prima della pubblicazione del profilo.
             </p>
             <div className="flex items-center gap-3 mt-5">
               <Link
@@ -92,7 +92,7 @@ export function SiteFooter() {
         </div>
 
         <div className="border-t border-border/60 mt-12 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Family Care. Tutti i diritti riservati.</p>
+          <p>© {new Date().getFullYear()} FamilyCare. Tutti i diritti riservati.</p>
           <div className="flex gap-5">
             <Link to="/privacy" className="hover:text-foreground">
               Privacy

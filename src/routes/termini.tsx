@@ -4,11 +4,11 @@ import { LegalPage, LegalSection } from "@/components/LegalPage";
 export const Route = createFileRoute("/termini")({
   head: () => ({
     meta: [
-      { title: "Termini di Servizio — Family Care" },
+      { title: "Termini di Servizio — FamilyCare" },
       {
         name: "description",
         content:
-          "Termini e Condizioni d'uso della piattaforma Family Care per famiglie e professionisti della cura.",
+          "Termini e Condizioni d'uso della piattaforma FamilyCare per famiglie e professionisti.",
       },
     ],
   }),
@@ -19,13 +19,13 @@ function TerminiPage() {
   return (
     <LegalPage
       title="Termini di Servizio"
-      intro="Condizioni che regolano l'uso della piattaforma Family Care."
+      intro="Condizioni che regolano l'uso della piattaforma FamilyCare."
     >
       <LegalSection title="1. Oggetto del servizio">
         <p>
-          Family Care è una <strong>piattaforma di intermediazione</strong> che mette in contatto
+          FamilyCare è una <strong>piattaforma di intermediazione</strong> che mette in contatto
           famiglie che cercano servizi di cura e professionisti che li offrono (babysitter,
-          collaboratori domestici, colf, dog sitter, tutor). Family Care{" "}
+          collaboratori domestici, colf, dog sitter, tutor). FamilyCare{" "}
           <strong>non è datore di lavoro</strong> dei professionisti né parte del rapporto che si
           instaura tra famiglia e professionista.
         </p>
@@ -42,7 +42,7 @@ function TerminiPage() {
       <LegalSection title="3. Verifica dei professionisti">
         <p>
           I professionisti sono tenuti a caricare un documento d'identità valido per la verifica del
-          profilo. Family Care si riserva di sospendere o rimuovere i profili che non superano la
+          profilo. FamilyCare si riserva di sospendere o rimuovere i profili che non superano la
           verifica o che violano i presenti termini. La verifica non costituisce garanzia assoluta
           sull'idoneità del professionista, la cui valutazione resta in capo alla famiglia.
         </p>
@@ -74,7 +74,7 @@ function TerminiPage() {
 
       <LegalSection title="6. Limitazione di responsabilità">
         <p>
-          Family Care fornisce uno strumento di connessione e non risponde della condotta degli
+          FamilyCare fornisce uno strumento di connessione e non risponde della condotta degli
           utenti né dell'esito dei rapporti instaurati tramite la piattaforma. Nei limiti consentiti
           dalla legge, è esclusa ogni responsabilità per danni derivanti dall'uso del servizio.
         </p>
@@ -90,7 +90,7 @@ function TerminiPage() {
 
       <LegalSection title="8. Modifiche ai termini">
         <p>
-          Family Care può aggiornare i presenti termini; le modifiche rilevanti saranno comunicate
+          FamilyCare può aggiornare i presenti termini; le modifiche rilevanti saranno comunicate
           agli utenti. L'uso continuato del servizio dopo la modifica ne comporta l'accettazione.
         </p>
       </LegalSection>

@@ -13,13 +13,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contatti")({
   head: () => ({
     meta: [
-      { title: "Contatti — Parla con il team Family Care" },
+      { title: "Contatti — Parla con il team FamilyCare" },
       {
         name: "description",
         content:
           "Hai una domanda, una segnalazione o vuoi collaborare? Scrivici. Rispondiamo entro 24 ore lavorative.",
       },
-      { property: "og:title", content: "Contatta Family Care" },
+      { property: "og:title", content: "Contatta FamilyCare" },
       {
         property: "og:description",
         content: "Siamo qui per aiutarti. Scrivici e ti rispondiamo entro 24 ore.",

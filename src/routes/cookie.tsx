@@ -4,11 +4,11 @@ import { LegalPage, LegalSection } from "@/components/LegalPage";
 export const Route = createFileRoute("/cookie")({
   head: () => ({
     meta: [
-      { title: "Cookie Policy — Family Care" },
+      { title: "Cookie Policy — FamilyCare" },
       {
         name: "description",
         content:
-          "Informativa sui cookie utilizzati da Family Care. Il sito impiega solo cookie tecnici necessari al funzionamento.",
+          "Informativa sui cookie utilizzati da FamilyCare. Il sito impiega solo cookie tecnici necessari al funzionamento.",
       },
     ],
   }),
@@ -19,7 +19,7 @@ function CookiePage() {
   return (
     <LegalPage
       title="Cookie Policy"
-      intro="Come Family Care utilizza i cookie e le tecnologie simili."
+      intro="Come FamilyCare utilizza i cookie e le tecnologie simili."
     >
       <LegalSection title="1. Cosa sono i cookie">
         <p>
@@ -31,7 +31,7 @@ function CookiePage() {
 
       <LegalSection title="2. Cookie utilizzati da questo sito">
         <p>
-          Family Care utilizza <strong>esclusivamente cookie tecnici</strong> necessari al
+          FamilyCare utilizza <strong>esclusivamente cookie tecnici</strong> necessari al
           funzionamento e all'autenticazione. Non utilizziamo cookie di profilazione, pubblicitari o
           di tracciamento di terze parti.
         </p>

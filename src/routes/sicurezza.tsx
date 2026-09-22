@@ -5,13 +5,13 @@ import { ShieldCheck, FileCheck, UserCheck, Lock, Star, AlertTriangle } from "lu
 export const Route = createFileRoute("/sicurezza")({
   head: () => ({
     meta: [
-      { title: "Sicurezza e verifiche — Come proteggiamo la tua famiglia | Family Care" },
+      { title: "Sicurezza e verifiche — Come proteggiamo la tua famiglia | FamilyCare" },
       {
         name: "description",
         content:
           "Identità verificata prima della pubblicazione, bollini di verifica aggiuntivi, videochiamata conoscitiva e conformità GDPR.",
       },
-      { property: "og:title", content: "Sicurezza Family Care" },
+      { property: "og:title", content: "Sicurezza FamilyCare" },
       {
         property: "og:description",
         content:
@@ -48,7 +48,7 @@ function SecurityPage() {
             {
               icon: FileCheck,
               title: "1. Identità verificata",
-              text: "Obbligatorio per tutti. Il professionista carica carta d'identità o passaporto, il nostro team li controlla e solo dopo il profilo diventa visibile alle famiglie.",
+              text: "Obbligatorio per tutti. Il professionista carica carta d'identità o passaporto, il nostro team lo controlla e solo dopo il profilo diventa visibile alle famiglie.",
             },
             {
               icon: ShieldCheck,
@@ -92,7 +92,7 @@ function SecurityPage() {
           <p className="text-muted-foreground leading-relaxed mt-4">
             Il casellario giudiziale e le referenze sono documenti che il professionista sceglie di
             caricare: quando il bollino non c'è, significa che quel documento non è stato fornito.
-            Family Care mette in contatto famiglie e professionisti, ma non è datore di lavoro e non
+            FamilyCare mette in contatto famiglie e professionisti, ma non è datore di lavoro e non
             è parte del rapporto che nascerà tra voi: la decisione finale, e il contratto, restano
             vostri.
           </p>
@@ -111,7 +111,7 @@ function SecurityPage() {
             {
               icon: ShieldCheck,
               t: "Pagamenti sicuri",
-              d: "Tutte le transazioni passano da Stripe. Family Care non vede mai i dati della tua carta.",
+              d: "Tutte le transazioni passano da Stripe. FamilyCare non vede mai i dati della tua carta.",
             },
             {
               icon: UserCheck,

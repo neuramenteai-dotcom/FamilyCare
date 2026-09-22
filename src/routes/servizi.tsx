@@ -8,14 +8,14 @@ export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
       {
-        title: "Servizi — Babysitter, Assistenti familiari, Colf, Dog sitter, Tutor | Family Care",
+        title: "Servizi — Babysitter, Assistenti familiari, Colf, Dog sitter, Tutor | FamilyCare",
       },
       {
         name: "description",
         content:
           "Babysitter, assistenti familiari, colf, dog sitter e tutor. L'identità di ogni professionista è verificata prima che il profilo diventi visibile.",
       },
-      { property: "og:title", content: "I servizi Family Care" },
+      { property: "og:title", content: "I servizi FamilyCare" },
       {
         property: "og:description",
         content:

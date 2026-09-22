@@ -413,7 +413,7 @@ function ProIncomeSimulator() {
             <ShieldCheck className="h-4 w-4 shrink-0 text-white" />
             <p className="leading-tight">
               Stima indicativa basata sui minimi del CCNL. Il compenso lo concordi direttamente con
-              la famiglia: Family Care non è datore di lavoro e non trattiene commissioni.
+              la famiglia: FamilyCare non è datore di lavoro e non trattiene commissioni.
             </p>
           </div>
         </div>

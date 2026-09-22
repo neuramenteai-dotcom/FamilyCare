@@ -10,15 +10,14 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title:
-          "Family Care — Babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
+        title: "FamilyCare — Babysitter, assistenti familiari, colf, dog sitter e tutor verificati",
       },
       {
         name: "description",
         content:
-          "Family Care è la piattaforma italiana per trovare professionisti con identità verificata per la tua famiglia. Cerchi aiuto o vuoi offrire i tuoi servizi: iscrizione gratuita.",
+          "FamilyCare è la piattaforma italiana per trovare professionisti con identità verificata per la tua famiglia. Cerchi aiuto o vuoi offrire i tuoi servizi: iscrizione gratuita.",
       },
-      { property: "og:title", content: "Family Care — La cura che la tua famiglia merita" },
+      { property: "og:title", content: "FamilyCare — La cura che la tua famiglia merita" },
       {
         property: "og:description",
         content:
@@ -97,7 +96,7 @@ function Hero() {
           <div className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/3]">
             <img
               src={heroFamily}
-              alt="Famiglia italiana che usa Family Care"
+              alt="Famiglia italiana che usa FamilyCare"
               width={1536}
               height={1024}
               className="w-full h-full object-cover"
@@ -119,7 +118,7 @@ function Hero() {
               <Heart className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">Gratis per i pro</p>
+              <p className="text-sm font-semibold">Gratis per i professionisti</p>
               <p className="text-xs text-muted-foreground">Nessun costo di iscrizione</p>
             </div>
           </div>
@@ -141,7 +140,7 @@ function AudienceSplit() {
         subtitle="Famiglie e professionisti hanno bisogni diversi. Per questo abbiamo costruito due esperienze su misura."
       />
       <p className="text-center text-sm font-semibold tracking-[0.18em] uppercase text-primary mb-6">
-        Family Care è per te se…
+        FamilyCare è per te se…
       </p>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-card border border-border rounded-3xl p-8 flex flex-col">
@@ -412,7 +411,7 @@ function WaitlistCTA() {
             Iscrizione gratuita
           </span>
           <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.05]">
-            Inizia subito con <span className="text-gradient-primary italic">Family Care</span>.
+            Inizia subito con <span className="text-gradient-primary italic">FamilyCare</span>.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Scegli il tuo percorso: <strong className="text-foreground">cerco aiuto</strong> per la
