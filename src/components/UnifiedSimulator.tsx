@@ -412,7 +412,8 @@ function ProIncomeSimulator() {
           <div className="flex gap-2">
             <ShieldCheck className="h-4 w-4 shrink-0 text-white" />
             <p className="leading-tight">
-              FamilyCare ti garantisce contratti in regola al 100% e pagamenti regolari ogni mese.
+              Stima indicativa basata sui minimi del CCNL. Il compenso lo concordi direttamente con
+              la famiglia: Family Care non è datore di lavoro e non trattiene commissioni.
             </p>
           </div>
         </div>

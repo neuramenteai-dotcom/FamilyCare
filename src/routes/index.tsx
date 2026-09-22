@@ -338,31 +338,31 @@ function Guarantees() {
   const items = [
     {
       icon: ShieldCheck,
-      title: "Identità verificata",
-      text: "L'identità di ogni professionista è verificata prima che il profilo diventi visibile alle famiglie.",
+      title: "Identità verificata prima della pubblicazione",
+      text: "Documento controllato dal nostro team. Obbligatorio, per tutti.",
     },
     {
       icon: BadgeCheck,
-      title: "Verifica approfondita",
-      text: "Casellario giudiziale, lettere di referenza e attestati formativi: chi li fornisce ottiene un bollino di verifica sul profilo.",
+      title: "Bollini di verifica aggiuntivi",
+      text: "Casellario, referenze, attestati. Volontari e visibili sul profilo.",
     },
     {
       icon: Lock,
       title: "Documenti mai condivisi",
-      text: "I file restano in un archivio privato. Alle famiglie mostriamo l'esito della verifica, mai il documento originale.",
+      text: "Archiviati in privato. Alle famiglie mostriamo solo l'esito.",
     },
   ];
 
   return (
     <Section>
       <SectionHeader
-        eyebrow="Le nostre garanzie"
+        eyebrow="Verifiche"
         title={
           <>
-            La fiducia non si chiede, <em className="italic text-primary">si dimostra.</em>
+            Come funziona il <em className="italic text-primary">controllo dei profili.</em>
           </>
         }
-        subtitle="Far entrare qualcuno in casa è una decisione seria. Ecco cosa controlliamo prima che accada."
+        subtitle="Niente formule generiche: ecco esattamente cosa succede prima che un profilo diventi visibile."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {items.map((it) => (

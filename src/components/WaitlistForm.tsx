@@ -709,7 +709,7 @@ function ProForm() {
         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crea il mio profilo — è gratis"}
       </Button>
       <p className="text-xs text-muted-foreground text-center">
-        Iscrizione 100% gratuita · Profilo verificato prima della pubblicazione.
+        Iscrizione gratuita · Profilo verificato prima della pubblicazione.
       </p>
     </form>
   );
