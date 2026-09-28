@@ -10,6 +10,10 @@ import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyProfile, updateMyProfile } from "@/functions/dashboard.functions";
 
+// Devono restare allineati ai limiti impostati sull'archivio "avatars".
+const AVATAR_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const AVATAR_MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+
 export const Route = createFileRoute("/professionista/profilo")({
   component: ProProfilo,
 });
@@ -52,6 +56,19 @@ function ProProfilo() {
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file || !proId) return;
+
+    // Il caricamento avviene dal browser direttamente verso l'archivio, quindi
+    // questi controlli servono solo a dare un messaggio comprensibile: i limiti
+    // veri sono imposti sull'archivio stesso (2 MB, solo immagini) e valgono
+    // comunque, anche se qualcuno chiamasse l'API scavalcando questa pagina.
+    if (!AVATAR_MIME_TYPES.includes(file.type)) {
+      toast.error("Formato non supportato. Usa JPG, PNG o WEBP.");
+      return;
+    }
+    if (file.size > AVATAR_MAX_SIZE) {
+      toast.error("L'immagine supera i 2 MB. Scegline una più leggera.");
+      return;
+    }
 
     setUploading(true);
     try {
