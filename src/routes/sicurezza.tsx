@@ -62,8 +62,8 @@ function SecurityPage() {
             },
             {
               icon: Star,
-              title: "4. Selezione assistita",
-              text: "Con il piano Premium il nostro team esamina fino a 10 profili verificati e te ne presenta 3, spiegando perché proprio quelli.",
+              title: "4. La scelta resta tua",
+              text: "Non selezioniamo profili per conto tuo e non stiliamo classifiche: i professionisti ti compaiono in ordine di iscrizione. Noi verifichiamo chi può pubblicare, tu decidi chi contattare.",
             },
           ].map((it) => (
             <div key={it.title} className="bg-card border border-border rounded-3xl p-7">

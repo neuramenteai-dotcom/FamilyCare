@@ -95,12 +95,12 @@ export const getMessages = createServerFn({ method: "GET" })
       // La videochiamata è abilitata se la famiglia della conversazione ha un piano video
       const { data: family } = await supabaseAdmin
         .from("waitlist")
-        .select("plan_tier, subscription_status")
+        .select("plan_tier, access_expires_at")
         .eq("id", conversation.family_id)
         .maybeSingle();
       const tier = family?.plan_tier;
       const videoEnabled =
-        hasActivePlan(tier, family?.subscription_status) &&
+        hasActivePlan(tier, family?.access_expires_at) &&
         isPlanTier(tier) &&
         PLANS[tier].videoCalls;
 

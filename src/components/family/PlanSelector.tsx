@@ -4,21 +4,16 @@ import { PLAN_TIERS, PLANS, type PlanTier } from "@/lib/plans";
 
 const FEATURES: Record<PlanTier, string[]> = {
   base: [
-    "Vedi tutti i profili (età, nazionalità, esperienza, specializzazione, zona, video)",
-    "Contatta e chatta con 5 profili",
-    "Chat illimitata con i profili contattati",
+    "Scrivi a tutti i professionisti che vuoi, senza limiti di numero",
+    "Video di presentazione e biografia completa di ogni profilo",
+    "Chat in piattaforma: il tuo numero resta privato",
+    "30 giorni di accesso, nessun rinnovo automatico",
   ],
   plus: [
-    "Tutto del piano Base",
-    "Contatta e chatta con 20 profili",
-    "Badge verifica approfondita (casellario, referenze, attestati)",
-    "Videochiamate con i profili",
-  ],
-  premium: [
-    "Tutto del piano Plus",
-    "Contatti illimitati con tutti i profili",
-    "Supporto documentale per l'assunzione",
-    "Concierge: selezioniamo noi i 3 profili migliori per te",
+    "Tutto dell'Accesso",
+    "Videochiamate conoscitive dentro la piattaforma",
+    "Ricerche salvate con avviso quando entra un profilo adatto",
+    "30 giorni di accesso, nessun rinnovo automatico",
   ],
 };
 

@@ -32,16 +32,17 @@ const CITTA = ["Roma", "Milano", "Torino", "Napoli", "Bologna", "Firenze", "Altr
 export const Route = createFileRoute("/prezzi")({
   head: () => ({
     meta: [
-      { title: "Prezzi — Piani flessibili per famiglie | FamilyCare" },
+      { title: "Prezzi — Accesso di 30 giorni per le famiglie | FamilyCare" },
       {
         name: "description",
-        content: "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano.",
+        content:
+          "Due livelli di accesso da 39€ a 59€ per 30 giorni, senza rinnovo automatico. I professionisti non pagano.",
       },
       { property: "og:title", content: "Prezzi FamilyCare — Trasparenti e flessibili" },
       {
         property: "og:description",
         content:
-          "Tre piani per le famiglie da €29,99 a €79,99/mese. I professionisti non pagano.",
+          "Due livelli di accesso da 39€ a 59€ per 30 giorni, senza rinnovo automatico. I professionisti non pagano.",
       },
     ],
   }),
@@ -50,25 +51,20 @@ export const Route = createFileRoute("/prezzi")({
 
 const FEATURES: Record<PlanTier, string[]> = {
   base: [
-    "Vedi tutti i profili (età, nazionalità, esperienza, specializzazione, zona, video)",
-    "Contatta e chatta con 5 profili",
-    "Chat illimitata con i profili contattati",
+    "Scrivi a tutti i professionisti che vuoi, senza limiti di numero",
+    "Video di presentazione e biografia completa di ogni profilo",
+    "Chat in piattaforma: il tuo numero resta privato",
+    "30 giorni di accesso, nessun rinnovo automatico",
   ],
   plus: [
-    "Tutto del piano Base",
-    "Contatta e chatta con 20 profili",
-    "Badge verifica approfondita (casellario, referenze, attestati)",
-    "Videochiamate con i profili",
-  ],
-  premium: [
-    "Tutto del piano Plus",
-    "Contatti illimitati con tutti i profili",
-    "Supporto documentale per l'assunzione",
-    "Concierge: selezioniamo noi i 3 profili migliori per te",
+    "Tutto dell'Accesso",
+    "Videochiamate conoscitive dentro la piattaforma",
+    "Ricerche salvate con avviso quando entra un profilo adatto",
+    "30 giorni di accesso, nessun rinnovo automatico",
   ],
 };
 
-// Modulo di interesse mostrato finché gli abbonamenti non sono attivabili.
+// Modulo di interesse mostrato finché gli accessi non sono attivabili.
 // Registra email, città e quale piano interessa: serve a sapere come si
 // distribuisce la domanda fra i tre livelli prima di aprire le vendite.
 function ModuloInteresse({ tier, onClose }: { tier: PlanTier | null; onClose: () => void }) {
@@ -95,7 +91,7 @@ function ModuloInteresse({ tier, onClose }: { tier: PlanTier | null; onClose: ()
           userType: "famiglia" as const,
           city: citta,
           source: "waitlist" as const,
-          message: piano ? `Interesse per il piano ${piano.label} (${piano.priceLabel}/mese)` : "",
+          message: piano ? `Interesse per ${piano.label} (${piano.priceLabel} / 30 giorni)` : "",
           privacy_accepted: true as const,
           marketing_consent: false,
           consent_policy_version: POLICY_VERSION,
@@ -124,8 +120,7 @@ function ModuloInteresse({ tier, onClose }: { tier: PlanTier | null; onClose: ()
             <DialogHeader>
               <DialogTitle className="font-display">Ci sei.</DialogTitle>
               <DialogDescription>
-                Ti scriviamo appena apriamo gli abbonamenti a {citta}. Chi è in lista entra per
-                primo.
+                Ti scriviamo appena apriamo gli accessi a {citta}. Chi è in lista entra per primo.
               </DialogDescription>
             </DialogHeader>
             <Button onClick={onClose} className="w-full h-11 rounded-full mt-2">
@@ -272,8 +267,8 @@ function PricingPage() {
             Trasparenti. <em className="italic text-primary">Senza sorprese.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            I professionisti non pagano per essere su FamilyCare. Le famiglie scelgono il piano che
-            preferiscono. Disdici quando vuoi.
+            I professionisti non pagano per essere su FamilyCare. Le famiglie comprano 30 giorni di
+            accesso, una volta. Nessun rinnovo automatico, niente da disdire.
           </p>
 
           {!ABBONAMENTI_ATTIVI && (
@@ -282,7 +277,7 @@ function PricingPage() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 <strong className="text-foreground">I piani non sono ancora attivabili.</strong>{" "}
                 Stiamo selezionando i primi professionisti verificati, a partire da Roma. Appena ci
-                saranno profili veri da mostrarti apriremo gli abbonamenti, e chi è in lista verrà
+                saranno profili veri da mostrarti apriremo gli accessi, e chi è in lista verrà
                 avvisato per primo. Preferiamo farti aspettare qualche settimana piuttosto che
                 venderti l'accesso a un catalogo vuoto.
               </p>
@@ -316,7 +311,7 @@ function PricingPage() {
                   <span
                     className={`text-sm ml-1 ${highlighted ? "text-white/90" : "text-muted-foreground"}`}
                   >
-                    /mese
+                    / 30 giorni
                   </span>
                 </div>
                 <ul className="space-y-3 text-sm flex-grow mb-8">
@@ -358,25 +353,25 @@ function PricingPage() {
               ? []
               : [
                   {
-                    q: "Quando potrò abbonarmi?",
+                    q: "Quando potrò comprare l'accesso?",
                     a: "Appena nella tua città ci saranno abbastanza professionisti verificati da rendere utile la ricerca. Partiamo da Roma. Lasciaci l'email dal pulsante qui sopra e ti avvisiamo: nessun pagamento è richiesto ora.",
                   },
                 ]),
             {
-              q: "Posso disdire quando voglio?",
-              a: "Sì. Gestisci o disdici l'abbonamento dal tuo profilo, senza penali, in un clic.",
+              q: "Si rinnova da solo?",
+              a: "No. Compri 30 giorni e basta: alla scadenza l'accesso si chiude, senza addebiti e senza niente da disdire. Se stai ancora cercando, rinnovi tu quando vuoi.",
             },
             {
               q: "I professionisti pagano qualcosa?",
               a: "No. FamilyCare è completamente gratuito per i professionisti.",
             },
             {
-              q: "Cosa include il piano Premium?",
-              a: "Contatti illimitati, supporto documentale per l'assunzione e il servizio concierge: selezioniamo noi i 3 profili migliori per te.",
+              q: "Quanti professionisti posso contattare?",
+              a: "Quanti vuoi. Non mettiamo limiti al numero di persone a cui puoi scrivere: l'accesso ti dà gli strumenti per cercare e parlare, la scelta di chi contattare è solo tua.",
             },
             {
               q: "I prezzi indicati includono il compenso del professionista?",
-              a: "I prezzi dei servizi (es. €8/h babysitter) sono il compenso del professionista. L'abbonamento copre l'uso della piattaforma.",
+              a: "No. I prezzi orari indicati (per esempio 8€/h per una babysitter) sono il compenso che concorderai direttamente con il professionista. L'accesso copre solo l'uso della piattaforma, e FamilyCare non trattiene commissioni su quell'accordo.",
             },
           ].map((f) => (
             <details

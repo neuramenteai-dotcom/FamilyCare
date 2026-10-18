@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
-import { PLANS, type PlanTier } from "@/lib/plans";
+import { PLANS, hasActivePlan, DURATA_ACCESSO_GIORNI, type PlanTier } from "@/lib/plans";
 
 function getStripe(): Stripe | null {
   const secretKey = process.env.STRIPE_SECRET_KEY || "";
@@ -19,7 +19,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator(
     z.object({
-      tier: z.enum(["base", "plus", "premium"]),
+      tier: z.enum(["base", "plus"]),
       returnUrl: z.string().url(),
     }),
   )
@@ -41,27 +41,30 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       // La famiglia è derivata dalla sessione autenticata
       const record = await getOwnedWaitlistRecord(context.userId, {
         userType: "famiglia",
-        columns: "id, email, full_name, subscription_status, stripe_customer_id",
+        columns: "id, email, full_name, plan_tier, access_expires_at, stripe_customer_id",
       });
 
       if (!record) {
         return { success: false, error: "Famiglia non trovata." };
       }
 
-      if (record.subscription_status === "active") {
-        return { success: false, error: "Hai già un abbonamento attivo." };
+      if (
+        hasActivePlan(record.plan_tier as string | null, record.access_expires_at as string | null)
+      ) {
+        return { success: false, error: "Hai già un accesso attivo." };
       }
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
-        mode: "subscription",
+        // Pagamento singolo, non abbonamento ricorrente: si acquistano 30
+        // giorni di accesso, non un servizio continuativo.
+        mode: "payment",
         // Riusa il customer se esiste (abilita il Customer Portal); altrimenti lo crea Stripe
         ...(record.stripe_customer_id
           ? { customer: record.stripe_customer_id as string }
           : { customer_email: record.email as string }),
         line_items: [{ price: priceId, quantity: 1 }],
         metadata: { familyId: record.id, tier: data.tier },
-        subscription_data: { metadata: { familyId: record.id, tier: data.tier } },
         success_url: `${data.returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: data.returnUrl,
       });
@@ -122,7 +125,10 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
         return { success: false, error: "Stripe non è configurato sul server." };
       }
 
-      const record = await getOwnedWaitlistRecord(context.userId, { userType: "famiglia" });
+      const record = await getOwnedWaitlistRecord(context.userId, {
+        userType: "famiglia",
+        columns: "id, stripe_customer_id, access_expires_at",
+      });
       if (!record) {
         return { success: false, error: "Famiglia non trovata." };
       }
@@ -134,22 +140,26 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
       }
 
       const tier = session.metadata?.tier;
-      if (
-        session.payment_status === "paid" &&
-        (tier === "base" || tier === "plus" || tier === "premium")
-      ) {
+      if (session.payment_status === "paid" && (tier === "base" || tier === "plus")) {
+        // Un accesso gia' attivo si prolunga invece di essere sovrascritto:
+        // chi rinnova prima della scadenza non deve perdere i giorni residui.
+        const adesso = Date.now();
+        const residuo = record.access_expires_at
+          ? new Date(record.access_expires_at as string).getTime()
+          : 0;
+        const partenza = residuo > adesso ? residuo : adesso;
+        const scadenza = new Date(partenza + DURATA_ACCESSO_GIORNI * 86_400_000).toISOString();
+
         const { error } = await supabaseAdmin
           .from("waitlist")
           .update({
             plan_tier: tier,
-            subscription_status: "active",
+            access_expires_at: scadenza,
             has_active_package: true,
             stripe_customer_id:
               typeof session.customer === "string"
                 ? session.customer
                 : ((record.stripe_customer_id as string | null) ?? null),
-            stripe_subscription_id:
-              typeof session.subscription === "string" ? session.subscription : null,
           })
           .eq("id", record.id);
 

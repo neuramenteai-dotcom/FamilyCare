@@ -30,6 +30,7 @@ export type Database = {
           score: number | null;
           auth_id: string | null;
           has_active_package: boolean | null;
+          access_expires_at: string | null;
           id_front_url: string | null;
           documenti: string | null;
           avatar_url: string | null;
@@ -70,6 +71,7 @@ export type Database = {
           score?: number | null;
           auth_id?: string | null;
           has_active_package?: boolean | null;
+          access_expires_at?: string | null;
           id_front_url?: string | null;
           documenti?: string | null;
           avatar_url?: string | null;
@@ -110,6 +112,7 @@ export type Database = {
           score?: number | null;
           auth_id?: string | null;
           has_active_package?: boolean | null;
+          access_expires_at?: string | null;
           id_front_url?: string | null;
           documenti?: string | null;
           avatar_url?: string | null;

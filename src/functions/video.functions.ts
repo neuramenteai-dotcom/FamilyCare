@@ -50,11 +50,11 @@ export const createVideoRoom = createServerFn({ method: "POST" })
       // Gating: la famiglia della conversazione deve avere un piano con videochiamate
       const { data: family } = await supabaseAdmin
         .from("waitlist")
-        .select("plan_tier, subscription_status")
+        .select("plan_tier, access_expires_at")
         .eq("id", convo.family_id)
         .maybeSingle();
       const tier = family?.plan_tier;
-      const active = hasActivePlan(tier, family?.subscription_status);
+      const active = hasActivePlan(tier, family?.access_expires_at);
       if (!active || !isPlanTier(tier) || !PLANS[tier].videoCalls) {
         return {
           success: false,

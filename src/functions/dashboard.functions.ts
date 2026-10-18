@@ -3,7 +3,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
-import { PLANS, hasActivePlan, isPlanTier, type PlanTier } from "@/lib/plans";
+import { PLANS, hasActivePlan, isPlanTier, giorniRimanenti, type PlanTier } from "@/lib/plans";
 
 // Calcola l'età (anni interi) da una data ISO YYYY-MM-DD.
 function computeAge(birthDate: string | null): number | null {
@@ -24,15 +24,15 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
       // 1. Profilo famiglia (con dati abbonamento)
       const family = await getOwnedWaitlistRecord(context.userId, {
         userType: "famiglia",
-        columns: "id, full_name, plan_tier, subscription_status",
+        columns: "id, full_name, plan_tier, access_expires_at",
       });
       if (!family) {
         return { success: false, error: "Profilo non trovato" };
       }
 
       const planTier = family.plan_tier as string | null;
-      const subStatus = family.subscription_status as string | null;
-      const active = hasActivePlan(planTier, subStatus);
+      const scadenza = family.access_expires_at as string | null;
+      const active = hasActivePlan(planTier, scadenza);
       const tier = (active && isPlanTier(planTier) ? planTier : null) as PlanTier | null;
 
       // 2. Tutti i professionisti visibili
@@ -112,13 +112,13 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
           bio: p.bio,
           video_url: p.video_url,
           avatar_url: p.avatar_url,
-          badges: plan.showVerificationBadges
-            ? {
-                criminal: p.criminal_check_verified,
-                references: p.references_verified,
-                certificates: p.certificates_verified,
-              }
-            : null,
+          // I bollini di verifica sono informazione di sicurezza: visibili
+          // sempre, a ogni livello e anche senza accesso attivo.
+          badges: {
+            criminal: p.criminal_check_verified,
+            references: p.references_verified,
+            certificates: p.certificates_verified,
+          },
         };
       });
 
@@ -129,8 +129,10 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
         familyId: family.id,
         full_name: family.full_name,
         professionals,
-        contactsUsed: contactedIds.size,
-        contactsCap: Number.isFinite(plan.contactCap) ? plan.contactCap : null, // null = illimitati
+        accessoScadeIl: scadenza,
+        giorniRimanenti: giorniRimanenti(scadenza),
+        videoCalls: plan.videoCalls,
+        savedSearches: plan.savedSearches,
       };
     } catch (err) {
       console.error(err);
@@ -241,7 +243,7 @@ export const contactProfessional = createServerFn({ method: "POST" })
     try {
       const family = await getOwnedWaitlistRecord(context.userId, {
         userType: "famiglia",
-        columns: "id, plan_tier, subscription_status",
+        columns: "id, plan_tier, access_expires_at",
       });
       if (!family) {
         return { success: false, error: "Profilo non trovato" };
@@ -249,11 +251,10 @@ export const contactProfessional = createServerFn({ method: "POST" })
 
       const active = hasActivePlan(
         family.plan_tier as string | null,
-        family.subscription_status as string | null,
+        family.access_expires_at as string | null,
       );
-      const tier = family.plan_tier as string | null;
-      if (!active || !isPlanTier(tier)) {
-        return { success: false, error: "Serve un abbonamento attivo per contattare i profili." };
+      if (!active) {
+        return { success: false, error: "Serve un accesso attivo per scrivere ai professionisti." };
       }
 
       // Il professionista deve esistere ed essere attivo/pre-approvato
@@ -277,20 +278,8 @@ export const contactProfessional = createServerFn({ method: "POST" })
         .maybeSingle();
 
       if (!existing) {
-        // Verifica il cap del tier
-        const cap = PLANS[tier].contactCap;
-        if (Number.isFinite(cap)) {
-          const { count } = await supabaseAdmin
-            .from("family_contacts")
-            .select("id", { count: "exact", head: true })
-            .eq("family_id", family.id);
-          if ((count || 0) >= cap) {
-            return {
-              success: false,
-              error: `Hai raggiunto il limite di ${cap} contatti del tuo piano. Passa a un piano superiore per contattarne altri.`,
-            };
-          }
-        }
+        // Nessun tetto ai contatti: si vendono strumenti, non accesso misurato
+        // a lavoratori. La tabella resta per sapere con chi si e' gia' parlato.
         const { error: insErr } = await supabaseAdmin
           .from("family_contacts")
           .insert({ family_id: family.id, professional_id: pro.id });

@@ -17,7 +17,6 @@ import { z } from "zod";
 import { PLANS, type PlanTier } from "@/lib/plans";
 import { PlanSelector } from "@/components/family/PlanSelector";
 import { ProfileCard, type FamilyProfile } from "@/components/family/ProfileCard";
-import { ConciergeSection } from "@/components/family/ConciergeSection";
 
 export const Route = createFileRoute("/famiglia/dashboard")({
   validateSearch: z.object({ session_id: z.string().optional() }),
@@ -137,8 +136,7 @@ function FamilyDashboard() {
   });
 
   const tier: PlanTier | null = data?.tier ?? null;
-  const contactsCap: number | null = data?.contactsCap ?? null;
-  const contactsUsed: number = data?.contactsUsed ?? 0;
+  const giorniRimasti: number = data?.giorniRimanenti ?? 0;
 
   return (
     <div className="min-h-screen bg-muted/20">
@@ -184,19 +182,22 @@ function FamilyDashboard() {
                 Piano {PLANS[tier].label}
               </span>
               <span className="text-muted-foreground">
-                Contatti:{" "}
-                <strong className="text-foreground">
-                  {contactsUsed}
-                  {contactsCap != null ? ` / ${contactsCap}` : " (illimitati)"}
-                </strong>
+                {giorniRimasti > 0 ? (
+                  <>
+                    Scade fra{" "}
+                    <strong className="text-foreground">
+                      {giorniRimasti} {giorniRimasti === 1 ? "giorno" : "giorni"}
+                    </strong>
+                  </>
+                ) : (
+                  <strong className="text-foreground">Accesso scaduto</strong>
+                )}
               </span>
             </div>
           )}
         </div>
 
         {data?.locked && <PlanSelector onChoose={handleCheckout} loadingTier={loadingTier} />}
-
-        {!data?.locked && <ConciergeSection />}
 
         <div>
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
