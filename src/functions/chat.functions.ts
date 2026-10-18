@@ -3,6 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
+import { analizzaMessaggio, spiegazione } from "@/server/contact-filter";
 import { PLANS, hasActivePlan, isPlanTier } from "@/lib/plans";
 
 // Carica il record waitlist dell'utente autenticato (famiglia o professionista).
@@ -134,6 +135,14 @@ export const sendMessage = createServerFn({ method: "POST" })
       );
       if (!me) return { success: false, error: "Profilo non trovato" };
       if (!conversation) return { success: false, error: "Conversazione non accessibile" };
+
+      // Il controllo sta qui e non nel browser: una verifica lato client si
+      // aggira chiamando direttamente la funzione. Vale in entrambe le
+      // direzioni, famiglia e professionista.
+      const esito = analizzaMessaggio(data.body);
+      if (!esito.pulito && esito.motivo) {
+        return { success: false, error: spiegazione(esito.motivo) };
+      }
 
       const { data: message, error } = await supabaseAdmin
         .from("messages")
