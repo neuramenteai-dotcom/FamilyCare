@@ -256,6 +256,15 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     try {
+      // Lo stato precedente serve a distinguere la prima approvazione da un
+      // salvataggio ripetuto: senza, chi riapre la scheda e preme di nuovo
+      // farebbe ripartire gli avvisi.
+      const { data: prima } = await supabaseAdmin
+        .from("waitlist")
+        .select("status, user_type")
+        .eq("id", data.id)
+        .maybeSingle();
+
       const { error } = await supabaseAdmin
         .from("waitlist")
         .update({ status: data.status })
@@ -265,7 +274,23 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
         console.error("update waitlist status error:", error);
         return { success: false, error: "Impossibile aggiornare lo stato." };
       }
-      return { success: true };
+
+      // Il profilo diventa visibile proprio ora: e' il momento in cui avvisare
+      // chi lo stava aspettando. L'invio non deve poter far fallire
+      // l'approvazione, quindi gli errori restano dentro la funzione.
+      let avvisi = 0;
+      if (
+        data.status === "attivo" &&
+        prima?.status !== "attivo" &&
+        prima?.user_type === "professionista"
+      ) {
+        // Import dinamico: il modulo tira dentro nodemailer, che non deve
+        // finire nel bundle del browser.
+        const { avvisaRicercheCorrispondenti } = await import("@/server/avvisi-ricerche");
+        avvisi = await avvisaRicercheCorrispondenti(data.id);
+      }
+
+      return { success: true, avvisiInviati: avvisi };
     } catch (err) {
       console.error(err);
       return { success: false, error: "Errore del server." };

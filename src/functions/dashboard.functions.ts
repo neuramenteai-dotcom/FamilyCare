@@ -42,7 +42,7 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
           "id, full_name, city, experience, nationality, italian_level, services, bio, avatar_url, birth_date, gender, video_url, email, criminal_check_verified, references_verified, certificates_verified",
         )
         .eq("user_type", "professionista")
-        .in("status", ["pre_approvato", "attivo"])
+        .eq("status", "attivo")
         .order("created_at", { ascending: false });
 
       if (proError) {
@@ -166,7 +166,9 @@ export const getProDashboard = createServerFn({ method: "GET" })
         .from("waitlist")
         .select("id, city, services, frequency, urgency, message")
         .eq("user_type", "famiglia")
-        .eq("has_active_package", true) // Solo famiglie paganti
+        // Solo famiglie con accesso ancora valido: has_active_package resta
+        // true anche dopo la scadenza, quindi la verita' e' la data.
+        .gt("access_expires_at", new Date().toISOString())
         .order("created_at", { ascending: false });
 
       if (famError) {
@@ -263,7 +265,7 @@ export const contactProfessional = createServerFn({ method: "POST" })
         .select("id, email, full_name")
         .eq("id", data.professionalId)
         .eq("user_type", "professionista")
-        .in("status", ["pre_approvato", "attivo"])
+        .eq("status", "attivo")
         .maybeSingle();
       if (!pro) {
         return { success: false, error: "Professionista non trovato" };

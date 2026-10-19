@@ -20,10 +20,18 @@ describe("matchNames", () => {
     expect(res.confidence).toBe(1);
   });
 
-  it("accetta metà del nome (soglia 50%)", () => {
+  it("rifiuta il documento di un'altra persona con lo stesso nome di battesimo", () => {
+    // Era il buco della soglia al 50%: bastava un nome in comune per
+    // pubblicare un profilo con il documento di qualcun altro.
     const res = matchNames("Mario Bianchi", "Mario Rossi");
     expect(res.confidence).toBe(0.5);
-    expect(res.isMatch).toBe(true);
+    expect(res.isMatch).toBe(false);
+  });
+
+  it("rifiuta anche quando corrisponde solo il cognome", () => {
+    const res = matchNames("Luigi Rossi", "Mario Rossi");
+    expect(res.confidence).toBe(0.5);
+    expect(res.isMatch).toBe(false);
   });
 
   it("rifiuta un nome completamente diverso", () => {
@@ -39,7 +47,7 @@ describe("matchNames", () => {
     expect(matchNames("   ", "Mario Rossi").isMatch).toBe(false);
   });
 
-  it("sotto la soglia del 50% non matcha", () => {
+  it("rifiuta quando manca una parte del nome dichiarato", () => {
     const res = matchNames("Mario Bianchi", "Mario Rossi Verdi");
     expect(res.confidence).toBeCloseTo(1 / 3);
     expect(res.isMatch).toBe(false);

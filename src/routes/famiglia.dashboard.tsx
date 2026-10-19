@@ -17,6 +17,7 @@ import { z } from "zod";
 import { PLANS, type PlanTier } from "@/lib/plans";
 import { PlanSelector } from "@/components/family/PlanSelector";
 import { ProfileCard, type FamilyProfile } from "@/components/family/ProfileCard";
+import { RicercheSalvate } from "@/components/family/RicercheSalvate";
 
 export const Route = createFileRoute("/famiglia/dashboard")({
   validateSearch: z.object({ session_id: z.string().optional() }),
@@ -198,6 +199,8 @@ function FamilyDashboard() {
         </div>
 
         {data?.locked && <PlanSelector onChoose={handleCheckout} loadingTier={loadingTier} />}
+
+        {!data?.locked && <RicercheSalvate />}
 
         <div>
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">

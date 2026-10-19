@@ -173,6 +173,42 @@ export type Database = {
           },
         ];
       };
+      ricerche_salvate: {
+        Row: {
+          id: string;
+          family_id: string;
+          nome: string;
+          citta: string;
+          zona: string | null;
+          servizi: string[];
+          attiva: boolean;
+          ultima_notifica_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id: string;
+          nome: string;
+          citta: string;
+          zona?: string | null;
+          servizi?: string[];
+          attiva?: boolean;
+          ultima_notifica_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string;
+          nome?: string;
+          citta?: string;
+          zona?: string | null;
+          servizi?: string[];
+          attiva?: boolean;
+          ultima_notifica_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       family_contacts: {
         Row: {
           id: string;

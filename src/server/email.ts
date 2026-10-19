@@ -116,3 +116,57 @@ Il team di FamilyCare`;
     console.error("❌ Errore durante l'invio delle email:", error);
   }
 }
+
+/**
+ * Avvisa una famiglia che e' entrato un profilo corrispondente a una sua
+ * ricerca salvata. Parte solo quando il profilo e' stato approvato da una
+ * persona ed e' quindi gia' visibile: non anticipa mai la pubblicazione.
+ */
+export async function sendAvvisoRicercaSalvata(data: {
+  email: string;
+  nomeFamiglia?: string | null;
+  nomeRicerca: string;
+  citta: string;
+  zona?: string | null;
+}) {
+  const EMAIL_MITTENTE = process.env.EMAIL_MITTENTE;
+  const PASSWORD_APP = process.env.PASSWORD_APP;
+
+  if (!EMAIL_MITTENTE || !PASSWORD_APP) {
+    console.warn("Credenziali SMTP mancanti: avviso ricerca salvata non inviato.");
+    return;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: { user: EMAIL_MITTENTE, pass: PASSWORD_APP },
+  });
+
+  const nome = (data.nomeFamiglia || "").trim();
+  const saluto = nome ? `Ciao ${nome},` : "Ciao,";
+  const dove = data.zona ? `${data.citta}, zona ${data.zona}` : data.citta;
+
+  const testo = `${saluto}
+
+è appena entrato un nuovo profilo verificato che corrisponde alla tua ricerca "${data.nomeRicerca}" (${dove}).
+
+Puoi vederlo entrando nella tua area riservata su FamilyCare.
+
+Ricevi questo messaggio perché hai una ricerca salvata attiva: puoi disattivarla in qualsiasi momento dalla stessa pagina.
+
+A presto,
+Il team di FamilyCare`;
+
+  try {
+    await transporter.sendMail({
+      from: `"FamilyCare" <${EMAIL_MITTENTE}>`,
+      to: data.email,
+      subject: `Nuovo profilo per la tua ricerca "${data.nomeRicerca}" — FamilyCare`,
+      text: testo,
+    });
+  } catch (err) {
+    console.error("Invio avviso ricerca salvata fallito:", err);
+  }
+}

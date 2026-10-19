@@ -1,7 +1,16 @@
 /**
  * Confronta il nome estratto dal documento con quello dichiarato dall'utente.
- * La confidenza è la frazione di parole del nome atteso presenti nel nome
- * estratto; la soglia al 50% tollera secondi nomi non inseriti nel form.
+ *
+ * La confidenza e' la frazione di parole del nome dichiarato presenti sul
+ * documento. Si richiede corrispondenza piena: con una soglia al 50% bastava
+ * un nome di battesimo in comune - "Mario Rossi" che carica il documento di
+ * "Mario Bianchi" passava.
+ *
+ * Nomi in piu' sul documento non penalizzano: chi dichiara "Maria Bianchi" e
+ * ha scritto "Maria Rosa Bianchi" sulla carta d'identita' corrisponde comunque.
+ *
+ * Nessuna delle due esiti pubblica il profilo: l'approvazione e' sempre umana.
+ * La differenza e' solo quanto in fretta l'admin puo' decidere.
  */
 export function matchNames(
   extractedName: string,
@@ -22,5 +31,5 @@ export function matchNames(
   }
 
   const confidence = matchCount / expectedWords.length;
-  return { isMatch: confidence >= 0.5, confidence };
+  return { isMatch: confidence >= 1, confidence };
 }
