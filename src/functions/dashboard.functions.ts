@@ -236,8 +236,10 @@ export const setProInterest = createServerFn({ method: "POST" })
     }
   });
 
-// Una famiglia "contatta" un professionista: rispetta il cap del tier, crea il
-// record di contatto e apre la conversazione. Ritorna id conversazione + email.
+// Una famiglia "contatta" un professionista: verifica che l'accesso sia
+// attivo, crea il record di contatto e apre la conversazione. Ritorna id
+// conversazione + email. Nessun tetto al numero di contatti, per scelta: si
+// vendono strumenti, non accesso misurato a lavoratori.
 export const contactProfessional = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => z.object({ professionalId: z.string().uuid() }).parse(input))
@@ -259,7 +261,9 @@ export const contactProfessional = createServerFn({ method: "POST" })
         return { success: false, error: "Serve un accesso attivo per scrivere ai professionisti." };
       }
 
-      // Il professionista deve esistere ed essere attivo/pre-approvato
+      // Il professionista deve esistere ed essere "attivo": un profilo
+      // pre-approvato ha superato la verifica del documento ma non e' ancora
+      // stato pubblicato da una persona, quindi non si puo' contattare.
       const { data: pro } = await supabaseAdmin
         .from("waitlist")
         .select("id, email, full_name")
