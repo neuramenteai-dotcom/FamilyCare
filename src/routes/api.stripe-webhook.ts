@@ -80,6 +80,51 @@ export const Route = createFileRoute("/api/stripe-webhook")({
 
         try {
           switch (event.type) {
+            case "identity.verification_session.verified": {
+              const session = event.data.object as Stripe.Identity.VerificationSession;
+              const waitlistId = session.metadata?.waitlistId;
+              if (waitlistId) {
+                // Documento verificato non vuol dire profilo pubblicato: il
+                // profilo va in "pre_approvato" e lo pubblica una persona
+                // dall'area admin. E' anche l'unico percorso da cui partono
+                // gli avvisi alle famiglie con una ricerca salvata.
+                const { data: prima } = await supabaseAdmin
+                  .from("waitlist")
+                  .select("status")
+                  .eq("id", waitlistId)
+                  .maybeSingle();
+
+                const campi: Record<string, unknown> = {
+                  identity_verified: true,
+                  verification_method: "stripe_identity",
+                  verified_at: new Date().toISOString(),
+                  identity_session_id: session.id,
+                };
+                // Un profilo gia' pubblicato non va retrocesso.
+                if (prima?.status !== "attivo") {
+                  campi.status = "pre_approvato";
+                }
+
+                const { error } = await supabaseAdmin
+                  .from("waitlist")
+                  .update(campi as never)
+                  .eq("id", waitlistId);
+                if (error) throw error;
+              }
+              break;
+            }
+
+            case "identity.verification_session.requires_input": {
+              const session = event.data.object as Stripe.Identity.VerificationSession;
+              console.warn(
+                "Stripe Identity richiede un nuovo invio (session:",
+                session.id,
+                session.last_error?.code,
+                ")"
+              );
+              break;
+            }
+
             case "checkout.session.completed": {
               const session = event.data.object as Stripe.Checkout.Session;
               const tier = session.metadata?.tier;

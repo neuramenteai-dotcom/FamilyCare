@@ -49,6 +49,10 @@ export type Database = {
           criminal_check_verified: boolean;
           references_verified: boolean;
           certificates_verified: boolean;
+          identity_verified?: boolean;
+          verification_method?: string | null;
+          verified_at?: string | null;
+          identity_session_id?: string | null;
         };
         Insert: {
           birth_date?: string | null;
@@ -90,6 +94,10 @@ export type Database = {
           criminal_check_verified?: boolean;
           references_verified?: boolean;
           certificates_verified?: boolean;
+          identity_verified?: boolean;
+          verification_method?: string | null;
+          verified_at?: string | null;
+          identity_session_id?: string | null;
         };
         Update: {
           birth_date?: string | null;
@@ -131,6 +139,10 @@ export type Database = {
           criminal_check_verified?: boolean;
           references_verified?: boolean;
           certificates_verified?: boolean;
+          identity_verified?: boolean;
+          verification_method?: string | null;
+          verified_at?: string | null;
+          identity_session_id?: string | null;
         };
         Relationships: [];
       };
