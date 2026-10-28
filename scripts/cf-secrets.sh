@@ -39,11 +39,17 @@ if ! npx wrangler whoami >/dev/null 2>&1; then
 fi
 
 # Legge una variabile da .env togliendo apici e spazi, senza stamparne il valore.
+#
+# Gli spazi si togliono due volte, prima e dopo gli apici: una chiave scritta
+# come KEY=" sk_test_..." ha lo spazio DENTRO gli apici, e ripulendo solo
+# all'esterno sopravvive. Stripe la rifiuta con "Invalid API Key provided", e
+# l'errore non dice che il problema e' uno spazio.
 read_env() {
   sed -n "s/^$1=//p" "$ENV_FILE" \
     | head -n1 \
     | sed -e 's/\r$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' \
-          -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/"
+          -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/" \
+          -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
 ok=0
