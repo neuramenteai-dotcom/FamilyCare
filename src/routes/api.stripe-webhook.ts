@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { isPlanTier } from "@/lib/plans";
+import { isPlanTier, DURATA_ACCESSO_GIORNI } from "@/lib/plans";
 
-// Fonte di verità per l'abbonamento famiglia. Configurazione: endpoint Stripe su
-// /api/stripe-webhook con gli eventi checkout.session.completed,
-// customer.subscription.updated/deleted, invoice.paid, invoice.payment_failed,
-// e STRIPE_WEBHOOK_SECRET nell'env.
+// Fonte di verita' per l'accesso famiglia e per l'esito delle verifiche
+// d'identita'. Configurazione: endpoint Stripe su /api/stripe-webhook con gli
+// eventi checkout.session.completed, identity.verification_session.verified e
+// identity.verification_session.requires_input, piu' STRIPE_WEBHOOK_SECRET
+// nell'env.
+//
+// I casi customer.subscription.* e invoice.* qui sotto sono eredita' del
+// modello ad abbonamento: con mode "payment" non arrivano piu', e restano solo
+// per gli abbonamenti eventualmente creati prima del cambio.
 
 type SubStatus = "active" | "past_due" | "canceled";
 
@@ -135,17 +140,38 @@ export const Route = createFileRoute("/api/stripe-webhook")({
                 customerId: typeof session.customer === "string" ? session.customer : null,
               });
 
-              if (familyId && isPlanTier(tier)) {
+              if (familyId && isPlanTier(tier) && session.payment_status === "paid") {
+                // La scadenza va scritta QUI, non solo al ritorno sul sito.
+                // hasActivePlan() considera attivo solo chi ha una data futura:
+                // senza access_expires_at la famiglia paga e non ottiene
+                // niente, e con il redirect come unico punto di attivazione
+                // basta chiudere la scheda dopo il pagamento per perderlo.
+                const { data: prima } = await supabaseAdmin
+                  .from("waitlist")
+                  .select("access_expires_at")
+                  .eq("id", familyId)
+                  .maybeSingle();
+
+                // Un accesso ancora valido si prolunga invece di essere
+                // sovrascritto: chi rinnova prima della scadenza non perde i
+                // giorni residui. Stessa regola di verifyCheckoutSession.
+                const adesso = Date.now();
+                const residuo = prima?.access_expires_at
+                  ? new Date(prima.access_expires_at as string).getTime()
+                  : 0;
+                const partenza = residuo > adesso ? residuo : adesso;
+                const scadenza = new Date(
+                  partenza + DURATA_ACCESSO_GIORNI * 86_400_000,
+                ).toISOString();
+
                 const { error } = await supabaseAdmin
                   .from("waitlist")
                   .update({
                     plan_tier: tier,
-                    subscription_status: "active",
+                    access_expires_at: scadenza,
                     has_active_package: true,
                     stripe_customer_id:
                       typeof session.customer === "string" ? session.customer : null,
-                    stripe_subscription_id:
-                      typeof session.subscription === "string" ? session.subscription : null,
                   })
                   .eq("id", familyId);
                 if (error) throw error;
