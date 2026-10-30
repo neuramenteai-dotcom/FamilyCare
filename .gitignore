@@ -36,3 +36,7 @@ scratch/
 *.njsproj
 *.sln
 *.sw?
+
+# Documento di contesto interno: strategia, questioni legali aperte.
+# Il repository e pubblico, quindi non va pubblicato.
+RECAP-PROGETTO.md
