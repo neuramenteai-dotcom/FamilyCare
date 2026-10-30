@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { isPlanTier, DURATA_ACCESSO_GIORNI } from "@/lib/plans";
+import { isPlanTier } from "@/lib/plans";
+import { accreditaCheckoutPagato } from "@/server/stripe-payments";
 
 // Fonte di verita' per l'accesso famiglia e per l'esito delle verifiche
 // d'identita'. Configurazione: endpoint Stripe su /api/stripe-webhook con gli
@@ -9,9 +10,8 @@ import { isPlanTier, DURATA_ACCESSO_GIORNI } from "@/lib/plans";
 // identity.verification_session.requires_input, piu' STRIPE_WEBHOOK_SECRET
 // nell'env.
 //
-// I casi customer.subscription.* e invoice.* qui sotto sono eredita' del
-// modello ad abbonamento: con mode "payment" non arrivano piu', e restano solo
-// per gli abbonamenti eventualmente creati prima del cambio.
+// I casi customer.subscription.* e invoice.* sono compatibilita' con vecchi
+// abbonamenti; i nuovi acquisti a 30 giorni passano dalla RPC idempotente.
 
 type SubStatus = "active" | "past_due" | "canceled";
 
@@ -88,16 +88,25 @@ export const Route = createFileRoute("/api/stripe-webhook")({
             case "identity.verification_session.verified": {
               const session = event.data.object as Stripe.Identity.VerificationSession;
               const waitlistId = session.metadata?.waitlistId;
-              if (waitlistId) {
+              if (waitlistId && session.metadata?.userType === "professionista") {
                 // Documento verificato non vuol dire profilo pubblicato: il
                 // profilo va in "pre_approvato" e lo pubblica una persona
                 // dall'area admin. E' anche l'unico percorso da cui partono
                 // gli avvisi alle famiglie con una ricerca salvata.
                 const { data: prima } = await supabaseAdmin
                   .from("waitlist")
-                  .select("status")
+                  .select("status, auth_id")
                   .eq("id", waitlistId)
+                  .eq("user_type", "professionista")
                   .maybeSingle();
+
+                if (!prima || prima.auth_id !== session.metadata?.userId) {
+                  console.warn(
+                    "Stripe Identity completata senza profilo professionista:",
+                    session.id,
+                  );
+                  break;
+                }
 
                 const campi: Record<string, unknown> = {
                   identity_verified: true,
@@ -113,7 +122,8 @@ export const Route = createFileRoute("/api/stripe-webhook")({
                 const { error } = await supabaseAdmin
                   .from("waitlist")
                   .update(campi as never)
-                  .eq("id", waitlistId);
+                  .eq("id", waitlistId)
+                  .eq("user_type", "professionista");
                 if (error) throw error;
               }
               break;
@@ -125,57 +135,15 @@ export const Route = createFileRoute("/api/stripe-webhook")({
                 "Stripe Identity richiede un nuovo invio (session:",
                 session.id,
                 session.last_error?.code,
-                ")"
+                ")",
               );
               break;
             }
 
-            case "checkout.session.completed": {
+            case "checkout.session.completed":
+            case "checkout.session.async_payment_succeeded": {
               const session = event.data.object as Stripe.Checkout.Session;
-              const tier = session.metadata?.tier;
-              const familyId = await resolveFamilyId({
-                familyId: session.metadata?.familyId,
-                subscriptionId:
-                  typeof session.subscription === "string" ? session.subscription : null,
-                customerId: typeof session.customer === "string" ? session.customer : null,
-              });
-
-              if (familyId && isPlanTier(tier) && session.payment_status === "paid") {
-                // La scadenza va scritta QUI, non solo al ritorno sul sito.
-                // hasActivePlan() considera attivo solo chi ha una data futura:
-                // senza access_expires_at la famiglia paga e non ottiene
-                // niente, e con il redirect come unico punto di attivazione
-                // basta chiudere la scheda dopo il pagamento per perderlo.
-                const { data: prima } = await supabaseAdmin
-                  .from("waitlist")
-                  .select("access_expires_at")
-                  .eq("id", familyId)
-                  .maybeSingle();
-
-                // Un accesso ancora valido si prolunga invece di essere
-                // sovrascritto: chi rinnova prima della scadenza non perde i
-                // giorni residui. Stessa regola di verifyCheckoutSession.
-                const adesso = Date.now();
-                const residuo = prima?.access_expires_at
-                  ? new Date(prima.access_expires_at as string).getTime()
-                  : 0;
-                const partenza = residuo > adesso ? residuo : adesso;
-                const scadenza = new Date(
-                  partenza + DURATA_ACCESSO_GIORNI * 86_400_000,
-                ).toISOString();
-
-                const { error } = await supabaseAdmin
-                  .from("waitlist")
-                  .update({
-                    plan_tier: tier,
-                    access_expires_at: scadenza,
-                    has_active_package: true,
-                    stripe_customer_id:
-                      typeof session.customer === "string" ? session.customer : null,
-                  })
-                  .eq("id", familyId);
-                if (error) throw error;
-              }
+              await accreditaCheckoutPagato(session);
               break;
             }
 

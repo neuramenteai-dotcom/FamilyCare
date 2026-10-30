@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
+import { trustedReturnUrl } from "@/server/trusted-return-url";
 
 function getStripeClient(): Stripe | null {
   const secret = process.env.STRIPE_SECRET_KEY;
@@ -71,6 +72,17 @@ export const createStripeIdentitySession = createServerFn({ method: "POST" })
       if (!user) {
         return { success: false, error: "Utente non trovato." };
       }
+      if (user.user_type !== "professionista") {
+        return { success: false, error: "La verifica d'identità è riservata ai professionisti." };
+      }
+
+      const returnUrl = trustedReturnUrl(
+        input.returnUrl,
+        `/verifica-identita/${user.id as string}`,
+      );
+      if (!returnUrl) {
+        return { success: false, error: "Indirizzo di ritorno non autorizzato." };
+      }
 
       // Crea sessione Stripe Identity (richiede documento + selfie biometrico)
       const session = await stripe.identity.verificationSessions.create({
@@ -85,7 +97,7 @@ export const createStripeIdentitySession = createServerFn({ method: "POST" })
             require_matching_selfie: true,
           },
         },
-        return_url: `${input.returnUrl}?session_id={VERIFICATION_SESSION_ID}`,
+        return_url: `${returnUrl}?session_id={VERIFICATION_SESSION_ID}`,
       });
 
       // Salva session_id sul record
@@ -101,7 +113,10 @@ export const createStripeIdentitySession = createServerFn({ method: "POST" })
       };
     } catch (err: any) {
       console.error("Errore creazione sessione Stripe Identity:", err);
-      return { success: false, error: err?.message || "Errore durante la creazione della sessione Stripe Identity." };
+      return {
+        success: false,
+        error: err?.message || "Errore durante la creazione della sessione Stripe Identity.",
+      };
     }
   });
 
@@ -125,6 +140,7 @@ export const checkStripeIdentitySession = createServerFn({ method: "POST" })
       }
 
       const user = await getOwnedWaitlistRecord(context.userId, {
+        userType: "professionista",
         columns: "id, full_name, status, identity_verified",
       });
 
@@ -138,7 +154,11 @@ export const checkStripeIdentitySession = createServerFn({ method: "POST" })
       // client, perche' Stripe lo rimette nell'URL dopo il redirect: senza
       // questo confronto basterebbe riusare l'id di una sessione verificata di
       // un altro per farsi marcare come verificati.
-      if (session.metadata?.waitlistId !== user.id) {
+      if (
+        session.metadata?.waitlistId !== user.id ||
+        session.metadata?.userId !== context.userId ||
+        session.metadata?.userType !== "professionista"
+      ) {
         console.warn("Sessione Stripe Identity non corrispondente al profilo:", session.id);
         return { success: false, error: "Sessione di verifica non riconosciuta." };
       }
@@ -189,7 +209,8 @@ export const getIdentityVerificationStatus = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     try {
       const user = await getOwnedWaitlistRecord(context.userId, {
-        columns: "id, full_name, status, identity_verified, verification_method, verified_at, user_type",
+        columns:
+          "id, full_name, status, identity_verified, verification_method, verified_at, user_type",
       });
 
       if (!user) {

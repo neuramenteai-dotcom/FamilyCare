@@ -26,6 +26,7 @@ export interface PlanConfig {
   tier: PlanTier;
   label: string;
   priceLabel: string;
+  priceCents: number;
   priceEnv: string; // nome della env var con lo Stripe Price ID
   videoCalls: boolean;
   savedSearches: boolean;
@@ -36,6 +37,7 @@ export const PLANS: Record<PlanTier, PlanConfig> = {
     tier: "base",
     label: "Accesso",
     priceLabel: "39€",
+    priceCents: 3900,
     priceEnv: "STRIPE_PRICE_BASE",
     videoCalls: false,
     savedSearches: false,
@@ -44,6 +46,7 @@ export const PLANS: Record<PlanTier, PlanConfig> = {
     tier: "plus",
     label: "Accesso Plus",
     priceLabel: "59€",
+    priceCents: 5900,
     priceEnv: "STRIPE_PRICE_PLUS",
     videoCalls: true,
     savedSearches: true,

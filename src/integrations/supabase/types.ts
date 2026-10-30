@@ -358,7 +358,17 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      grant_family_access_for_checkout: {
+        Args: {
+          p_checkout_session_id: string;
+          p_family_id: string;
+          p_tier: string;
+          p_payment_intent_id: string | null;
+          p_amount_total: number;
+          p_currency: string;
+        };
+        Returns: boolean;
+      };
     };
     Enums: {
       [_ in never]: never;

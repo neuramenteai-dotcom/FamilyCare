@@ -4,7 +4,9 @@ import Stripe from "stripe";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
-import { PLANS, hasActivePlan, DURATA_ACCESSO_GIORNI, type PlanTier } from "@/lib/plans";
+import { accreditaCheckoutPagato } from "@/server/stripe-payments";
+import { trustedReturnUrl } from "@/server/trusted-return-url";
+import { PLANS, isPlanTier, type PlanTier } from "@/lib/plans";
 
 function getStripe(): Stripe | null {
   const secretKey = process.env.STRIPE_SECRET_KEY || "";
@@ -48,10 +50,9 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         return { success: false, error: "Famiglia non trovata." };
       }
 
-      if (
-        hasActivePlan(record.plan_tier as string | null, record.access_expires_at as string | null)
-      ) {
-        return { success: false, error: "Hai già un accesso attivo." };
+      const returnUrl = trustedReturnUrl(data.returnUrl, "/famiglia/dashboard");
+      if (!returnUrl) {
+        return { success: false, error: "Indirizzo di ritorno non autorizzato." };
       }
 
       const session = await stripe.checkout.sessions.create({
@@ -65,8 +66,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           : { customer_email: record.email as string }),
         line_items: [{ price: priceId, quantity: 1 }],
         metadata: { familyId: record.id, tier: data.tier },
-        success_url: `${data.returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: data.returnUrl,
+        success_url: `${returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: returnUrl,
       });
 
       return { success: true, url: session.url };
@@ -127,7 +128,7 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
 
       const record = await getOwnedWaitlistRecord(context.userId, {
         userType: "famiglia",
-        columns: "id, stripe_customer_id, access_expires_at",
+        columns: "id",
       });
       if (!record) {
         return { success: false, error: "Famiglia non trovata." };
@@ -139,39 +140,9 @@ export const verifyCheckoutSession = createServerFn({ method: "POST" })
         return { success: false, error: "Sessione non valida." };
       }
 
-      const tier = session.metadata?.tier;
-      if (session.payment_status === "paid" && (tier === "base" || tier === "plus")) {
-        // Un accesso gia' attivo si prolunga invece di essere sovrascritto:
-        // chi rinnova prima della scadenza non deve perdere i giorni residui.
-        const adesso = Date.now();
-        const residuo = record.access_expires_at
-          ? new Date(record.access_expires_at as string).getTime()
-          : 0;
-        const partenza = residuo > adesso ? residuo : adesso;
-        const scadenza = new Date(partenza + DURATA_ACCESSO_GIORNI * 86_400_000).toISOString();
-
-        const { error } = await supabaseAdmin
-          .from("waitlist")
-          .update({
-            plan_tier: tier,
-            access_expires_at: scadenza,
-            has_active_package: true,
-            stripe_customer_id:
-              typeof session.customer === "string"
-                ? session.customer
-                : ((record.stripe_customer_id as string | null) ?? null),
-          })
-          .eq("id", record.id);
-
-        if (error) {
-          console.error("Error updating family plan after payment:", error);
-          return {
-            success: false,
-            error: "Pagamento ricevuto, ma errore nell'aggiornamento del database.",
-          };
-        }
-
-        return { success: true, plan_tier: tier };
+      const result = await accreditaCheckoutPagato(session);
+      if (result.tier) {
+        return { success: true, plan_tier: result.tier, accessoAttivato: true };
       }
 
       return { success: true, plan_tier: null };
