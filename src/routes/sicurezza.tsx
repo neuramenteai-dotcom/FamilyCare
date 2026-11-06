@@ -58,7 +58,7 @@ function SecurityPage() {
             {
               icon: UserCheck,
               title: "3. Videochiamata conoscitiva",
-              text: "Con i piani Plus e Premium parli in video con il professionista dentro la piattaforma, prima di decidere. Senza scambiarvi il numero privato.",
+              text: "Con Accesso Plus parli in video con il professionista dentro la piattaforma, prima di decidere. Senza scambiarvi il numero privato.",
             },
             {
               icon: Star,

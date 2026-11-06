@@ -43,7 +43,7 @@ function HowPage() {
     {
       icon: Calendar,
       title: "Vedetevi in videochiamata",
-      text: "Con i piani Plus e Premium fissi una videochiamata conoscitiva senza impegno, poi decidi con calma. L'accordo lo prendete direttamente voi.",
+      text: "Con Accesso Plus fissi una videochiamata conoscitiva senza impegno, poi decidi con calma. L'accordo lo prendete direttamente voi.",
     },
   ];
 

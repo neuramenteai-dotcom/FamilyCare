@@ -21,7 +21,7 @@ async function dailyFetch(path: string, init: RequestInit, apiKey: string) {
 
 // Crea (o riusa) la stanza video per una conversazione e ritorna URL + token.
 // La videochiamata è riservata alle conversazioni la cui famiglia ha un piano
-// Plus o Premium attivo.
+// Accesso Plus attivo.
 export const createVideoRoom = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => z.object({ conversationId: z.string().uuid() }).parse(input))
@@ -58,7 +58,7 @@ export const createVideoRoom = createServerFn({ method: "POST" })
       if (!active || !isPlanTier(tier) || !PLANS[tier].videoCalls) {
         return {
           success: false,
-          error: "Le videochiamate sono disponibili con i piani Plus e Premium.",
+          error: "Le videochiamate sono disponibili con Accesso Plus.",
         };
       }
 

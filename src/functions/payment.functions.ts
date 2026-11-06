@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import Stripe from "stripe";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
 import { accreditaCheckoutPagato } from "@/server/stripe-payments";
@@ -80,42 +79,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     }
   });
 
-// Portale di gestione abbonamento (aggiorna metodo di pagamento, disdici, ecc.)
-export const createBillingPortalSession = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator(z.object({ returnUrl: z.string().url() }))
-  .handler(async ({ data, context }) => {
-    try {
-      const stripe = getStripe();
-      if (!stripe) {
-        return { success: false, error: "Stripe non è configurato sul server." };
-      }
-
-      const record = await getOwnedWaitlistRecord(context.userId, {
-        userType: "famiglia",
-        columns: "id, stripe_customer_id",
-      });
-      if (!record?.stripe_customer_id) {
-        return { success: false, error: "Nessun abbonamento da gestire." };
-      }
-
-      const session = await stripe.billingPortal.sessions.create({
-        customer: record.stripe_customer_id as string,
-        return_url: data.returnUrl,
-      });
-
-      return { success: true, url: session.url };
-    } catch (err) {
-      console.error("Stripe Billing Portal Error:", err);
-      return {
-        success: false,
-        error: err instanceof Error ? err.message : "Errore nell'apertura del portale.",
-      };
-    }
-  });
-
 // Conferma UX dopo il redirect da Stripe. La fonte di verità per l'attivazione
-// dell'abbonamento è il webhook; questa aggiorna subito lo stato del proprietario.
+// dell'accesso è il webhook; questa aggiorna subito lo stato del proprietario.
 export const verifyCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator(z.object({ sessionId: z.string().max(500) }))

@@ -27,12 +27,12 @@ export function PlanSelector({
   return (
     <div className="mb-10">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold mb-2">Scegli il tuo piano</h2>
+        <h2 className="text-2xl font-bold mb-2">Scegli il tuo accesso</h2>
         <p className="text-muted-foreground">
-          Abbonamento mensile, disdici quando vuoi. Sblocca i profili verificati nella tua zona.
+          30 giorni per cercare e conoscere le persone, senza rinnovo automatico.
         </p>
       </div>
-      <div className="grid md:grid-cols-3 gap-6 items-start">
+      <div className="grid md:grid-cols-2 gap-6 items-start max-w-3xl mx-auto">
         {PLAN_TIERS.map((tier) => {
           const plan = PLANS[tier];
           const highlighted = tier === "plus";
@@ -56,7 +56,7 @@ export function PlanSelector({
                 <span
                   className={`ml-1 text-sm ${highlighted ? "text-white/90" : "text-muted-foreground"}`}
                 >
-                  /mese
+                  / 30 giorni
                 </span>
               </div>
               <ul className="space-y-3 text-sm flex-grow mb-8">

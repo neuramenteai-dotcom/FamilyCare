@@ -386,7 +386,7 @@ function Stats() {
     { n: "5", l: "Servizi in un'unica piattaforma" },
     { n: "0 €", l: "Costo per i professionisti" },
     { n: "Roma", l: "La città da cui partiamo" },
-    { n: "3", l: "Piani per le famiglie, da 29,99 €" },
+    { n: "2", l: "Accessi famiglia di 30 giorni" },
   ];
   return (
     <Section className="bg-primary text-primary-foreground" containerClassName="">
@@ -422,7 +422,7 @@ function WaitlistCTA() {
             {[
               {
                 t: "Famiglie",
-                d: "Abbonamento mensile da 29,99 € — disdici quando vuoi",
+                d: "Profili visibili gratis. Chat e strumenti da 39 € per 30 giorni, senza rinnovo automatico",
               },
               {
                 t: "Professionisti",

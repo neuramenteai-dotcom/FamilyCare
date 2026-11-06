@@ -66,7 +66,7 @@ const FEATURES: Record<PlanTier, string[]> = {
 
 // Modulo di interesse mostrato finché gli accessi non sono attivabili.
 // Registra email, città e quale piano interessa: serve a sapere come si
-// distribuisce la domanda fra i tre livelli prima di aprire le vendite.
+// distribuisce la domanda fra i due livelli prima di aprire le vendite.
 function ModuloInteresse({ tier, onClose }: { tier: PlanTier | null; onClose: () => void }) {
   const join = useServerFn(joinWaitlist);
   const [email, setEmail] = useState("");
@@ -287,7 +287,7 @@ function PricingPage() {
       </Section>
 
       <Section className="pt-0">
-        <div className="grid md:grid-cols-3 gap-6 items-start">
+        <div className="grid md:grid-cols-2 gap-6 items-start max-w-3xl mx-auto">
           {PLAN_TIERS.map((tier) => {
             const plan = PLANS[tier];
             const highlighted = tier === "plus";

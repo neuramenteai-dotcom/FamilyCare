@@ -5,13 +5,12 @@ import { getFamilyDashboard, contactProfessional } from "@/functions/dashboard.f
 import {
   createCheckoutSession,
   verifyCheckoutSession,
-  createBillingPortalSession,
 } from "@/functions/payment.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Search, Filter, MessageCircle, Settings } from "lucide-react";
+import { Loader2, Search, Filter, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { PLANS, type PlanTier } from "@/lib/plans";
@@ -31,7 +30,6 @@ function FamilyDashboard() {
   const checkout = useServerFn(createCheckoutSession);
   const verify = useServerFn(verifyCheckoutSession);
   const contact = useServerFn(contactProfessional);
-  const billingPortal = useServerFn(createBillingPortalSession);
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
@@ -60,7 +58,7 @@ function FamilyDashboard() {
       if (res.success && search.session_id) {
         const verifyRes = await verify({ data: { sessionId: search.session_id } });
         if (verifyRes.success && verifyRes.plan_tier) {
-          toast.success("Abbonamento attivato!");
+          toast.success("Accesso attivato!");
           await reload();
         }
         navigate({ to: "/famiglia/dashboard", replace: true });
@@ -107,14 +105,6 @@ function FamilyDashboard() {
     }
   }
 
-  async function handleBillingPortal() {
-    const res = await billingPortal({
-      data: { returnUrl: window.location.origin + "/famiglia/dashboard" },
-    });
-    if (res.success && res.url) window.location.href = res.url;
-    else toast.error(res.error || "Portale non disponibile.");
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -156,11 +146,6 @@ function FamilyDashboard() {
               <MessageCircle className="w-4 h-4 mr-1.5" /> Messaggi
             </Link>
           </Button>
-          {tier && (
-            <Button variant="ghost" size="sm" onClick={handleBillingPortal}>
-              <Settings className="w-4 h-4 mr-1.5" /> Abbonamento
-            </Button>
-          )}
           <Button
             variant="ghost"
             size="sm"
@@ -272,7 +257,7 @@ function FamilyDashboard() {
                     Esperienza: {pro.experience || "—"}
                   </p>
                   <p className="mt-4 text-sm text-primary font-medium">
-                    Abbonati per vedere il profilo completo e contattare
+                    Attiva l'accesso per vedere il profilo completo e contattare
                   </p>
                 </div>
               ))}
