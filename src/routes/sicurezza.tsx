@@ -15,7 +15,7 @@ export const Route = createFileRoute("/sicurezza")({
       {
         property: "og:description",
         content:
-          "Nessun profilo è visibile prima che l'identità sia stata verificata dal nostro team.",
+          "Nessun profilo è visibile prima che la verifica dell'identità sia stata completata tramite Stripe Identity.",
       },
     ],
   }),
@@ -36,8 +36,9 @@ function SecurityPage() {
             <em className="italic text-primary">si dimostra.</em>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground">
-            Nessun profilo diventa visibile alle famiglie prima che l'identità sia stata verificata
-            dal nostro team. Qui sotto trovi esattamente cosa verifichiamo — e cosa no.
+            Nessun profilo diventa visibile alle famiglie prima che la verifica dell'identità sia
+            stata completata tramite Stripe Identity. Qui sotto trovi esattamente cosa facciamo —
+            e cosa no.
           </p>
         </div>
       </Section>
@@ -48,7 +49,7 @@ function SecurityPage() {
             {
               icon: FileCheck,
               title: "1. Identità verificata",
-              text: "Obbligatorio per tutti. Il professionista carica carta d'identità o passaporto, il nostro team lo controlla e solo dopo il profilo diventa visibile alle famiglie.",
+              text: "Obbligatorio per tutti. Il professionista completa la verifica di documento e selfie sulle pagine sicure di Stripe Identity. FamilyCare riceve solo l'esito e il profilo resta in attesa di approvazione prima della pubblicazione.",
             },
             {
               icon: ShieldCheck,

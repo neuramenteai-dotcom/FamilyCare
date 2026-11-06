@@ -72,7 +72,7 @@ Il team di FamilyCare`
 
 grazie per esserti iscritto a FamilyCare. Abbiamo ricevuto il tuo profilo.
 
-Prima che diventi visibile alle famiglie, il nostro team verifica il tuo documento d'identità. Ti scriviamo a questo indirizzo quando la verifica è completata, oppure se ci serve qualcosa in più.
+Prima che diventi visibile alle famiglie, completa la verifica dell'identità con Stripe Identity dal tuo pannello. Stripe gestisce documento e selfie sulle proprie pagine sicure; FamilyCare riceve solo l'esito della verifica. Dopo, una persona del nostro team revisiona il profilo prima della pubblicazione.
 
 L'iscrizione è gratuita e FamilyCare non trattiene commissioni sul rapporto tra te e la famiglia.
 

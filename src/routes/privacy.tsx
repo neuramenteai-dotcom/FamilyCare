@@ -41,8 +41,9 @@ function PrivacyPage() {
             esperienza, servizi offerti, livello di italiano, presentazione.
           </li>
           <li>
-            <strong>Documenti d'identità</strong>: immagine del documento caricato ai fini della
-            verifica del profilo.
+            <strong>Esito della verifica dell'identità</strong>: esito, riferimento della sessione
+            e data della verifica eseguita da Stripe Identity. FamilyCare non riceve né conserva
+            immagini del documento o del selfie.
           </li>
           <li>
             <strong>Dati di pagamento</strong> (famiglie): gestiti direttamente dal fornitore
@@ -57,14 +58,15 @@ function PrivacyPage() {
       <LegalSection title="3. Finalità e basi giuridiche">
         <ul className="list-disc pl-5 space-y-1">
           <li>
-            <strong>Erogazione del servizio</strong> (registrazione, matching
-            famiglia/professionista, verifica del profilo, pagamenti) — base giuridica: esecuzione
-            del contratto (art. 6.1.b GDPR).
+            <strong>Erogazione del servizio</strong> (registrazione, pubblicazione autonoma dei
+            profili, strumenti di contatto, verifica del profilo, pagamenti) — base giuridica:
+            esecuzione del contratto (art. 6.1.b GDPR).
           </li>
           <li>
-            <strong>Verifica dell'identità</strong> tramite analisi automatizzata del documento —
-            base giuridica: esecuzione del contratto e legittimo interesse alla sicurezza della
-            piattaforma (art. 6.1.b e 6.1.f).
+            <strong>Verifica dell'identità</strong> tramite Stripe Identity; FamilyCare tratta il
+            solo esito per prevenire profili falsi e tutelare gli utenti — base giuridica:
+            esecuzione del contratto e legittimo interesse alla sicurezza della piattaforma
+            (art. 6.1.b e 6.1.f).
           </li>
           <li>
             <strong>Comunicazioni promozionali</strong> (email/WhatsApp) — base giuridica: consenso,
@@ -90,11 +92,8 @@ function PrivacyPage() {
             <strong>Cloudflare</strong> (hosting dell'applicazione e distribuzione);
           </li>
           <li>
-            <strong>Stripe</strong> (elaborazione dei pagamenti);
-          </li>
-          <li>
-            <strong>Google (Gemini API)</strong> per l'analisi automatizzata del documento
-            d'identità;
+            <strong>Stripe</strong> (elaborazione dei pagamenti e, tramite Stripe Identity,
+            verifica del documento e del selfie sulle proprie pagine sicure);
           </li>
           <li>
             <strong>Daily.co</strong> per le videochiamate tra famiglie e professionisti;
@@ -108,19 +107,20 @@ function PrivacyPage() {
 
       <LegalSection title="5. Trasferimenti extra-UE">
         <p>
-          Alcuni fornitori (in particolare Google per l'analisi del documento) possono trattare dati
-          al di fuori dello Spazio Economico Europeo. In tali casi il trasferimento avviene sulla
-          base delle Clausole Contrattuali Standard approvate dalla Commissione Europea o di altre
-          garanzie adeguate ai sensi degli artt. 44 e seguenti del GDPR.
+          Alcuni fornitori, tra cui Stripe e Cloudflare, possono trattare dati al di fuori dello
+          Spazio Economico Europeo. In tali casi il trasferimento avviene sulla base delle Clausole
+          Contrattuali Standard approvate dalla Commissione Europea o di altre garanzie adeguate ai
+          sensi degli artt. 44 e seguenti del GDPR.
         </p>
       </LegalSection>
 
       <LegalSection title="6. Periodo di conservazione">
         <p>
           I dati sono conservati per il tempo necessario alle finalità indicate e, successivamente,
-          per i termini di legge (es. obblighi fiscali). I documenti d'identità sono conservati solo
-          per il tempo necessario alla verifica e comunque non oltre <strong>[PERIODO]</strong>. I
-          dati trattati sulla base del consenso sono conservati fino alla revoca dello stesso.
+          per i termini di legge (es. obblighi fiscali). FamilyCare conserva il solo esito della
+          verifica dell'identità per il tempo necessario alla gestione e sicurezza dell'account,
+          comunque non oltre <strong>[PERIODO]</strong>. I dati trattati sulla base del consenso
+          sono conservati fino alla revoca dello stesso.
         </p>
       </LegalSection>
 

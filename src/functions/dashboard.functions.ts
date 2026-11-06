@@ -265,7 +265,7 @@ export const contactProfessional = createServerFn({ method: "POST" })
       }
 
       // Il professionista deve esistere ed essere "attivo": un profilo
-      // pre-approvato ha superato la verifica del documento ma non e' ancora
+      // pre-approvato ha superato la verifica dell'identità ma non e' ancora
       // stato pubblicato da una persona, quindi non si puo' contattare.
       const { data: pro } = await supabaseAdmin
         .from("waitlist")

@@ -115,7 +115,7 @@ function ProDashboard() {
             className="hidden sm:flex"
             onClick={() => navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })}
           >
-            <FileText className="w-4 h-4 mr-2" />I miei Documenti
+            <FileText className="w-4 h-4 mr-2" />Verifica identità
           </Button>
           <Button
             variant="ghost"
@@ -138,8 +138,8 @@ function ProDashboard() {
             <h2 className="text-3xl font-semibold mb-4">Profilo in Verifica</h2>
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
               {data?.status === "nuovo" || data?.status === "contattato"
-                ? "Devi caricare un documento d'identità per procedere. Senza un documento verificato non potrai accedere alla bacheca degli annunci."
-                : "Abbiamo ricevuto i tuoi documenti. Il nostro team sta revisionando il tuo profilo manualmente per garantirti l'accesso alla bacheca."}
+                ? "Completa la verifica dell'identità con Stripe Identity per procedere. Finché non è conclusa, il profilo non può accedere alla bacheca degli annunci."
+                : "La tua identità è stata verificata. Una persona del nostro team sta revisionando il profilo prima della pubblicazione."}
             </p>
             <Button
               size="lg"
@@ -148,7 +148,7 @@ function ProDashboard() {
                 navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })
               }
             >
-              Vai alla pagina di Verifica Documenti
+              Verifica la tua identità
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
@@ -163,7 +163,7 @@ function ProDashboard() {
                   navigate({ to: "/verifica-identita/$id", params: { id: data?.proId } })
                 }
               >
-                <FileText className="w-4 h-4 mr-2" />I miei Documenti
+                <FileText className="w-4 h-4 mr-2" />Verifica identità
               </Button>
             </div>
 

@@ -500,7 +500,7 @@ function ProForm() {
         } else {
           // Double opt-in: l'email non è ancora confermata, quindi non c'è
           // sessione. L'utente conferma via email e viene poi indirizzato alla
-          // verifica del documento (/conferma-email → /verifica-identita/$id).
+          // verifica dell'identità (/conferma-email → /verifica-identita/$id).
           setDone(true);
         }
       } else {
@@ -517,7 +517,7 @@ function ProForm() {
     return (
       <SuccessCard
         title="Controlla la tua email"
-        message="Ti abbiamo inviato un link per confermare l'iscrizione. Dopo la conferma potrai caricare il documento d'identità per completare la verifica del profilo."
+        message="Ti abbiamo inviato un link per confermare l'iscrizione. Dopo la conferma potrai completare la verifica dell'identità con Stripe Identity."
       />
     );
   }

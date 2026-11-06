@@ -53,7 +53,7 @@ function IdentityVerificationPage() {
 
       // 1. Se stiamo tornando da un redirect Stripe con ?session_id=...
       // Non si esce da qui con un messaggio proprio: l'esito va riletto dal
-      // profilo, perche' la verifica del documento non pubblica il profilo e
+      // profilo, perche' la verifica dell'identità non pubblica il profilo e
       // solo lo stato sul record dice se e' visibile alle famiglie.
       if (sessionId) {
         setIsVerifyingStripe(true);

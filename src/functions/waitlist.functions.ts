@@ -296,25 +296,3 @@ export const updateWaitlistStatus = createServerFn({ method: "POST" })
       return { success: false, error: "Errore del server." };
     }
   });
-
-// Il bucket identity_docs è privato: l'admin ottiene un signed URL temporaneo
-// a partire dal path salvato in waitlist.id_front_url.
-export const getIdentityDocUrl = createServerFn({ method: "POST" })
-  .middleware([requireAdmin])
-  .validator((input: unknown) => z.object({ path: z.string().min(1).max(500) }).parse(input))
-  .handler(async ({ data }) => {
-    try {
-      const { data: signed, error } = await supabaseAdmin.storage
-        .from("identity_docs")
-        .createSignedUrl(data.path, 60 * 10); // 10 minuti
-
-      if (error || !signed?.signedUrl) {
-        console.error("signed url error:", error);
-        return { success: false, error: "Impossibile generare il link al documento." };
-      }
-      return { success: true, url: signed.signedUrl };
-    } catch (err) {
-      console.error(err);
-      return { success: false, error: "Errore del server." };
-    }
-  });

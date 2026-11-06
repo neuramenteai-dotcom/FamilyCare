@@ -188,7 +188,7 @@ function AudienceSplit() {
             {[
               "Iscrizione gratuita",
               "I contatti che riceverai provengono esclusivamente da famiglie motivate",
-              "Profilo online dopo la verifica del documento d'identità",
+              "Profilo online dopo la verifica dell'identità",
             ].map((b) => (
               <li key={b} className="flex items-start gap-2">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-secondary text-foreground grid place-items-center text-xs font-bold">
@@ -338,7 +338,7 @@ function Guarantees() {
     {
       icon: ShieldCheck,
       title: "Identità verificata prima della pubblicazione",
-      text: "Documento controllato dal nostro team. Obbligatorio, per tutti.",
+      text: "Verifica gestita da Stripe Identity. Obbligatoria per tutti.",
     },
     {
       icon: BadgeCheck,

@@ -4,7 +4,6 @@ import {
   getWaitlist,
   updateWaitlistStatus,
   updateFamilyPackage,
-  getIdentityDocUrl,
 } from "@/functions/waitlist.functions";
 import {
   getProfessionalDocuments,
@@ -514,10 +513,7 @@ export function AdminDashboard() {
                       selectedLead.score,
                     )}`}
                   >
-                    {selectedLead.user_type === "professionista" &&
-                    (selectedLead as any).id_front_url
-                      ? `AI Verifica: ${selectedLead.score}%`
-                      : `Score Profilo: ${selectedLead.score}%`}
+                    {`Completezza profilo: ${selectedLead.score}%`}
                   </span>
 
                   {selectedLead.user_type === "famiglia" && (
@@ -662,10 +658,6 @@ export function AdminDashboard() {
                   </div>
                 </div>
 
-                {(selectedLead as any).id_front_url && (
-                  <IdentityDocViewer docRef={(selectedLead as any).id_front_url} />
-                )}
-
                 {selectedLead.user_type === "professionista" && (
                   <ProVerificationPanel professionalId={selectedLead.id} />
                 )}
@@ -703,67 +695,6 @@ export function AdminDashboard() {
             </div>
           )}
         </div>
-      </div>
-    </div>
-  );
-}
-
-// Il bucket identity_docs è privato: il documento si apre tramite signed URL
-// generato on-demand dal server (solo admin). Supporta sia i nuovi record
-// (path) sia i vecchi (URL completo, da cui viene estratto il path).
-function IdentityDocViewer({ docRef }: { docRef: string }) {
-  const fetchDocUrl = useServerFn(getIdentityDocUrl);
-  const [signedUrl, setSignedUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const path = docRef.includes("/identity_docs/") ? docRef.split("/identity_docs/")[1] : docRef;
-
-  const handleLoad = async () => {
-    setLoading(true);
-    try {
-      const res = await fetchDocUrl({ data: { path } });
-      if (res.success && res.url) {
-        setSignedUrl(res.url);
-      } else {
-        toast.error(res.error || "Impossibile caricare il documento.");
-      }
-    } catch {
-      toast.error("Errore di connessione.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-1.5 border-t border-border/60 pt-3">
-      <span className="text-xs font-semibold text-muted-foreground uppercase">
-        Documento d'Identità Caricato
-      </span>
-      <div className="mt-2">
-        {signedUrl ? (
-          <a
-            href={signedUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="block w-full overflow-hidden rounded-xl border border-border/60 hover:opacity-80 transition-opacity"
-          >
-            <img src={signedUrl} alt="Documento" className="w-full h-auto object-cover max-h-48" />
-          </a>
-        ) : (
-          <Button
-            onClick={handleLoad}
-            disabled={loading}
-            variant="outline"
-            className="w-full h-10 rounded-xl"
-          >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
-            ) : (
-              <FileText className="h-4 w-4 mr-1.5" />
-            )}
-            Visualizza documento
-          </Button>
-        )}
       </div>
     </div>
   );

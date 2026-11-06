@@ -53,10 +53,14 @@ function TerminiPage() {
 
       <LegalSection title="3. Verifica dei professionisti">
         <p>
-          I professionisti sono tenuti a caricare un documento d'identità valido per la verifica del
-          profilo. FamilyCare si riserva di sospendere o rimuovere i profili che non superano la
-          verifica o che violano i presenti termini. La verifica non costituisce garanzia assoluta
-          sull'idoneità del professionista, la cui valutazione resta in capo alla famiglia.
+          I professionisti sono tenuti a completare la verifica dell'identità tramite
+          <strong> Stripe Identity</strong>, sulle pagine sicure del fornitore. FamilyCare riceve
+          l'esito della verifica e non riceve né conserva le immagini del documento o del selfie.
+          Il superamento della verifica non comporta la pubblicazione automatica: ogni profilo è
+          sottoposto a una revisione umana prima della pubblicazione. FamilyCare può sospendere o
+          rimuovere i profili che non superano la verifica o che violano i presenti termini. La
+          verifica non costituisce garanzia assoluta sull'idoneità del professionista, la cui
+          valutazione resta in capo alla famiglia.
         </p>
       </LegalSection>
 
