@@ -4,6 +4,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
 import { PLANS, hasActivePlan, isPlanTier, giorniRimanenti, type PlanTier } from "@/lib/plans";
+import { canStartCheckout } from "@/server/access-rollout";
 
 // Calcola l'età (anni interi) da una data ISO YYYY-MM-DD.
 function computeAge(birthDate: string | null): number | null {
@@ -21,10 +22,10 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     try {
-      // 1. Profilo famiglia (con dati abbonamento)
+      // 1. Profilo famiglia e stato dell'accesso.
       const family = await getOwnedWaitlistRecord(context.userId, {
         userType: "famiglia",
-        columns: "id, full_name, plan_tier, access_expires_at",
+        columns: "id, full_name, email, plan_tier, access_expires_at",
       });
       if (!family) {
         return { success: false, error: "Profilo non trovato" };
@@ -51,7 +52,7 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
       }
       const pros = allPros || [];
 
-      // 3. Stato bloccato: teaser (nessun abbonamento attivo)
+      // 3. Stato bloccato: teaser (nessun accesso attivo)
       if (!tier) {
         const teaser = pros.map((p) => ({
           id: p.id,
@@ -66,6 +67,7 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
           tier: null,
           familyId: family.id,
           full_name: family.full_name,
+          checkoutEnabled: canStartCheckout(family.email as string | null),
           professionals: teaser,
         };
       }
@@ -128,6 +130,7 @@ export const getFamilyDashboard = createServerFn({ method: "GET" })
         tier,
         familyId: family.id,
         full_name: family.full_name,
+        checkoutEnabled: canStartCheckout(family.email as string | null),
         professionals,
         accessoScadeIl: scadenza,
         giorniRimanenti: giorniRimanenti(scadenza),

@@ -5,6 +5,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getOwnedWaitlistRecord } from "@/server/authz";
 import { accreditaCheckoutPagato } from "@/server/stripe-payments";
 import { trustedReturnUrl } from "@/server/trusted-return-url";
+import { canStartCheckout } from "@/server/access-rollout";
 import { PLANS, isPlanTier, type PlanTier } from "@/lib/plans";
 
 function getStripe(): Stripe | null {
@@ -47,6 +48,13 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
       if (!record) {
         return { success: false, error: "Famiglia non trovata." };
+      }
+
+      if (!canStartCheckout(record.email as string | null)) {
+        return {
+          success: false,
+          error: "Gli accessi non sono ancora disponibili al pubblico.",
+        };
       }
 
       const returnUrl = trustedReturnUrl(data.returnUrl, "/famiglia/dashboard");

@@ -183,7 +183,19 @@ function FamilyDashboard() {
           )}
         </div>
 
-        {data?.locked && <PlanSelector onChoose={handleCheckout} loadingTier={loadingTier} />}
+        {data?.locked && data?.checkoutEnabled && (
+          <PlanSelector onChoose={handleCheckout} loadingTier={loadingTier} />
+        )}
+
+        {data?.locked && !data?.checkoutEnabled && (
+          <div className="mb-10 rounded-3xl border border-border/60 bg-background p-7 text-center">
+            <h2 className="text-2xl font-bold">Gli accessi apriranno presto</h2>
+            <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
+              Stiamo completando la selezione dei primi professionisti verificati a Roma. Potrai
+              attivare chat e altri strumenti quando la ricerca nella tua zona sarà pronta.
+            </p>
+          </div>
+        )}
 
         {!data?.locked && <RicercheSalvate />}
 
